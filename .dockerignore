@@ -1,7 +1,7 @@
-node_modules
+**/node_modules
+**/dist
 .git
 .env
-dist
 .vscode
 .astro
 npm-debug.log*

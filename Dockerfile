@@ -7,15 +7,16 @@ WORKDIR /app
 COPY frontend/package*.json ./frontend/
 COPY backend/package*.json ./backend/
 
-# Install dependencies
+# Install dependencies (clean install for container environment)
 RUN cd frontend && npm ci
 RUN cd backend && npm ci
 
-# Copy full source
+# Copy full source (excluding what's in .dockerignore)
 COPY frontend ./frontend
 COPY backend ./backend
 
 # Generate Prisma Client & Build Astro SSR
+# Explicitly use npx and ensure it's executable if needed (npm ci usually handles this)
 RUN cd backend && npx prisma generate
 RUN cd frontend && npm run build
 
@@ -36,9 +37,7 @@ COPY --from=build /app/frontend/package.json ./frontend/package.json
 COPY --from=build /app/backend/node_modules ./backend/node_modules
 COPY --from=build /app/backend/prisma ./backend/prisma
 COPY --from=build /app/backend/package.json ./backend/package.json
-COPY --from=build /app/backend/server.js ./backend/server.js
-# Note: assuming routes/controllers are inside backend/ if any, copying the whole backend folder is safer
-COPY --from=build /app/backend ./backend
+COPY --from=build /app/backend/src ./backend/src
 
 # Variables for Astro Node adapter
 ENV HOST=0.0.0.0
