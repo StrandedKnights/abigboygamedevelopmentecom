@@ -1,25 +1,37 @@
-# Findings — A Big Boy's Game Homepage Audit
+# Findings — A Big Boy's Game Project Discovery & Audit
 
-## Technical Learnings (2026-03-26)
+## 🛡️ BLAST Phase 1: Discovery Answers
+
+- **North Star:** Create the most premium, high-trust digital storefront for retro gaming collectibles in the Benelux, focused on "A Big Boy's Game" branding.
+- **Integrations:**
+    - **Mollie API:** For iDEAL and Credit Card payments.
+    - **Web3Forms:** For serverless contact form handling.
+    - **Supabase:** For PostgreSQL database and Auth.
+- **Source of Truth:**
+    - Primary Data: Production PostgreSQL on Supabase.
+    - Reference UI: `source2.html` (Original High-Fidelity Mockup).
+- **Delivery Payload:** Live e-commerce platform hosted on Coolify (Dockerized Astro + Node).
+- **Behavioral Rules:** STRICT "No Returns" policy. Branding must feel "Morphism/Glassy" and "Dark Retro".
+
+## 🛠️ Technical Revelations
 
 ### 1. Element Centering Reliability
-**Issue**: Centering text perfectly inside a circular badge is often botched by browser-specific line-heights or custom font baselines (`table-cell` approach still had micro-offsets).
-**Resolution**: The only 100% mathematically perfect centering technique that ignores font metrics is:
-```css
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-line-height: 1;
-```
+**Issue**: Centering text perfectly inside a circular badge is often botched by browser-specific line-heights.
+**Resolution**: Use absolute positioning with `50%` offsets and `translate(-50%, -50%)`. This ignores font-specific baseline metrics.
 
-### 2. Aesthetic Colors
-**Issue**: The `#d593ff` purple was too bright when applied across large text, borders, and buttons globally, leading to visual fatigue in the dark theme.
-**Resolution**: Swapped globally to `#9b5fe0`. This deep, muted purple provides excellent contrast against the `#0e0e13` background without blinding the user, allowing neon accents (like the green Xbox hover) to pop more.
+### 2. Aesthetic Color Theory
+**Issue**: Initially used `#d593ff` (too neon), causing eye strain in dark mode.
+**Resolution**: Swapped to `#9b5fe0` (Medium Slate Purple). This maintains brand identity while improving readability on `#0e0e13` backgrounds.
 
-### 3. Font Stacking Constraints
-**Issue**: Adding `Barlow Condensed` for headings required ensuring it was loaded at weights 700, 800, 900 in the Google Fonts import, and properly mapped in `tailwind.config.mjs`.
+### 3. Logo Transparency (The "Morphism" Trick)
+**Issue**: User logo has a hard black background, which clashes with slightly-off-black UI elements.
+**Resolution**: Implement `mix-blend-lighten`. This drops the black background entirely when layered over the dark theme, making the logo appear transparent/integrated.
 
-### 4. Coolify Deployment Architecture
-**Issue**: Astro SSR + Express Backend requires serving two Node instances if deployed via a single Docker container.
-**Resolution**: Building a multi-stage Dockerfile that runs both via a lightweight shell script `start.sh` so Coolify can host them as a single application, utilizing ports `3000` and `4321`.
+### 4. Container Grid Symmetry
+**Issue**: Footer columns and header elements frequently misaligned on 1024px-1280px viewports.
+**Resolution**: Moved from standard `grid-cols-4` to a responsive `sm:grid-cols-2 lg:grid-cols-4` pattern with optical padding-top on headers to maintain a uniform top-line baseline.
+
+### 5. Deployment Architecture
+**Issue**: Serving both Astro (SSR) and Express (API) usually requires two separate containers.
+**Resolution**: Using a multi-stage Dockerfile that installs dependencies for both, then uses a single entrypoint script to manage both processes, simplifying Coolify management.
+

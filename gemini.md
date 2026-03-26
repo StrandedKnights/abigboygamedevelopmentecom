@@ -14,26 +14,77 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 
 ### Product
 ```json
-{ "id": "cuid", "title": "String", "platform": "String", "priceInCents": "Int", "stock": "Int", "condition": "String", "imageUrl": "String", "isLegacy": "Boolean" }
+{ 
+  "id": "cuid", 
+  "title": "String", 
+  "platform": "String (PlayStation|Nintendo|Xbox|Sega)", 
+  "priceInCents": "Int", 
+  "stock": "Int", 
+  "condition": "String (NEW|LIKE NEW|GOOD|FAIR)", 
+  "imageUrl": "String", 
+  "isLegacy": "Boolean",
+  "category": "String",
+  "createdAt": "DateTime",
+  "updatedAt": "DateTime"
+}
 ```
 
 ### Order
 ```json
-{ "id": "cuid", "customerEmail": "String", "customerName": "String", "totalAmountInCents": "Int", "molliePaymentId": "String?", "status": "PENDING|PAID|CANCELED|EXPIRED|FAILED", "trackingCode": "String?" }
+{ 
+  "id": "cuid", 
+  "customerEmail": "String", 
+  "customerName": "String", 
+  "totalAmountInCents": "Int", 
+  "molliePaymentId": "String?", 
+  "status": "PENDING|PAID|CANCELED|EXPIRED|FAILED", 
+  "trackingCode": "String?",
+  "orderNumber": "String (Optional, for Web3Forms correlation)",
+  "createdAt": "DateTime"
+}
+```
+
+### Contact Submission (Web3Forms)
+```json
+{
+  "access_key": "ID",
+  "name": "String",
+  "email": "String",
+  "subject": "String?",
+  "message": "String",
+  "order_number": "String?"
+}
 ```
 
 ## Behavioral Rules
-1. **No Returns**: All copy = "alle verkopen zijn definitief". Never mention bedenktijd/retour.
-2. **Dark Only**: `#0e0e13` backgrounds. Inline `style` as Tailwind fallback.
-3. **Typography**: Barlow Condensed (major headings), Orbitron (UI labels/accents), Space Grotesk (sub), Inter (body).
-4. **Neon accents**: Deep Purple `#9b5fe0`, deal green `#00FF88`. Per-platform colors (Xbox=green, Sega=blue, etc.)
-5. **Logo in hero**: Use `mix-blend-lighten` + `opacity-25` for full-bleed hero background.
+1. **No Returns**: All copy = "alle verkopen zijn definitief". Never mention "bedenktijd" or "retour" unless clarifying they don't exist.
+2. **Dark Theme Invariant**: Backgrounds must be `#0e0e13` (Morphism Dark). 
+3. **Typography Standards**: 
+    - Barlow Condensed: ALL CAPS for H1/H2 headings.
+    - Orbitron: 0.3em letter-spacing for UI labels and accents.
+    - Inter: Standard body text, 1.6 leading.
+4. **Neon Brand Accents**:
+    - Primary Purple: `#9b5fe0`
+    - Deal Green: `#00FF88` (used for savings/trust badges)
+    - Per-Platform: Xbox (`#107c10`), PlayStation (`#003791`), Nintendo (`#e60012`).
+5. **Logo Rendering**: The logo has a black background. Use `mix-blend-lighten` to make it transparent on the dark UI.
+6. **Error Handling**: Every API response must include a `status` (success/error), `data` (payload), and `message` (human-readable).
 
 ## Architectural Invariants
-- Frontend fetches from `http://localhost:3000/api/` (Requires mapping in production via ENV)
-- Images optimized via Sharp on upload
-- Mollie handles payments
-- Tailwind inline `style` fallback mandatory for dark theme guarantee
+- **SSR Strategy**: Astro SSR for the frontend to enable dynamic metadata and session management.
+- **Backend API**: Node.js/Express with Prisma ORM and PostgreSQL.
+- **Payment Lifecycle**: Webhook-driven status updates from Mollie.
+- **CI/CD**: Auto-deployment to Coolify on push to `main` branch.
+- **Asset Optimization**: All product images processed via Sharp to WebP format.
+
+## Maintenance Log
+| Date | Change | Reason |
+|---|---|---|
+| 2026-03-26 | Integrated Web3Forms | Added professional contact capability. |
+| 2026-03-26 | Updated Subcategories | Aligned categories with user inventory (PS2, Switch, Xbox 360). |
+| 2026-03-26 | Global Purple Refinement | Swapped `#d593ff` for `#9b5fe0` for better accessibility. |
+| 2026-03-26 | Footer Alignment Fix | Adjusted grid for mobile/tablet symmetry. |
+
 
 ## Component Inventory
 | Component | File | Status |
