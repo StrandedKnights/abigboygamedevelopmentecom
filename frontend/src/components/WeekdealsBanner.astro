@@ -27,20 +27,23 @@
 
 <script>
     function updateCountdown() {
+        // Get current time in Amsterdam
         const now = new Date();
-        const nextFriday = new Date();
+        const amsterdamTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Amsterdam"}));
         
-        // Find next Friday at 20:00
-        const daysUntilFriday = (5 - now.getDay() + 7) % 7;
-        nextFriday.setDate(now.getDate() + daysUntilFriday);
+        // Target: Friday at 20:00 Amsterdam time
+        const nextFriday = new Date(amsterdamTime);
+        const daysUntilFriday = (5 - amsterdamTime.getDay() + 7) % 7;
+        
+        nextFriday.setDate(amsterdamTime.getDate() + daysUntilFriday);
         nextFriday.setHours(20, 0, 0, 0);
 
-        // If it's already past 20:00 on Friday, go to next week
-        if (now >= nextFriday) {
+        // If it's already past 20:00 on Friday in Amsterdam, go to next week
+        if (amsterdamTime >= nextFriday) {
             nextFriday.setDate(nextFriday.getDate() + 7);
         }
 
-        const diff = nextFriday.getTime() - now.getTime();
+        const diff = nextFriday.getTime() - amsterdamTime.getTime();
         
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
