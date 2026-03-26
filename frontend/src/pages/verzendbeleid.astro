@@ -1,15 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNavBar from '../components/TopNavBar.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<BaseLayout title="Verzendbeleid | ABigBoysGame" description="Alles over onze snelle en veilige verzending van retro games en consoles.">
+<BaseLayout title="Verzendbeleid | ABigBoysGame" description="Informatie over verzendmethoden, levertijden en kosten.">
+    <TopNavBar />
     <div class="relative min-h-screen pt-32 pb-24" style="background-color: #0e0e13;">
         <!-- Background Glow -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl pointer-events-none opacity-20" 
-             style="background: radial-gradient(circle at 50% 0%, #9b5fe0 0%, transparent 70%);">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none opacity-20" 
+             style="background: radial-gradient(circle at 50% 10%, #9b5fe0 0%, transparent 70%);">
         </div>
 
-        <div class="max-w-5xl mx-auto px-6 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
                 <span class="font-orbitron text-[#9b5fe0] text-sm tracking-[0.3em] uppercase mb-4 block">Logistiek & Levering</span>
                 <h1 class="font-barlow font-black text-6xl md:text-7xl text-white uppercase leading-none italic tracking-tighter">
@@ -85,5 +88,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
         </div>
     </div>
+    <Footer />
 </BaseLayout>
+
 

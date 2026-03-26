@@ -1,15 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNavBar from '../components/TopNavBar.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout title="Garantie & Kwaliteit | ABigBoysGame" description="Onze belofte: de hoogste kwaliteit retro hardware en software, met 3 maanden garantie.">
+    <TopNavBar />
     <div class="relative min-h-screen pt-32 pb-24" style="background-color: #0e0e13;">
         <!-- Background Glow -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl pointer-events-none opacity-20" 
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none opacity-20" 
              style="background: radial-gradient(circle at 50% 10%, #9b5fe0 0%, transparent 70%);">
         </div>
 
-        <div class="max-w-5xl mx-auto px-6 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+
             <!-- Header Section -->
             <div class="text-center mb-20">
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00FF88]/20 bg-[#00FF88]/5 mb-6">
@@ -89,5 +93,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
         </div>
     </div>
+    <Footer />
 </BaseLayout>
+
 
