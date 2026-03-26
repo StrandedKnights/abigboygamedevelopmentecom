@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="nl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Inter:wght@300..700&amp;family=Orbitron:wght@400..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#0e0e13",
+              "surface-tint": "#d593ff",
+              "outline-variant": "#48474d",
+              "on-secondary": "#330059",
+              "on-error-container": "#ffb2b9",
+              "on-background": "#f9f5fd",
+              "surface-variant": "#25252d",
+              "on-secondary-fixed-variant": "#741fb7",
+              "on-tertiary-fixed-variant": "#006632",
+              "on-secondary-fixed": "#500087",
+              "on-secondary-container": "#e5c3ff",
+              "secondary": "#c37fff",
+              "primary-fixed": "#cc7fff",
+              "on-tertiary-container": "#005b2c",
+              "primary-fixed-dim": "#c36aff",
+              "secondary-container": "#690bac",
+              "on-tertiary-fixed": "#004621",
+              "on-surface-variant": "#acaab1",
+              "primary-container": "#cc7fff",
+              "tertiary-fixed": "#00fd87",
+              "surface-container-low": "#131319",
+              "background": "#0e0e13",
+              "primary-dim": "#ca7bff",
+              "error-dim": "#d73357",
+              "on-primary": "#4b0075",
+              "primary": "#d593ff",
+              "tertiary-dim": "#00ed7e",
+              "surface-container-highest": "#25252d",
+              "surface-bright": "#2c2b33",
+              "on-primary-container": "#3a005b",
+              "on-error": "#490013",
+              "surface-container": "#19191f",
+              "error": "#ff6e84",
+              "on-primary-fixed": "#000000",
+              "surface-container-lowest": "#000000",
+              "on-primary-fixed-variant": "#480070",
+              "secondary-fixed": "#e6c5ff",
+              "secondary-dim": "#c37fff",
+              "inverse-on-surface": "#55545b",
+              "inverse-primary": "#8d26cc",
+              "inverse-surface": "#fcf8ff",
+              "tertiary": "#a4ffb9",
+              "error-container": "#a70138",
+              "surface-container-high": "#1f1f26",
+              "secondary-fixed-dim": "#ddb3ff",
+              "surface-dim": "#0e0e13",
+              "tertiary-container": "#00fd87",
+              "outline": "#76747b",
+              "tertiary-fixed-dim": "#00ed7e",
+              "on-tertiary": "#006532",
+              "on-surface": "#f9f5fd",
+              "deal-green": "#00FF88"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "orbitron": ["Orbitron"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .scanline-overlay {
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        background-size: 100% 2px, 3px 100%;
+        pointer-events: none;
+      }
+      .neon-glow {
+        box-shadow: 0 0 20px rgba(191, 95, 255, 0.3);
+      }
+      .ticker-scroll {
+        animation: ticker 30s linear infinite;
+        white-space: nowrap;
+      }
+      @keyframes ticker {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        height: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #131319;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #d593ff;
+        border-radius: 2px;
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Section 1: TopNavBar (from Shared Components JSON) -->
+<nav class="fixed top-0 w-full h-[56px] md:h-[64px] z-50 bg-[#0e0e13]/80 backdrop-blur-md flex justify-between items-center px-4 md:px-8 w-full max-w-none shadow-[0_0_20px_rgba(191,95,255,0.15)] border-b border-[#7B2FBE]">
+<div class="flex items-center gap-2">
+<span class="text-2xl font-black tracking-tighter text-[#d593ff] drop-shadow-[0_0_10px_rgba(213,147,255,0.5)] font-orbitron uppercase">AbigBoysGame</span>
+</div>
+<div class="hidden md:flex items-center space-x-8 font-['Space_Grotesk'] tracking-wider uppercase text-sm">
+<a class="text-[#d593ff] border-b-2 border-[#d593ff] pb-1 hover:text-[#d593ff] hover:drop-shadow-[0_0_8px_rgba(191,95,255,0.6)] transition-all" href="#">Home</a>
+<a class="text-[#acaab1] hover:text-[#d593ff] hover:drop-shadow-[0_0_8px_rgba(191,95,255,0.6)] transition-all" href="#">Shop</a>
+<a class="text-[#acaab1] hover:text-[#d593ff] hover:drop-shadow-[0_0_8px_rgba(191,95,255,0.6)] transition-all" href="#">Inruilen</a>
+<a class="text-[#acaab1] hover:text-[#d593ff] hover:drop-shadow-[0_0_8px_rgba(191,95,255,0.6)] transition-all" href="#">Over Ons</a>
+</div>
+<div class="flex items-center gap-4 text-[#d593ff]">
+<button class="material-symbols-outlined p-2 scale-95 active:scale-90 duration-200 hover:drop-shadow-[0_0_8px_rgba(191,95,255,0.6)]">search</button>
+<button class="material-symbols-outlined p-2 scale-95 active:scale-90 duration-200 hover:drop-shadow-[0_0_8px_rgba(191,95,255,0.6)]">account_circle</button>
+<button class="material-symbols-outlined p-2 scale-95 active:scale-90 duration-200 hover:drop-shadow-[0_0_8px_rgba(191,95,255,0.6)] relative">
+                shopping_cart
+                <span class="absolute top-0 right-0 bg-deal-green text-surface-container-lowest text-[10px] font-bold px-1 rounded-full">3</span>
+</button>
+</div>
+</nav>
+<!-- Section 2: Hero Section -->
+<section class="relative min-h-[560px] pt-[64px] flex items-center overflow-hidden bg-[radial-gradient(circle_at_center,_#6A0DAD_0%,_#0A0A0F_70%)]">
+<div class="absolute inset-0 scanline-overlay z-10 opacity-30"></div>
+<div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-12 relative z-20">
+<div class="space-y-6">
+<h1 class="font-orbitron text-5xl md:text-7xl font-black text-on-surface leading-tight tracking-tighter">
+                    JOUW RETRO <br/>
+<span class="text-primary drop-shadow-[0_0_15px_rgba(213,147,255,0.4)]">GAMING PARADIJS</span>
+</h1>
+<p class="text-on-surface-variant text-lg max-w-lg font-body leading-relaxed">
+                    Herbeleef de gouden jaren van gaming. Van zeldzame NES-cartridges tot legendarische PlayStation-klassiekers, wij hebben de schatten uit jouw jeugd.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-orbitron font-bold py-4 px-8 rounded-sm neon-glow transform hover:scale-105 transition-all uppercase tracking-widest text-sm">
+                        Bekijk Aanbod
+                    </button>
+<button class="border border-outline-variant/40 bg-surface-container-high/50 backdrop-blur-sm text-on-surface font-orbitron font-bold py-4 px-8 rounded-sm hover:bg-surface-variant transition-all uppercase tracking-widest text-sm">
+                        Inruilen
+                    </button>
+</div>
+</div>
+<div class="hidden lg:block relative group">
+<div class="absolute -inset-4 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+<img alt="Retro Mascot" class="relative z-10 w-full max-w-md mx-auto drop-shadow-[0_0_50px_rgba(191,95,255,0.4)]" data-alt="Retro gaming mascot character or high-tech neon console setup with vibrant purple glowing highlights and floating digital artifacts" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCePtqVt2364tDZ7qMHJ0DOUBVHBR9FHl9x2jg89SpgrXdS5VP6bqaPaBOqi3nB4onNLZe0jJamiTDYh9OCnSc-DlKAS4-gBOoFoLkC7NXznmus84RUEHWVwyeXFxIVD87ZJBhV-3BTtUbxHeTVjeatJbmvBIGcktfwrV8kag1JJ-8pjxFSlO6ezVh-hiUxaSWG1oANsuc17r7Za54cyv2JheBJqDOMCjxKcYV-jfELzInGsgAnezLIzqnsFcbqFK5P5Yopw4UaLbo"/>
+</div>
+</div>
+<!-- Scrolling Ticker -->
+<div class="absolute bottom-0 w-full bg-surface-container-lowest/80 backdrop-blur-sm border-y border-primary/20 py-3 overflow-hidden z-30">
+<div class="ticker-scroll flex items-center gap-12 font-orbitron text-sm font-bold text-primary-dim tracking-[0.3em]">
+<span>NES · SNES · N64 · PS1 · PS2 · XBOX · SEGA · GAMEBOY · ATARI · DREAMCAST · GAME CUBE · WII · NEO GEO · COMMODORE 64</span>
+<span>NES · SNES · N64 · PS1 · PS2 · XBOX · SEGA · GAMEBOY · ATARI · DREAMCAST · GAME CUBE · WII · NEO GEO · COMMODORE 64</span>
+</div>
+</div>
+</section>
+<!-- Section 3: Bento Category Grid -->
+<section class="py-20 px-6 container mx-auto">
+<div class="flex items-end justify-between mb-12">
+<h2 class="font-orbitron text-3xl font-bold tracking-tighter border-l-4 border-primary pl-4 uppercase">Categorieën</h2>
+<a class="text-sm font-label uppercase tracking-widest text-primary hover:underline" href="#">Toon alles (28)</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 auto-rows-[160px]">
+<!-- Row 1-2 Featured (2x2) -->
+<div class="col-span-2 row-span-2 bg-surface-container-high relative group overflow-hidden rounded-sm cursor-pointer border border-outline-variant/10 hover:border-primary/50 transition-colors">
+<img alt="PS" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700" data-alt="Sleek original PlayStation 1 console with controllers on a dark technical background with neon violet lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXHNQlv_E8VeFjB4Y00FD6euBZ5AwxtoAxIbTBv0jTBT687l4n6PvPUxhLFCi-AgZTcI1XpTLdM1Jum9Uv0y435x8PVBmi12Ou-bMzrZT3tnZDhf3yHeyv5JVmtToUhBGFQrGgCUJuQKwI79A4vX5qU80-PoD-oV1ZBRlOPaLMLT_gcHoU7LdKJNFc-ch3RrtV6s-Hgcset-vDkZwxe6r8xVyc5S3b9-tC9GyaHvX3C3PNZSKKVaiYMisumJX8dtltHJ1neqgzufw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 z-20">
+<span class="material-symbols-outlined text-4xl text-primary mb-2">videogame_asset</span>
+<h3 class="font-orbitron text-2xl font-black">PLAYSTATION</h3>
+<p class="text-xs font-label text-deal-green tracking-widest">1,240 TITELS</p>
+</div>
+</div>
+<div class="col-span-2 row-span-2 bg-surface-container-high relative group overflow-hidden rounded-sm cursor-pointer border border-outline-variant/10 hover:border-primary/50 transition-colors">
+<img alt="Nintendo" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700" data-alt="Collection of classic Nintendo cartridges and consoles arranged in an artistic asymmetric layout with soft red and purple glow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKYetgQpr0eqgbQzqIwuFP7_102KNIoTQ0G2krHrRCzEVAbF4SNrty6NcGa4tZX9wxDj4H9T79LnnQs59POIJE0v0CwFbPi1n6HpAFZe3S_vzk2gd7a0N9cj6u9f1CsVmqnnq1EDalT7EKHSsC5QdWTfGN__zrydNxMdPL0ywjQPNBcxo8wEC-SXUz5FgJ0C0l0Ta9F88eypjb5xUFveSIoyeRmqq-qtG85o8_uVVYykbOb34DIy4FvjfMsRZLug9JKUJ4jtTeIX8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 z-20">
+<span class="material-symbols-outlined text-4xl text-primary mb-2">sports_esports</span>
+<h3 class="font-orbitron text-2xl font-black">NINTENDO</h3>
+<p class="text-xs font-label text-deal-green tracking-widest">2,105 TITELS</p>
+</div>
+</div>
+<!-- Medium (2x1) -->
+<div class="col-span-1 row-span-1 bg-surface-container-high p-6 flex flex-col justify-between group cursor-pointer border border-outline-variant/10 hover:border-deal-green transition-all">
+<span class="material-symbols-outlined text-3xl text-outline group-hover:text-deal-green transition-colors">joystick</span>
+<div>
+<h4 class="font-orbitron text-lg font-bold">XBOX</h4>
+<p class="text-[10px] font-label text-on-surface-variant tracking-tighter">482 GAMES</p>
+</div>
+</div>
+<div class="col-span-1 row-span-1 bg-surface-container-high p-6 flex flex-col justify-between group cursor-pointer border border-outline-variant/10 hover:border-deal-green transition-all">
+<span class="material-symbols-outlined text-3xl text-outline group-hover:text-deal-green transition-colors">token</span>
+<div>
+<h4 class="font-orbitron text-lg font-bold">SEGA</h4>
+<p class="text-[10px] font-label text-on-surface-variant tracking-tighter">315 GAMES</p>
+</div>
+</div>
+<div class="col-span-1 row-span-1 bg-surface-container-high p-6 flex flex-col justify-between group cursor-pointer border border-outline-variant/10 hover:border-deal-green transition-all">
+<span class="material-symbols-outlined text-3xl text-outline group-hover:text-deal-green transition-colors">smartphone</span>
+<div>
+<h4 class="font-orbitron text-lg font-bold">HANDHELDS</h4>
+<p class="text-[10px] font-label text-on-surface-variant tracking-tighter">890 GAMES</p>
+</div>
+</div>
+<div class="col-span-1 row-span-1 bg-surface-container-high p-6 flex flex-col justify-between group cursor-pointer border border-outline-variant/10 hover:border-deal-green transition-all">
+<span class="material-symbols-outlined text-3xl text-outline group-hover:text-deal-green transition-colors">desktop_windows</span>
+<div>
+<h4 class="font-orbitron text-lg font-bold">PC CLASSICS</h4>
+<p class="text-[10px] font-label text-on-surface-variant tracking-tighter">154 GAMES</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Nieuwste Toevoegingen -->
+<section class="py-20 bg-surface-container-low overflow-hidden">
+<div class="container mx-auto px-6">
+<div class="flex items-center justify-between mb-12">
+<h2 class="font-orbitron text-3xl font-bold tracking-tighter uppercase">Nieuwste <span class="text-primary">Toevoegingen</span></h2>
+<div class="flex gap-2">
+<button class="w-10 h-10 border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-surface-container-lowest transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-surface-container-lowest transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex gap-6 overflow-x-auto custom-scrollbar pb-8 snap-x">
+<!-- Product Card 1 -->
+<div class="min-w-[280px] bg-surface snap-start rounded-xl overflow-hidden border border-outline-variant/20 hover:neon-glow transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="Game" class="w-full h-full object-cover" data-alt="Close up shot of a vintage game cartridge for Super Nintendo with vibrant colorful box art in a dark technical setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTj3C5Yj894z0VKWQwybVwB-FTh6ir8hBnVji8eZQUdyQuUjlSG9zyjwvGW5QBEub-AXJerM5DLqXYIEK3aCPa9SHN0r_xo-Tsi_Pg_1sterUtsA2LHqZ8doGse04XatcmFDyoJIeNV4LuC1hm8dQnfUzNhh3Ce5i1xSjvSG-Y8kzuzcfMaraWU7B39f-aFWED1zXzMlsqjJE1UnDoiblaPHcLFadaIOHQEkpxx8n_EIS_FbjAJlXaMe1eIuWxfjYDuOYCv4d1RYU"/>
+<span class="absolute top-4 right-4 bg-[#ff4b4b] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase font-orbitron">Nintendo</span>
+</div>
+<div class="p-6 space-y-4">
+<h3 class="font-bold text-lg line-clamp-1">Super Mario World</h3>
+<div class="flex items-center justify-between">
+<span class="font-orbitron text-xl text-primary">€49,99</span>
+<button class="bg-surface-container-highest p-2 rounded-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="min-w-[280px] bg-surface snap-start rounded-xl overflow-hidden border border-outline-variant/20 hover:neon-glow transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="Game" class="w-full h-full object-cover" data-alt="Iconic PlayStation 1 game jewel case with legendary cover art visible under dramatic neon blue lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPS9P2VK2V1sVznp-_2TsReaBA0iGnIt9gxWWS8gvq0ua-jIFrFsIo-sDyKyYTpxiPM7lLTmDFXpFygewSSpPuW_JOv-Z0ZWtimsuTNzsOqXQEkheSYQgfGv182RTSk0rrpEMSBUAdionmhF4HBPO7MdlGqXPJrohVOo3JSGMzGT0oOMbbpGJFmv8gNWG4iydS5CpU8LvdbODV1iNAXEtG4NS-CUXzbHx06WijkNH8Ftllth12xKEKU7ktx6nmQnqctWQ2C65jVmk"/>
+<span class="absolute top-4 right-4 bg-[#00439c] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase font-orbitron">PS1</span>
+</div>
+<div class="p-6 space-y-4">
+<h3 class="font-bold text-lg line-clamp-1">Final Fantasy VII</h3>
+<div class="flex items-center justify-between">
+<span class="font-orbitron text-xl text-primary">€85,00</span>
+<button class="bg-surface-container-highest p-2 rounded-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[280px] bg-surface snap-start rounded-xl overflow-hidden border border-outline-variant/20 hover:neon-glow transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="Game" class="w-full h-full object-cover" data-alt="Close up of a green Xbox game case standing on a reflective surface with cyan lighting in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1YIMvcmOS4WueXsKoBILLQ0oAklOnTsAewl-W8rUe5Qg9wBaysqmanN35wRR-dn_077sdAxrzrVeyqBfDeA1e71RK0NzrSrfw1SA1iNk9CHfyMf2QNH39AB9bEsobEGvRZY-KK7Kr4PlQJSOcCgwGt_exBfSR5ApsvHsoRH9YGl-FKfDvEb_Dm4D1MuqGKvE6a8Y2GcS-o9zQbz29nwlRq5S7dah2rCeM-i3eoFIjJaBrbzB93GeIz7JFjrVPxV6KTsNwLqXFqqA"/>
+<span class="absolute top-4 right-4 bg-[#107c10] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase font-orbitron">Xbox</span>
+</div>
+<div class="p-6 space-y-4">
+<h3 class="font-bold text-lg line-clamp-1">Halo: Combat Evolved</h3>
+<div class="flex items-center justify-between">
+<span class="font-orbitron text-xl text-primary">€24,50</span>
+<button class="bg-surface-container-highest p-2 rounded-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="min-w-[280px] bg-surface snap-start rounded-xl overflow-hidden border border-outline-variant/20 hover:neon-glow transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="Game" class="w-full h-full object-cover" data-alt="Colorful Sega Mega Drive cartridge box showing energetic mascot character on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_WR_CJULssLm-ShRvzp3KE9R74jAP7R4nTKLZCYU8rj4v_XimcJKPCA1Saom3Vmt2wknxFK34ZTTqHC207MGWbe1Fa85VOHV6sdlpgyOXbPFWF7fG9TSRkjjvdoHPd1UUK0p3FvUGtP5dmRzwool2guWjFQtbzborjVFwolJdYAE7etR-8PuS1AZep_etG8kkp0Q2Zj6v3BDMqSNLAbMf8nAGjTPAYbNSk90vfH2FNOIXe_ouosLbY19KP4hKmp2Z3S8V6Myy-Hs"/>
+<span class="absolute top-4 right-4 bg-[#0054a6] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase font-orbitron">Sega</span>
+</div>
+<div class="p-6 space-y-4">
+<h3 class="font-bold text-lg line-clamp-1">Sonic the Hedgehog 2</h3>
+<div class="flex items-center justify-between">
+<span class="font-orbitron text-xl text-primary">€39,95</span>
+<button class="bg-surface-container-highest p-2 rounded-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="min-w-[280px] bg-surface snap-start rounded-xl overflow-hidden border border-outline-variant/20 hover:neon-glow transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="Game" class="w-full h-full object-cover" data-alt="Collection of multi-colored Gameboy Color consoles in a stylish high-contrast flat lay" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABQ7o2wI46_3WBWi5SyvWvtnY73XAf5Yi2v1I-EukfUKSH3qWegENEVTmE5QyxfwX7-7Zfc27qpsSQ1SIFcuI6LzvkeeQ0XdIoBT0ic7liTWlSCNzYuJaKpznW2ILj3C0VG7evtwUzm8DWLc4bYD0_8_7_vOyDrnrzNexUAD86oK2hGu_kRf7RpjS8hHpo5tp25KBWFGev3Ou5wbDdKq6uFuKoYmm84c6B3aXHlqu7u5phugt6IGyrHWFfcw8fiXGjtpowhTDGQIw"/>
+<span class="absolute top-4 right-4 bg-[#6c2891] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase font-orbitron">Handheld</span>
+</div>
+<div class="p-6 space-y-4">
+<h3 class="font-bold text-lg line-clamp-1">Pokémon Yellow</h3>
+<div class="flex items-center justify-between">
+<span class="font-orbitron text-xl text-primary">€74,00</span>
+<button class="bg-surface-container-highest p-2 rounded-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="min-w-[280px] bg-surface snap-start rounded-xl overflow-hidden border border-outline-variant/20 hover:neon-glow transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="Game" class="w-full h-full object-cover" data-alt="Rare Nintendo 64 gold colored cartridge standing heroically with ambient light reflecting off the surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9f9e7cxJx_3k0IWes77auUoq2N2hEUbXfq8LKM8kWdwKaC9j9hg_OXm0vegfuUQRiNVw2jAczPnoO5jxG1JtIgS1dLAF162Wi4ZmrC3mOteiY_sUKUKBjxrurIDdweXgDZJSZPFWVvIqJaE8vw_TYrJoRxRSJtNw_OwIeqsy-7zZMlAf5Rp1ymJvZR4PS9COaMccp7l0u2XzHWnS-lNsJVWNSo_cjqmQN7E2Ev-dNOOFC7_IiCIuvFxMqrv3nuvehLaUEf-jfFlk"/>
+<span class="absolute top-4 right-4 bg-[#ff4b4b] text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase font-orbitron">N64</span>
+</div>
+<div class="p-6 space-y-4">
+<h3 class="font-bold text-lg line-clamp-1">GoldenEye 007</h3>
+<div class="flex items-center justify-between">
+<span class="font-orbitron text-xl text-primary">€55,00</span>
+<button class="bg-surface-container-highest p-2 rounded-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Weekdeals Banner -->
+<section class="py-12 bg-surface">
+<div class="container mx-auto px-6">
+<div class="bg-[#1A1A2E] border-l-[6px] border-deal-green p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group">
+<div class="absolute inset-0 bg-deal-green/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+<div class="relative z-10 flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
+<div class="w-16 h-16 bg-deal-green/20 rounded-full flex items-center justify-center text-deal-green">
+<span class="material-symbols-outlined text-4xl" data-weight="fill">bolt</span>
+</div>
+<div>
+<h2 class="font-orbitron text-2xl font-black text-on-surface">WEEKDEALS: SCOOR JE KLASSIEKERS</h2>
+<p class="text-on-surface-variant text-sm font-label uppercase tracking-widest mt-1">Eindigt in:</p>
+</div>
+</div>
+<div class="relative z-10 font-mono text-3xl md:text-5xl font-bold text-deal-green tracking-tighter flex gap-4">
+<div class="bg-surface-container-lowest px-4 py-2 rounded-sm border border-deal-green/20">02<span class="text-[10px] block text-center uppercase font-label text-on-surface-variant">Dagen</span></div>
+<div class="bg-surface-container-lowest px-4 py-2 rounded-sm border border-deal-green/20">14<span class="text-[10px] block text-center uppercase font-label text-on-surface-variant">Uren</span></div>
+<div class="bg-surface-container-lowest px-4 py-2 rounded-sm border border-deal-green/20">45<span class="text-[10px] block text-center uppercase font-label text-on-surface-variant">Min</span></div>
+</div>
+<button class="relative z-10 bg-deal-green text-surface-container-lowest px-10 py-4 font-orbitron font-black text-sm uppercase tracking-widest hover:brightness-110 transition-all">
+                    Bekijk Deals
+                </button>
+</div>
+</div>
+</section>
+<!-- Section 6: Vertrouwensbalk -->
+<section class="py-12 border-y border-outline-variant/10">
+<div class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="flex flex-col items-center text-center space-y-3">
+<span class="material-symbols-outlined text-3xl text-primary">local_shipping</span>
+<div>
+<h4 class="font-orbitron text-xs font-bold uppercase tracking-widest">Gratis Verzending</h4>
+<p class="text-[10px] text-on-surface-variant">Bij bestellingen vanaf €75</p>
+</div>
+</div>
+<div class="flex flex-col items-center text-center space-y-3">
+<span class="material-symbols-outlined text-3xl text-primary">assignment_return</span>
+<div>
+<h4 class="font-orbitron text-xs font-bold uppercase tracking-widest">14 Dagen Bedenktijd</h4>
+<p class="text-[10px] text-on-surface-variant">Niet goed? Geld terug</p>
+</div>
+</div>
+<div class="flex flex-col items-center text-center space-y-3">
+<span class="material-symbols-outlined text-3xl text-primary">verified_user</span>
+<div>
+<h4 class="font-orbitron text-xs font-bold uppercase tracking-widest">Veilig Betalen</h4>
+<p class="text-[10px] text-on-surface-variant">iDEAL, Klarna &amp; Creditcard</p>
+</div>
+</div>
+<div class="flex flex-col items-center text-center space-y-3">
+<span class="material-symbols-outlined text-3xl text-primary" data-weight="fill">star</span>
+<div>
+<h4 class="font-orbitron text-xs font-bold uppercase tracking-widest">4.8/5 Trustpilot</h4>
+<p class="text-[10px] text-on-surface-variant">98% klanttevredenheid</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 7: Footer (from Shared Components JSON) -->
+<footer class="bg-[#07070D] w-full border-t-2 border-[#BF5FFF] shadow-[0_-10px_30px_rgba(191,95,255,0.2)]">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 py-12 md:px-12 w-full">
+<!-- Brand Column -->
+<div class="space-y-6">
+<span class="text-3xl font-black text-[#BF5FFF] font-orbitron uppercase">AbigBoysGame</span>
+<p class="font-body text-[#acaab1] text-sm leading-relaxed">
+                    De ultieme bestemming voor retro gamers. Wij brengen nostalgie terug in jouw huiskamer met passie en expertise.
+                </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 bg-surface-variant flex items-center justify-center rounded-sm hover:text-[#ffffff] transition-colors duration-300 opacity-80 hover:opacity-100" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+<a class="w-10 h-10 bg-surface-variant flex items-center justify-center rounded-sm hover:text-[#ffffff] transition-colors duration-300 opacity-80 hover:opacity-100" href="#">
+<span class="material-symbols-outlined">rss_feed</span>
+</a>
+<a class="w-10 h-10 bg-surface-variant flex items-center justify-center rounded-sm hover:text-[#ffffff] transition-colors duration-300 opacity-80 hover:opacity-100" href="#">
+<span class="material-symbols-outlined">public</span>
+</a>
+</div>
+</div>
+<!-- Links Column 1 -->
+<div>
+<h4 class="font-['Space_Grotesk'] text-[#d593ff] font-bold mb-6 uppercase tracking-wider">Klantenservice</h4>
+<ul class="space-y-4 text-sm font-['Inter'] text-[#acaab1]">
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">Contact opnemen</a></li>
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">Veelgestelde vragen</a></li>
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">Verzenden &amp; Retourneren</a></li>
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">Garantie &amp; Reparatie</a></li>
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">Inkoopvoorwaarden</a></li>
+</ul>
+</div>
+<!-- Links Column 2 -->
+<div>
+<h4 class="font-['Space_Grotesk'] text-[#d593ff] font-bold mb-6 uppercase tracking-wider">Populaire Categorieën</h4>
+<ul class="space-y-4 text-sm font-['Inter'] text-[#acaab1]">
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">Nintendo consoles</a></li>
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">PlayStation games</a></li>
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">Sega verzamelaarsobjecten</a></li>
+<li><a class="hover:text-[#ffffff] transition-colors duration-300" href="#">Retro hardware</a></li>
+<li><a class="hover:text-[#ffffff] transition-colors duration-300 text-[#d593ff] font-bold" href="#">Weekdeals</a></li>
+</ul>
+</div>
+<!-- Newsletter Column -->
+<div>
+<h4 class="font-['Space_Grotesk'] text-[#d593ff] font-bold mb-6 uppercase tracking-wider">Nieuwsbrief</h4>
+<p class="text-sm font-['Inter'] text-[#acaab1] mb-6">Meld je aan voor exclusieve drops en retro nieuws.</p>
+<div class="flex flex-col gap-3">
+<input class="bg-surface-container-lowest border border-outline-variant/30 px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="E-mailadres" type="email"/>
+<button class="bg-[#BF5FFF] text-surface-container-lowest py-3 font-orbitron font-bold text-xs uppercase tracking-[0.2em] hover:brightness-110 transition-all">Inschrijven</button>
+</div>
+</div>
+</div>
+<div class="px-6 md:px-12 py-6 border-t border-[#BF5FFF]/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="text-[11px] tracking-[0.1em] text-[#acaab1]">© 2024 AbigBoysGame. Alle rechten voorbehouden.</span>
+<div class="flex gap-6">
+<a class="text-[11px] tracking-[0.1em] text-[#acaab1] hover:text-[#ffffff]" href="#">Algemene Voorwaarden</a>
+<a class="text-[11px] tracking-[0.1em] text-[#acaab1] hover:text-[#ffffff]" href="#">Privacybeleid</a>
+</div>
+</div>
+</footer>
+</body></html>

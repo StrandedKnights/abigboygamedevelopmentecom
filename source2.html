@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEON MONOLITH | ANTIGRAVITY TERMINAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-container": "#49484f",
+                        "on-secondary-fixed": "#1b1b21",
+                        "on-secondary-container": "#b9b7c0",
+                        "surface-variant": "#353439",
+                        "surface-container-highest": "#353439",
+                        "on-background": "#e4e1e8",
+                        "outline-variant": "#4f4254",
+                        "on-tertiary": "#3d2f00",
+                        "on-primary-fixed-variant": "#7200a3",
+                        "primary-container": "#c960ff",
+                        "on-surface": "#e4e1e8",
+                        "primary-fixed-dim": "#e8b3ff",
+                        "on-primary-fixed": "#310049",
+                        "on-tertiary-container": "#4f3d00",
+                        "tertiary-fixed-dim": "#f1c100",
+                        "surface-bright": "#39393e",
+                        "on-tertiary-fixed-variant": "#584400",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#e8b3ff",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#303036",
+                        "tertiary-container": "#d0a600",
+                        "on-primary": "#500074",
+                        "tertiary-fixed": "#ffe08b",
+                        "on-primary-container": "#460066",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-error": "#690005",
+                        "primary-fixed": "#f6d9ff",
+                        "outline": "#9c8ba0",
+                        "secondary": "#c8c5ce",
+                        "inverse-primary": "#9600d4",
+                        "surface": "#131317",
+                        "secondary-fixed-dim": "#c8c5ce",
+                        "surface-container-low": "#1b1b20",
+                        "tertiary": "#f1c100",
+                        "inverse-on-surface": "#303035",
+                        "secondary-fixed": "#e4e1ea",
+                        "on-secondary-fixed-variant": "#47464d",
+                        "inverse-surface": "#e4e1e8",
+                        "error-container": "#93000a",
+                        "surface-dim": "#131317",
+                        "on-surface-variant": "#d3c1d6",
+                        "surface-container-lowest": "#0e0e12",
+                        "surface-container-high": "#2a292e",
+                        "primary": "#e8b3ff",
+                        "surface-container": "#1f1f24",
+                        "background": "#131317"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 240px;
+            gap: 1.5rem;
+        }
+        .text-glow:hover {
+            text-shadow: 0 0 8px rgba(232, 179, 255, 0.6);
+        }
+        .glass-card {
+            background: rgba(42, 41, 46, 0.4);
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tactical-grid {
+            background-image: radial-gradient(rgba(232, 179, 255, 0.05) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body tactical-grid min-h-screen">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 w-full z-50 bg-[#131317]/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 w-full shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+<div class="text-2xl font-bold tracking-tighter text-[#e8b3ff] drop-shadow-[0_0_8px_rgba(232, 179, 255, 0.4)] font-['Space_Grotesk']">
+            NEON MONOLITH
+        </div>
+<div class="hidden md:flex gap-8 items-center font-['Space_Grotesk'] tracking-tight">
+<a class="text-[#c8c5ce] hover:text-[#e8b3ff] transition-colors" href="#">Store</a>
+<a class="text-[#c8c5ce] hover:text-[#e8b3ff] transition-colors" href="#">Hardware</a>
+<a class="text-[#c8c5ce] hover:text-[#e8b3ff] transition-colors" href="#">Community</a>
+<a class="text-[#c8c5ce] hover:text-[#e8b3ff] transition-colors" href="#">Support</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-[#c8c5ce] hover:text-[#e8b3ff] transition-all">shopping_cart</button>
+<button class="material-symbols-outlined text-[#c8c5ce] hover:text-[#e8b3ff] transition-all">account_circle</button>
+</div>
+</nav>
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-24 border-r border-[#e8b3ff]/10 bg-[#0e0e12] flex flex-col gap-2 p-4 z-40">
+<div class="px-4 mb-4">
+<p class="font-['Space_Grotesk'] uppercase tracking-widest text-xs text-[#e8b3ff]">PLATFORMS</p>
+<p class="text-[10px] text-[#c8c5ce] opacity-50">SELECT MODULE</p>
+</div>
+<div class="space-y-1 overflow-y-auto pr-2">
+<!-- Nintendo Section -->
+<details class="group" open="">
+<summary class="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#2a292e] text-[#e8b3ff] border-l-4 border-[#e8b3ff] cursor-pointer list-none transition-all duration-300">
+<span class="material-symbols-outlined text-sm">sports_esports</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">Nintendo</span>
+</summary>
+<div class="pl-11 py-2 space-y-2 flex flex-col">
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Switch OLED</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">3DS XL</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">GameCube</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">GameBoy Adv</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">NES Classic</a>
+</div>
+</details>
+<!-- PlayStation Section -->
+<details class="group">
+<summary class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#c8c5ce] hover:bg-[#131317] cursor-pointer list-none transition-all duration-300">
+<span class="material-symbols-outlined text-sm">videogame_asset</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">PlayStation</span>
+</summary>
+<div class="pl-11 py-2 space-y-2 flex flex-col">
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">PS5 Console</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">PS4 Pro</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">PSVR 2</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">PS Vita</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">PS1 Retro</a>
+</div>
+</details>
+<!-- Xbox Section -->
+<details class="group">
+<summary class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#c8c5ce] hover:bg-[#131317] cursor-pointer list-none transition-all duration-300">
+<span class="material-symbols-outlined text-sm">videogame_asset_off</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">Xbox</span>
+</summary>
+<div class="pl-11 py-2 space-y-2 flex flex-col">
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Series X</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Series S</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Xbox 360</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">OG Xbox</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Elite Controllers</a>
+</div>
+</details>
+<!-- PC/Retro Section -->
+<details class="group">
+<summary class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#c8c5ce] hover:bg-[#131317] cursor-pointer list-none transition-all duration-300">
+<span class="material-symbols-outlined text-sm">computer</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">PC &amp; Retro</span>
+</summary>
+<div class="pl-11 py-2 space-y-2 flex flex-col">
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Steam Deck</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Commodore 64</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">3DO</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Sega Saturn</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">PC Big Box</a>
+</div>
+</details>
+<!-- Cards/Toys Section -->
+<details class="group">
+<summary class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#c8c5ce] hover:bg-[#131317] cursor-pointer list-none transition-all duration-300">
+<span class="material-symbols-outlined text-sm">style</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">Cards &amp; Toys</span>
+</summary>
+<div class="pl-11 py-2 space-y-2 flex flex-col">
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Pokémon TCG</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">One Piece</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Gunpla Models</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Nendoroids</a>
+<a class="text-xs text-[#c8c5ce] hover:text-[#e8b3ff] text-glow transition-all" href="#">Rare Plushies</a>
+</div>
+</details>
+</div>
+<div class="mt-auto space-y-2 pt-4 border-t border-white/5">
+<button class="w-full text-center py-2 bg-primary-container text-on-primary-container font-headline text-[10px] tracking-widest rounded-lg hover:shadow-[0_0_15px_rgba(232,179,255,0.4)] transition-all">
+                VIEW ALL DEALS
+            </button>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2 text-[#c8c5ce] hover:text-[#e8b3ff] transition-all" href="#">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px]">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#c8c5ce] hover:text-[#e8b3ff] transition-all" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px]">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-10 pb-20">
+<header class="mb-12">
+<h1 class="font-headline text-5xl font-bold tracking-tighter text-on-background uppercase max-w-2xl">
+                The Terminal for <span class="text-primary drop-shadow-[0_0_10px_rgba(232,179,255,0.3)]">High-Fidelity</span> Hardware
+            </h1>
+<p class="mt-4 text-secondary font-body max-w-xl opacity-80">
+                Direct access to the monolith. Trade, collect, and upgrade your digital and physical gaming modules with sub-millisecond precision.
+            </p>
+</header>
+<!-- Bento Grid Structure -->
+<div class="bento-grid">
+<!-- NINTENDO (2x2) -->
+<div class="col-span-2 row-span-2 glass-card relative overflow-hidden group border border-white/5 hover:border-red-500/30 hover:shadow-[0_0_40px_rgba(239,68,68,0.15)]">
+<div class="absolute inset-0 z-0 bg-cover bg-center opacity-40 group-hover:scale-110 transition-transform duration-700" data-alt="Modern gaming setup with Nintendo Switch console and colorful accessories in high-contrast neon lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCY5tFr2PQObUvV6Qh7nlroByLB3p3uSUtx8zzl2PSsGJ9Xea1mK9tqKZQ0GfgnawwQRCPmUL-GKqX0cMo4fBBXm5Zt7GI4RPfqQLCIBweLfHDQ7BEU_lBJXLS4pPHVuGq8XhwR-FjBPRHonsNsUBLPScT5c6ysbff4ZKnHqUrRz2wrMD2bBXwxNoAomYIOzo9_IAVHoTKx5Bl1JgqEEOTho-L2eMZWlZeG1l9QPu-LHx2a8b8PgjijNJ83LzCleuV_PDXhyidlwdE')">
+</div>
+<div class="relative z-10 h-full p-8 flex flex-col justify-end bg-gradient-to-t from-surface to-transparent">
+<div class="mb-4">
+<span class="bg-red-600 text-white text-[10px] px-2 py-0.5 font-bold rounded tracking-tighter uppercase mb-2 inline-block">Module Active</span>
+<h2 class="font-headline text-4xl font-bold tracking-tighter text-white">NINTENDO</h2>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container-high border border-white/10 rounded-full text-[10px] text-primary uppercase font-bold cursor-pointer hover:bg-primary hover:text-on-primary transition-all">Switch</span>
+<span class="px-3 py-1 bg-surface-container-high border border-white/10 rounded-full text-[10px] text-primary uppercase font-bold cursor-pointer hover:bg-primary hover:text-on-primary transition-all">3DS</span>
+<span class="px-3 py-1 bg-surface-container-high border border-white/10 rounded-full text-[10px] text-primary uppercase font-bold cursor-pointer hover:bg-primary hover:text-on-primary transition-all">DS</span>
+</div>
+</div>
+</div>
+<!-- PLAYSTATION (2x2) -->
+<div class="col-span-2 row-span-2 glass-card relative overflow-hidden group border border-white/5 hover:border-blue-500/30 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]">
+<div class="absolute inset-0 z-0 bg-cover bg-center opacity-40 group-hover:scale-110 transition-transform duration-700" data-alt="Futuristic PlayStation 5 console glowing with blue ambient light in a dark high-tech environment" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCg6jQTLWj4nM-NhnxJSUoIXOXWQby4YSJFuW8VuHZZDMzbGJIX1wG_GphLCGJr5Wf4EPzJGmOOWr2kV5FY0wLujRLjeAVwLYC0gXaJea5F-PPNJB2I90GFIF0MiV7dsQTpQsXTEyRlNl9SZQlfge4IpoNtdF3gIQeZvGLOJMXYVWCJFqUfVKmKm3WCI-fODBfBFDJfRy-vPuwoZbCkG2dCauoXKcWGF4vOXj4bhEjsaFAPYRDXZnka8lZoqAL9WE0yvsGqmVZILz8')">
+</div>
+<div class="relative z-10 h-full p-8 flex flex-col justify-end bg-gradient-to-t from-surface to-transparent">
+<div class="mb-4">
+<span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 font-bold rounded tracking-tighter uppercase mb-2 inline-block">Neural Link</span>
+<h2 class="font-headline text-4xl font-bold tracking-tighter text-white">PLAYSTATION</h2>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container-high border border-white/10 rounded-full text-[10px] text-primary uppercase font-bold cursor-pointer hover:bg-primary hover:text-on-primary transition-all">PS5</span>
+<span class="px-3 py-1 bg-surface-container-high border border-white/10 rounded-full text-[10px] text-primary uppercase font-bold cursor-pointer hover:bg-primary hover:text-on-primary transition-all">PS4</span>
+<span class="px-3 py-1 bg-surface-container-high border border-white/10 rounded-full text-[10px] text-primary uppercase font-bold cursor-pointer hover:bg-primary hover:text-on-primary transition-all">PS1</span>
+</div>
+</div>
+</div>
+<!-- XBOX (1x1) -->
+<div class="col-span-1 row-span-1 glass-card relative overflow-hidden group border border-white/5 hover:border-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.15)]">
+<div class="absolute inset-0 z-0 bg-cover bg-center opacity-20 group-hover:scale-110 transition-transform duration-700" data-alt="Sleek Xbox Series X console featuring the iconic green glowing power button in a dark room" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCbk8Vix6XJP5QYSkbDAmmuPYyYutJ-qtYW-HKMWgFRZfiATasq9kUh_2RbvGg0BuarzdBh079eX3x8nbPhhP66fjsJakblq9fveiFINau-G00x0SO_5rUjZtajKlNTFgqkKBx3oywdeOKYvS5J4UNHtKV0_Ue5JuCBlNbTWu6bY3_Hub_YKLY0ohBg4EsF8Nt8uLCfpVKtQfHph_85j9HZwlikdFEZowK7O1ztgD7mKcQy6AtTbJueTF7bGRktP3azW-HlSQk7ZeU')">
+</div>
+<div class="relative z-10 h-full p-6 flex flex-col justify-between">
+<h3 class="font-headline text-lg font-bold tracking-tight text-white uppercase">Xbox</h3>
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-surface-container-low border border-white/5 rounded text-[8px] text-secondary uppercase">Series X</span>
+<span class="px-2 py-0.5 bg-surface-container-low border border-white/5 rounded text-[8px] text-secondary uppercase">One</span>
+<span class="px-2 py-0.5 bg-surface-container-low border border-white/5 rounded text-[8px] text-secondary uppercase">360</span>
+</div>
+</div>
+</div>
+<!-- PC & RETRO (1x1) -->
+<div class="col-span-1 row-span-1 glass-card relative overflow-hidden group border border-white/5 hover:border-primary/30 hover:shadow-[0_0_30px_rgba(232,179,255,0.15)]">
+<div class="absolute inset-0 z-0 bg-cover bg-center opacity-20 group-hover:scale-110 transition-transform duration-700" data-alt="Close up of a vintage computer keyboard and retro hardware with warm glowing amber light" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBHcF0C_93vT5RP9illQlGbXOEzx20zHZ6PAmgN1vikpqettKdxoGLrjMsxmq_Zln34_OMJFF-iK2jEP8MPy93IkDuPQSn9b3fwatlN4eKQEgHsCi4HkzIG5WM-DOMlcGzdJJA79HSQPzWOeMV40lbjGFi19dKhrI0ULS58LV4ANHsmtC6UT2pET6d8S9Eu1XE0p39cIGyMh3Pfb9Nwhis9N_N7DSAzGqbnJc5i4p7C0Zi_ztdVrO56Jr7s9qsHnwRSoIgJsSeT5R8')">
+</div>
+<div class="relative z-10 h-full p-6 flex flex-col justify-between">
+<h3 class="font-headline text-lg font-bold tracking-tight text-white uppercase text-glow">PC &amp; RETRO</h3>
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-surface-container-low border border-white/5 rounded text-[8px] text-secondary uppercase">PC</span>
+<span class="px-2 py-0.5 bg-surface-container-low border border-white/5 rounded text-[8px] text-secondary uppercase">3DO</span>
+</div>
+</div>
+</div>
+<!-- CARDS & TOYS (1x1) -->
+<div class="col-span-1 row-span-1 glass-card relative overflow-hidden group border border-white/5 hover:border-tertiary/30 hover:shadow-[0_0_30px_rgba(241,193,0,0.15)]">
+<div class="absolute inset-0 z-0 bg-cover bg-center opacity-20 group-hover:scale-110 transition-transform duration-700" data-alt="Collection of holographic trading cards shimmering under dramatic studio lighting with deep shadows" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD2eWoLqX0xtEolTf9GTMJNir9f80Ma5RTGUGYTJaFp5tsMACXLM585rzdA2wucsua6R5Oo-q-yajOAmTExbP-Pxw3RhRgD6BHGsAEbAJsgd34egDtrPfrb4ESyes_LlhC9tgsqtAStB7Bh2JgWcdp4XjDc5nSJrkG6tfXa3Ccj7aNEbjE_XLp-DCmRQxoZfk85MtV9Nk7PUq2LuXN2m-kDz7o_8mVdRCEl2W4KaXxJgQSMHPmqsDw0Xglxlp7RK7p_jBi6ma5PNb4')">
+</div>
+<div class="relative z-10 h-full p-6 flex flex-col justify-between">
+<h3 class="font-headline text-lg font-bold tracking-tight text-white uppercase">Cards &amp; Toys</h3>
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-surface-container-low border border-white/5 rounded text-[8px] text-secondary uppercase">Pokémon</span>
+<span class="px-2 py-0.5 bg-surface-container-low border border-white/5 rounded text-[8px] text-secondary uppercase">One Piece</span>
+<span class="px-2 py-0.5 bg-surface-container-low border border-white/5 rounded text-[8px] text-secondary uppercase">Toys</span>
+</div>
+</div>
+</div>
+<!-- PRE-OWNED FEATURE (1x1) -->
+<div class="col-span-1 row-span-1 bg-tertiary-container relative overflow-hidden flex flex-col p-6 group">
+<div class="absolute -right-4 -top-4 text-6xl opacity-20 group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined !text-7xl">history_edu</span>
+</div>
+<div class="mt-auto">
+<h3 class="font-headline text-xl font-extrabold text-on-tertiary-container uppercase tracking-tighter">Certified Pre-Owned</h3>
+<p class="text-[10px] text-on-tertiary-container/70 font-bold mt-1">Verified Hardware Certification</p>
+<button class="mt-4 text-[10px] font-bold underline text-on-tertiary-container">START SCAN</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full mt-auto py-12 px-8 bg-[#131317]/60 backdrop-blur-2xl border-t border-[#e8b3ff]/5 shadow-[0_-10px_40px_rgba(191,64,255,0.05)]">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto font-['Inter'] text-sm tracking-normal">
+<div class="space-y-4">
+<div class="text-lg font-bold text-[#c8c5ce]">NEON MONOLITH</div>
+<p class="text-[#c8c5ce] opacity-60 leading-relaxed text-xs">
+                    The ultimate destination for elite hardware enthusiasts. Powered by high-fidelity systems and retro-tech passion.
+                </p>
+</div>
+<div>
+<h4 class="font-headline text-xs font-bold text-[#e8b3ff] mb-4 uppercase tracking-widest">Protocol</h4>
+<div class="flex flex-col gap-2">
+<a class="text-[#c8c5ce] hover:text-[#f1c100] transition-colors" href="#">Privacy Policy</a>
+<a class="text-[#c8c5ce] hover:text-[#f1c100] transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+<div>
+<h4 class="font-headline text-xs font-bold text-[#e8b3ff] mb-4 uppercase tracking-widest">Logistics</h4>
+<div class="flex flex-col gap-2">
+<a class="text-[#c8c5ce] hover:text-[#f1c100] transition-colors" href="#">Shipping Info</a>
+<a class="text-[#c8c5ce] hover:text-[#f1c100] transition-colors" href="#">Global Tracking</a>
+</div>
+</div>
+<div>
+<h4 class="font-headline text-xs font-bold text-[#e8b3ff] mb-4 uppercase tracking-widest">Contact Ops</h4>
+<div class="flex flex-col gap-2">
+<a class="text-[#c8c5ce] hover:text-[#f1c100] transition-colors" href="#">Support Terminal</a>
+<a class="text-[#c8c5ce] hover:text-[#f1c100] transition-colors" href="#">Partner Access</a>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-[10px] text-[#c8c5ce] tracking-widest uppercase">© 2024 NEON MONOLITH. TERMINAL ACCESS GRANTED.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-xs text-[#e8b3ff]">token</span>
+<span class="material-symbols-outlined text-xs text-[#e8b3ff]">verified</span>
+<span class="material-symbols-outlined text-xs text-[#e8b3ff]">shield</span>
+</div>
+</div>
+</footer>
+</body></html>

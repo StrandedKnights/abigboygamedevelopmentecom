@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNavBar from '../components/TopNavBar.astro';
+import HeroSection from '../components/HeroSection.astro';
+import BentoCategoryGrid from '../components/BentoCategoryGrid.astro';
+import ProductSlider from '../components/ProductSlider.astro';
+import WeekDealsBanner from '../components/WeekDealsBanner.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout title="A Big Boy's Game">
+    <TopNavBar />
+    <!-- Main Content -->
+    <main class="w-full relative z-10 pt-[72px]">
+        <HeroSection />
+        
+        <BentoCategoryGrid />
+
+        <ProductSlider />
+
+        <WeekDealsBanner />
+
+        <!-- Second Featured Products list -->
+        <section class="container mx-auto px-6 py-12 relative z-20">
+            <div class="flex justify-between items-end border-b border-outline-variant/20 pb-4 mb-8">
+                <div>
+                    <h2 class="font-orbitron text-2xl font-bold text-on-surface uppercase tracking-wider flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary-dim">history</span>
+                        Net Binnen
+                    </h2>
+                    <p class="font-space-grotesk text-on-surface-variant text-sm mt-2">Vers van de zolder, direct in jouw collectie.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Using ProductSlider's inner item styles for consistency, you could also extract a generic ProductCard component later -->
+                
+                <!-- Product Card: GBC -->
+                <div class="group relative bg-surface-container rounded-lg border border-outline-variant/20 overflow-hidden hover:border-primary/40 transition-all duration-300 neon-glow flex flex-col">
+                    <button class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-surface-container-highest/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
+                        <span class="material-symbols-outlined text-sm">favorite</span>
+                    </button>
+                    
+                    <div class="w-full aspect-square bg-surface-container-low relative overflow-hidden flex items-center justify-center p-4">
+                        <!-- Image representation for GBC Pokemon Yellow -->
+                        <div class="w-3/4 h-3/4 bg-amber-400/20 border border-amber-400/50 rounded flex items-center justify-center">
+                            <span class="font-orbitron text-amber-400 rotate-[-15deg]">Pokémon Yellow</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-inter text-on-surface-variant/70 uppercase">Game Boy</span>
+                            <span class="bg-surface/80 backdrop-blur-md text-on-surface-variant text-[10px] font-orbitron uppercase px-2 py-1 rounded-sm border border-outline-variant/30">CIB</span>
+                        </div>
+                        <h3 class="font-space-grotesk text-on-surface font-semibold text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">Pokémon Yellow Version</h3>
+                        <p class="text-xs text-on-surface-variant font-inter mb-4">Compleet in doos. Inclusief handleiding.</p>
+                        
+                        <div class="mt-auto flex items-center justify-between">
+                            <span class="font-orbitron font-bold text-lg text-primary-dim">€ 220,00</span>
+                            <button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-orbitron font-bold p-2 rounded-sm transition-colors" title="In winkelwagen">
+                                <span class="material-symbols-outlined text-lg">shopping_cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Product Card: PS1 Game -->
+                 <div class="group relative bg-surface-container rounded-lg border border-outline-variant/20 overflow-hidden hover:border-primary/40 transition-all duration-300 neon-glow flex flex-col">
+                    <button class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-surface-container-highest/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
+                        <span class="material-symbols-outlined text-sm">favorite</span>
+                    </button>
+                    
+                    <div class="w-full aspect-square bg-surface-container-low relative overflow-hidden flex items-center justify-center p-4">
+                        <div class="w-2/3 h-5/6 bg-blue-900/40 border border-blue-500/50 rounded flex items-center justify-center">
+                            <span class="font-orbitron text-blue-300 text-center">Metal Gear<br/>Solid</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-inter text-on-surface-variant/70 uppercase">PlayStation</span>
+                             <span class="bg-surface/80 backdrop-blur-md text-on-surface-variant text-[10px] font-orbitron uppercase px-2 py-1 rounded-sm border border-outline-variant/30">Black Label</span>
+                        </div>
+                        <h3 class="font-space-grotesk text-on-surface font-semibold text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">Metal Gear Solid</h3>
+                        <p class="text-xs text-on-surface-variant font-inter mb-4">Zeer goede staat. Krasvrij incl silent hill demo.</p>
+                        
+                        <div class="mt-auto flex items-center justify-between">
+                            <span class="font-orbitron font-bold text-lg text-primary-dim">€ 65,00</span>
+                            <button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-orbitron font-bold p-2 rounded-sm transition-colors" title="In winkelwagen">
+                                <span class="material-symbols-outlined text-lg">shopping_cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card: SNES Console -->
+                <div class="group relative bg-surface-container rounded-lg border border-outline-variant/20 overflow-hidden hover:border-primary/40 transition-all duration-300 neon-glow flex flex-col">
+                    <button class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-surface-container-highest/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
+                        <span class="material-symbols-outlined text-sm">favorite</span>
+                    </button>
+                    
+                    <div class="w-full aspect-square bg-surface-container-low relative overflow-hidden flex items-center justify-center p-4">
+                        <div class="w-5/6 h-2/3 bg-gray-500/20 border border-gray-400/40 rounded flex flex-col items-center justify-center gap-2">
+                           <div class="w-16 h-2 bg-gray-600 rounded-full"></div>
+                           <div class="w-12 h-2 bg-gray-600 rounded-full"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-inter text-on-surface-variant/70 uppercase">SNES</span>
+                            <span class="bg-surface/80 backdrop-blur-md text-primary text-[10px] font-orbitron uppercase px-2 py-1 rounded-sm border border-primary/20">Refurbished</span>
+                        </div>
+                        <h3 class="font-space-grotesk text-on-surface font-semibold text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">Super Nintendo Entertainment System</h3>
+                        <p class="text-xs text-on-surface-variant font-inter mb-4">Volledig anti-yellowing behandeld. 2 controllers.</p>
+                        
+                        <div class="mt-auto flex items-center justify-between">
+                            <span class="font-orbitron font-bold text-lg text-primary-dim">€ 110,00</span>
+                            <button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-orbitron font-bold p-2 rounded-sm transition-colors" title="In winkelwagen">
+                                <span class="material-symbols-outlined text-lg">shopping_cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card: Accessory -->
+                <div class="group relative bg-surface-container rounded-lg border border-outline-variant/20 overflow-hidden hover:border-primary/40 transition-all duration-300 neon-glow flex flex-col">
+                    <button class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-surface-container-highest/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
+                        <span class="material-symbols-outlined text-sm">favorite</span>
+                    </button>
+                    
+                    <div class="w-full aspect-square bg-surface-container-low relative overflow-hidden flex items-center justify-center p-4">
+                        <div class="w-1/2 h-1/2 bg-surface border border-outline-variant rounded flex items-center justify-center">
+                            <span class="material-symbols-outlined text-4xl text-on-surface-variant">memory</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-inter text-on-surface-variant/70 uppercase">Accessoires</span>
+                             <span class="bg-surface/80 backdrop-blur-md text-on-surface-variant text-[10px] font-orbitron uppercase px-2 py-1 rounded-sm border border-outline-variant/30">Nieuw</span>
+                        </div>
+                        <h3 class="font-space-grotesk text-on-surface font-semibold text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">PS2 Memory Card 8MB (MagicGate)</h3>
+                        <p class="text-xs text-on-surface-variant font-inter mb-4">Third-party memory card met MagicGate ondersteuning.</p>
+                        
+                        <div class="mt-auto flex items-center justify-between">
+                            <span class="font-orbitron font-bold text-lg text-primary-dim">€ 9,99</span>
+                            <button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-orbitron font-bold p-2 rounded-sm transition-colors" title="In winkelwagen">
+                                <span class="material-symbols-outlined text-lg">shopping_cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+</BaseLayout>

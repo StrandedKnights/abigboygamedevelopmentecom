@@ -1,0 +1,33 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl" class="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="A Big Boy's Game - Jouw portaal naar het verleden. Retro games, consoles en toebehoren." />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+		
+		<!-- Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+		
+		<!-- Icons -->
+		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+	</head>
+	<body class="bg-surface text-on-surface font-body antialiased min-h-screen custom-scrollbar">
+		<!-- Add full-page scanline overlay if desired here -->
+        <!-- <div class="fixed inset-0 scanline-overlay z-[9999] pointer-events-none opacity-10"></div> -->
+		<slot />
+	</body>
+</html>

@@ -1,0 +1,142 @@
+---
+---
+<!-- Featured Products Slider Section -->
+<section class="container mx-auto px-6 py-12 relative z-20">
+<div class="flex justify-between items-end border-b border-outline-variant/20 pb-4 mb-8">
+<div>
+<h2 class="font-orbitron text-2xl font-bold text-on-surface uppercase tracking-wider flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-dim">verified</span>
+                        Beste Vangsten
+                    </h2>
+<p class="font-space-grotesk text-on-surface-variant text-sm mt-2">Vers getest, gereinigd en klaar voor verzending.</p>
+</div>
+<div class="flex gap-2 hidden md:flex">
+<button class="w-10 h-10 rounded-sm bg-surface flex items-center justify-center border border-outline-variant/30 hover:border-primary/50 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-sm bg-surface flex items-center justify-center border border-outline-variant/30 hover:border-primary/50 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Product Grid Skeleton (To be populated dynamically via alpine/HTMX or similar) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Product Card 1 -->
+<div class="group relative bg-surface-container rounded-lg border border-outline-variant/20 overflow-hidden hover:border-primary/40 transition-all duration-300 neon-glow flex flex-col">
+<!-- Status Badge -->
+<div class="absolute top-3 left-3 z-10">
+<span class="bg-surface/80 backdrop-blur-md text-primary text-[10px] font-orbitron uppercase px-2 py-1 rounded-sm border border-primary/20">Refurbished</span>
+</div>
+<!-- Wishlist -->
+<button class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-surface-container-highest/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm">favorite</span>
+</button>
+<!-- Image -->
+<div class="w-full aspect-square bg-surface-container-low relative overflow-hidden flex items-center justify-center p-4">
+<img alt="Nintendo 64 Console Boxed" class="w-full h-full object-contain mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-500" data-alt="Pristine, boxed Nintendo 64 console set against a dark background with subtle moody lighting" src="https://lh3.googleusercontent.com/aida-public/V2qU6qX1lZ-P8T-N5D-zW4T9n-I9S1Q9L4L9L4S1zW-_1nS1qT-wJ9L4qD9I-D3Q8sP9Z8D4T9T8Y9K9D1Y-E_1qY8T9kK9vS9mZ-G8lT9J9gH7S-S7L8lF9mU7nI8L_l-S4aH7vI8lS1aA-S1Z4bH6qN9E8M8vR5kX-_"/>
+</div>
+<!-- Content -->
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-[10px] font-inter text-on-surface-variant/70 uppercase">Nintendo</span>
+<div class="flex -space-x-1">
+<span class="material-symbols-outlined text-[12px] text-yellow-500">star</span>
+<span class="material-symbols-outlined text-[12px] text-yellow-500">star</span>
+<span class="material-symbols-outlined text-[12px] text-yellow-500">star</span>
+<span class="material-symbols-outlined text-[12px] text-yellow-500">star</span>
+<span class="material-symbols-outlined text-[12px] text-yellow-500">star_half</span>
+</div>
+</div>
+<h3 class="font-space-grotesk text-on-surface font-semibold text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">Nintendo 64 Console Clear Blue (Boxed)</h3>
+<p class="text-xs text-on-surface-variant font-inter mb-4">Inclusief controller, AV kabel, en originele doos.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="font-orbitron font-bold text-lg text-primary-dim">€ 149,99</span>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-orbitron font-bold p-2 rounded-sm transition-colors" title="In winkelwagen">
+<span class="material-symbols-outlined text-lg">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group relative bg-surface-container rounded-lg border border-outline-variant/20 overflow-hidden hover:border-primary/40 transition-all duration-300 neon-glow flex flex-col">
+<div class="absolute top-3 left-3 z-10">
+<span class="bg-surface/80 backdrop-blur-md text-deal-green text-[10px] font-orbitron uppercase px-2 py-1 rounded-sm border border-deal-green/20">Aanbieding</span>
+</div>
+<button class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-surface-container-highest/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm cursor-pointer">favorite</span>
+</button>
+<div class="w-full aspect-square bg-surface-container-low relative overflow-hidden flex items-center justify-center p-4">
+<img alt="The Legend of Zelda: Ocarina of Time" class="w-full h-full object-contain mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-500" data-alt="Classic gold cartridge for The Legend of Zelda Ocarina of Time, gleaming against a black backdrop" src="https://lh3.googleusercontent.com/aida-public/S9L5M8v0I1R4uD9A9pW4vQ9Z9G9gD-_4T9I9R9M8jZ0E-sW8yY4zZ9G4K9K7K9X0M4D-J-Z1rJ9M9nK8mD9Z-M8zE-L8E-D9m4R8Z0sZ-_2E8bF9kP9vU9mU9zL8xI9oK9jM9A-F6zY9tM9A-_4lS4wR8F6mI-_"/>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-[10px] font-inter text-on-surface-variant/70 uppercase">Nintendo 64</span>
+</div>
+<h3 class="font-space-grotesk text-on-surface font-semibold text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">The Legend of Zelda: Ocarina of Time (Gold Cartridge)</h3>
+<p class="text-xs text-on-surface-variant font-inter mb-4">Cartridge only. Getest en werkend. Lichte gebruikssporen.</p>
+<div class="mt-auto flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-orbitron text-xs text-on-surface-variant/50 line-through">€ 75,00</span>
+<span class="font-orbitron font-bold text-lg text-deal-green">€ 59,99</span>
+</div>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-orbitron font-bold p-2 rounded-sm transition-colors" title="In winkelwagen">
+<span class="material-symbols-outlined text-lg">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group relative bg-surface-container rounded-lg border border-outline-variant/20 overflow-hidden hover:border-primary/40 transition-all duration-300 neon-glow flex flex-col">
+<div class="absolute top-3 left-3 z-10">
+<span class="bg-surface/80 backdrop-blur-md text-on-surface-variant text-[10px] font-orbitron uppercase px-2 py-1 rounded-sm border border-outline-variant/30">Nieuwstaat</span>
+</div>
+<button class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-surface-container-highest/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm cursor-pointer">favorite</span>
+</button>
+<div class="w-full aspect-square bg-surface-container-low relative overflow-hidden flex items-center justify-center p-4">
+<img alt="PlayStation 2 DualShock Controller Black" class="w-full h-full object-contain mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-500" data-alt="A sleek black PlayStation 2 DualShock controller, pristine condition, against a deep black void" src="https://lh3.googleusercontent.com/aida-public/G-M5g4S8T1X-M9Q8P-m4J4U9M9X9Q9T9A4h1cO9pB0N8nF-gO9O4fH8X0N7H0zN9K-mH-V-m9M9T0zD9mD8A-m9F1S-F4kK8sE-N5E4E4O4N4O-H1R8S1A6pB9zG-eP5qM8M-k4eG9sI9tF9A1L6sN9jG-_"/>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-[10px] font-inter text-on-surface-variant/70 uppercase">PlayStation</span>
+</div>
+<h3 class="font-space-grotesk text-on-surface font-semibold text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">Sony DualShock 2 Controller (Zwart)</h3>
+<p class="text-xs text-on-surface-variant font-inter mb-4">Origineel Sony onderdeel. Volledig gereinigd en getest.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="font-orbitron font-bold text-lg text-primary-dim">€ 24,99</span>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-orbitron font-bold p-2 rounded-sm transition-colors" title="In winkelwagen">
+<span class="material-symbols-outlined text-lg cursor-pointer">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group relative bg-surface-container rounded-lg border border-outline-variant/20 overflow-hidden hover:border-primary/40 transition-all duration-300 neon-glow flex flex-col">
+<!-- Status Badge -->
+<div class="absolute top-3 left-3 z-10">
+<span class="bg-surface/80 backdrop-blur-md text-amber-400 text-[10px] font-orbitron uppercase px-2 py-1 rounded-sm border border-amber-400/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">bolt</span>Zeldzaam
+                        </span>
+</div>
+<button class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-surface-container-highest/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm cursor-pointer">favorite</span>
+</button>
+<div class="w-full aspect-square bg-surface-container-low relative overflow-hidden flex items-center justify-center p-4">
+<img alt="Sega Dreamcast Console" class="w-full h-full object-contain mix-blend-screen opacity-90 group-hover:scale-110 transition-transform duration-500" data-alt="A clean white Sega Dreamcast console angled slightly, dark minimal lighting emphasizing its shape" src="https://lh3.googleusercontent.com/aida-public/K-W9V-E0qW-V9U9P9h9V4Q9L9I9E_0U9e1sE9yQ8xO9V5tM9W4uA0M8V0A1X0M8P4T-Y9T4mP8sT9L8K0jF-_8fE9tA8O-Y4zH9rP4Z8tT5E-_2iV8nC8J0qR8nF8B1O8Q9eB9zS9zZ-W6wX8tP8jR-_"/>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-[10px] font-inter text-on-surface-variant/70 uppercase">Sega</span>
+</div>
+<h3 class="font-space-grotesk text-on-surface font-semibold text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">Sega Dreamcast Console PAL</h3>
+<p class="text-xs text-on-surface-variant font-inter mb-4">Met controller en kabels. Inclusief VMU unit.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="font-orbitron font-bold text-lg text-primary-dim">€ 189,00</span>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface font-orbitron font-bold p-2 rounded-sm transition-colors" title="In winkelwagen">
+<span class="material-symbols-outlined text-lg cursor-pointer">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
