@@ -14,9 +14,9 @@
 </div>
 </div>
 <div class="relative z-10 font-mono text-3xl md:text-5xl font-bold tracking-tighter flex gap-4" style="color: #00FF88;">
-<div class="px-4 py-2 rounded-sm" style="background: #000000; border: 1px solid rgba(0,255,136,0.2);">02<span class="text-[10px] block text-center uppercase font-label" style="color: #acaab1;">Dagen</span></div>
-<div class="px-4 py-2 rounded-sm" style="background: #000000; border: 1px solid rgba(0,255,136,0.2);">14<span class="text-[10px] block text-center uppercase font-label" style="color: #acaab1;">Uren</span></div>
-<div class="px-4 py-2 rounded-sm" style="background: #000000; border: 1px solid rgba(0,255,136,0.2);">45<span class="text-[10px] block text-center uppercase font-label" style="color: #acaab1;">Min</span></div>
+<div class="px-4 py-2 rounded-sm" style="background: #000000; border: 1px solid rgba(0,255,136,0.2);"><span id="countdown-days">00</span><span class="text-[10px] block text-center uppercase font-label" style="color: #acaab1;">Dagen</span></div>
+<div class="px-4 py-2 rounded-sm" style="background: #000000; border: 1px solid rgba(0,255,136,0.2);"><span id="countdown-hours">00</span><span class="text-[10px] block text-center uppercase font-label" style="color: #acaab1;">Uren</span></div>
+<div class="px-4 py-2 rounded-sm" style="background: #000000; border: 1px solid rgba(0,255,136,0.2);"><span id="countdown-mins">00</span><span class="text-[10px] block text-center uppercase font-label" style="color: #acaab1;">Min</span></div>
 </div>
 <button class="relative z-10 px-10 py-4 font-orbitron font-black text-sm uppercase tracking-widest hover:brightness-110 transition-all" style="background: #00FF88; color: #000000;">
                     Bekijk Deals
@@ -24,3 +24,35 @@
 </div>
 </div>
 </section>
+
+<script>
+    function updateCountdown() {
+        const now = new Date();
+        const nextFriday = new Date();
+        
+        // Find next Friday at 20:00
+        const daysUntilFriday = (5 - now.getDay() + 7) % 7;
+        nextFriday.setDate(now.getDate() + daysUntilFriday);
+        nextFriday.setHours(20, 0, 0, 0);
+
+        // If it's already past 20:00 on Friday, go to next week
+        if (now >= nextFriday) {
+            nextFriday.setDate(nextFriday.getDate() + 7);
+        }
+
+        const diff = nextFriday.getTime() - now.getTime();
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+        document.getElementById('countdown-days').innerText = String(days).padStart(2, '0');
+        document.getElementById('countdown-hours').innerText = String(hours).padStart(2, '0');
+        document.getElementById('countdown-mins').innerText = String(minutes).padStart(2, '0');
+    }
+
+    // Initial call
+    updateCountdown();
+    // Update every minute (or every second if you want, but minute is fine for this display)
+    setInterval(updateCountdown, 60000);
+</script>

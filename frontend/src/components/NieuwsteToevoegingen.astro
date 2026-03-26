@@ -27,19 +27,21 @@ if (products.length === 0) products = fallbackProducts;
   <div class="max-w-7xl mx-auto px-6">
 
     <!-- Header -->
-    <div class="flex items-end justify-between mb-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
       <div>
         <p class="font-orbitron text-[10px] font-bold tracking-[0.4em] uppercase mb-2" style="color: #9b5fe0;">Hot Drops</p>
         <h2 class="font-barlow font-black text-5xl md:text-6xl tracking-tight uppercase" style="color: #f9f5fd;">Nieuwste <span style="color: #9b5fe0;">Toevoegingen</span></h2>
       </div>
-      <div class="flex items-center gap-3">
-        <button id="scroll-prev" onclick="document.getElementById('card-track').scrollBy({left:-285,behavior:'smooth'})" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;" onmouseover="this.style.borderColor='rgba(155,95,224,0.5)';this.style.color='#9b5fe0'" onmouseout="this.style.borderColor='rgba(72,71,77,0.4)';this.style.color='#acaab1'">
-          <span class="material-symbols-outlined text-base">chevron_left</span>
-        </button>
-        <button id="scroll-next" onclick="document.getElementById('card-track').scrollBy({left:285,behavior:'smooth'})" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;" onmouseover="this.style.borderColor='rgba(155,95,224,0.5)';this.style.color='#9b5fe0'" onmouseout="this.style.borderColor='rgba(72,71,77,0.4)';this.style.color='#acaab1'">
-          <span class="material-symbols-outlined text-base">chevron_right</span>
-        </button>
-        <a href="#" class="group flex items-center gap-1 font-orbitron text-xs font-bold uppercase tracking-[0.2em] transition-all" style="color: #9b5fe0;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+      <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+        <div class="flex items-center gap-3">
+          <button id="scroll-prev" onclick="document.getElementById('card-track').scrollBy({left:-285,behavior:'smooth'})" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;" onmouseover="this.style.borderColor='rgba(155,95,224,0.5)';this.style.color='#9b5fe0'" onmouseout="this.style.borderColor='rgba(72,71,77,0.4)';this.style.color='#acaab1'">
+            <span class="material-symbols-outlined text-base">chevron_left</span>
+          </button>
+          <button id="scroll-next" onclick="document.getElementById('card-track').scrollBy({left:285,behavior:'smooth'})" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;" onmouseover="this.style.borderColor='rgba(155,95,224,0.5)';this.style.color='#9b5fe0'" onmouseout="this.style.borderColor='rgba(72,71,77,0.4)';this.style.color='#acaab1'">
+            <span class="material-symbols-outlined text-base">chevron_right</span>
+          </button>
+        </div>
+        <a href="#" class="group ml-4 inline-flex items-center gap-1 font-orbitron text-xs font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap" style="color: #9b5fe0;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
           Toon alles
           <span class="material-symbols-outlined text-sm transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
         </a>
