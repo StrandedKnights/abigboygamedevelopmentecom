@@ -3,17 +3,65 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Algemene Voorwaarden | ABigBoysGame" description="De algemene voorwaarden van ABigBoysGame.">
-    <div class="relative min-h-[60vh] pt-32 pb-24" style="background-color: #07070D;">
-        <div class="max-w-3xl mx-auto px-6">
-            <h1 class="font-barlow font-black text-5xl md:text-6xl text-white uppercase mb-8" style="color: #f9f5fd;">Algemene Voorwaarden</h1>
-            <div class="prose prose-invert prose-p:text-[#acaab1] prose-headings:text-[#f9f5fd] prose-a:text-[#9b5fe0]">
-                <h3>1. Toepasselijkheid</h3>
-                <p>Deze algemene voorwaarden zijn van toepassing op alle aanbiedingen en overeenkomsten van ABigBoysGame.</p>
-                <h3>2. Aanbod & Prijzen</h3>
-                <p>De vermelde prijzen voor de aangeboden producten zijn in euro's, inclusief BTW en exclusief handlings- en verzendkosten.</p>
-                <h3>3. Betaling</h3>
-                <p>Betaling dient vooraf te geschieden via de door ons aangeboden veilige betalingsmethoden (zoals iDEAL of Creditcard).</p>
+    <div class="relative min-h-screen pt-32 pb-24" style="background-color: #0e0e13;">
+        <!-- Background Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl pointer-events-none opacity-20" 
+             style="background: radial-gradient(circle at 50% 10%, #9b5fe0 0%, transparent 70%);">
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <h1 class="font-barlow font-black text-6xl md:text-7xl text-white uppercase leading-none italic tracking-tighter">
+                   Voorwaarden
+                </h1>
+                <p class="text-[#acaab1] mt-4 font-orbitron text-[10px] tracking-[0.4em] uppercase">Terms of Engagement</p>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                <!-- Section 1 -->
+                <div class="p-10 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl relative group">
+                    <div class="w-12 h-12 bg-[#9b5fe0]/20 rounded-xl flex items-center justify-center mb-6 text-[#9b5fe0] border border-[#9b5fe0]/30 font-orbitron text-lg font-bold">01</div>
+                    <h2 class="font-barlow font-black text-3xl text-white uppercase mb-4 italic">Toepasbaarheid</h2>
+                    <p class="text-[#acaab1] leading-relaxed">
+                        Deze algemene voorwaarden zijn van toepassing op alle aanbiedingen, bestellingen en overeenkomsten van ABigBoysGame. Door een bestelling te plaatsen, ga je akkoord met deze voorwaarden.
+                    </p>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="p-10 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl relative group">
+                    <div class="w-12 h-12 bg-[#9b5fe0]/20 rounded-xl flex items-center justify-center mb-6 text-[#9b5fe0] border border-[#9b5fe0]/30 font-orbitron text-lg font-bold">02</div>
+                    <h2 class="font-barlow font-black text-3xl text-white uppercase mb-4 italic">Aanbod & Prijzen</h2>
+                    <p class="text-[#acaab1] leading-relaxed">
+                        Alle prijzen zijn in Euro's, inclusief BTW en exclusief verzendkosten. Wij behouden ons het recht voor om prijzen te wijzigen (bijv. door marktfluctuaties in retro-collectables).
+                    </p>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="p-10 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl relative group">
+                    <div class="w-12 h-12 bg-[#9b5fe0]/20 rounded-xl flex items-center justify-center mb-6 text-[#9b5fe0] border border-[#9b5fe0]/30 font-orbitron text-lg font-bold">03</div>
+                    <h2 class="font-barlow font-black text-3xl text-white uppercase mb-4 italic">Betaling</h2>
+                    <p class="text-[#acaab1] leading-relaxed">
+                        Betaling geschiedt vooraf via de aangeboden methoden (iDEAL, Klarna, Creditcard). Pas na ontvangst van de betaling wordt de order definitief verwerkt en verzonden.
+                    </p>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="p-10 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl relative group">
+                    <div class="w-12 h-12 bg-[#9b5fe0]/20 rounded-xl flex items-center justify-center mb-6 text-[#9b5fe0] border border-[#9b5fe0]/30 font-orbitron text-lg font-bold">04</div>
+                    <h2 class="font-barlow font-black text-3xl text-white uppercase mb-4 italic">Eigendom</h2>
+                    <p class="text-[#acaab1] leading-relaxed">
+                        Geleverde producten blijven eigendom van ABigBoysGame totdat het volledige orderbedrag is voldaan. Wij leveren uitsluitend aan particulieren en verzamelaars.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Trust Bar -->
+            <div class="p-8 rounded-3xl border border-dashed border-white/10 text-center">
+                <p class="text-[#acaab1] text-sm uppercase tracking-widest font-orbitron">Vragen over deze voorwaarden? Neem contact op via onze support desk.</p>
             </div>
         </div>
     </div>
 </BaseLayout>
+

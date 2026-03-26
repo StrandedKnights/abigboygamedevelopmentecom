@@ -2,18 +2,88 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Verzendbeleid | ABigBoysGame" description="Informatie over verzending en levertijden bij ABigBoysGame.">
-    <div class="relative min-h-[60vh] pt-32 pb-24" style="background-color: #07070D;">
-        <div class="max-w-3xl mx-auto px-6">
-            <h1 class="font-barlow font-black text-5xl md:text-6xl text-white uppercase mb-8" style="color: #f9f5fd;">Verzendbeleid</h1>
-            <div class="prose prose-invert prose-p:text-[#acaab1] prose-headings:text-[#f9f5fd] prose-a:text-[#9b5fe0]">
-                <h3>Gratis verzending</h3>
-                <p>Wij bieden gratis verzending op alle bestellingen binnen Nederland boven de €75,-. Voor bestellingen onder dit bedrag rekenen wij standaard verzendkosten.</p>
-                <h3>Levertijden</h3>
-                <p>Bestellingen geplaatst voor 15:00 uur worden dezelfde dag nog verzonden. In de regel wordt je bestelling de volgende werkdag bezorgd.</p>
-                <h3>Verpakking</h3>
-                <p>We verpakken al onze retro games en consoles met de grootste zorg en stevig materiaal, zodat ze veilig en zonder schade bij jou aankomen.</p>
+<BaseLayout title="Verzendbeleid | ABigBoysGame" description="Alles over onze snelle en veilige verzending van retro games en consoles.">
+    <div class="relative min-h-screen pt-32 pb-24" style="background-color: #0e0e13;">
+        <!-- Background Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl pointer-events-none opacity-20" 
+             style="background: radial-gradient(circle at 50% 0%, #9b5fe0 0%, transparent 70%);">
+        </div>
+
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <span class="font-orbitron text-[#9b5fe0] text-sm tracking-[0.3em] uppercase mb-4 block">Logistiek & Levering</span>
+                <h1 class="font-barlow font-black text-6xl md:text-7xl text-white uppercase leading-none italic tracking-tighter">
+                   Verzending
+                </h1>
+                <p class="text-[#acaab1] mt-6 text-lg max-w-2xl mx-auto">
+                    Wij begrijpen dat je je nieuwe aanwinst zo snel mogelijk in huis wilt hebben. Daarom hanteren wij een razendsnelle en uiterst betrouwbare verzendservice.
+                </p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md relative overflow-hidden group hover:border-[#9b5fe0]/50 transition-all">
+                    <div class="w-12 h-12 bg-[#9b5fe0]/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#9b5fe0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Wait, using truck icons here." />
+                            <path d="M5 18h14M5 18a2 2 0 1 0 4 0M5 18a2 2 0 1 1 4 0m10 0a2 2 0 1 0 4 0M19 18a2 2 0 1 1 4 0M5 18l1-9h10l1 9M11 9V5a2 2 0 0 0-2-2H5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <h3 class="font-barlow font-black text-2xl text-white uppercase mb-3 tracking-tight">Snelle Levering</h3>
+                    <p class="text-[#acaab1] text-sm leading-relaxed">
+                        Bestellingen geplaatst voor <span class="text-white font-bold italic">15:00 uur</span> worden doorgaans dezelfde dag nog overgedragen aan onze vervoerder.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md relative overflow-hidden group hover:border-[#9b5fe0]/50 transition-all">
+                    <div class="w-12 h-12 bg-[#9b5fe0]/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#9b5fe0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                    </div>
+                    <h3 class="font-barlow font-black text-2xl text-white uppercase mb-3 tracking-tight">Safe Packaging</h3>
+                    <p class="text-[#acaab1] text-sm leading-relaxed">
+                        Retro games en consoles zijn kwetsbaar. Wij gebruiken dubbellaags karton en overvloedig beschermingsmateriaal tegen schokken.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-3xl border border-white/10 bg-[#00FF88]/5 backdrop-blur-md relative overflow-hidden group hover:border-[#00FF88]/50 transition-all">
+                    <div class="w-12 h-12 bg-[#00FF88]/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#00FF88]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-barlow font-black text-2xl text-white uppercase mb-3 tracking-tight">Gratis bij €75</h3>
+                    <p class="text-[#acaab1] text-sm leading-relaxed">
+                        Bestellingen boven de €75,- binnen Nederland worden <span class="text-[#00FF88] font-bold">geheel gratis</span> verzonden. Direct voordeel voor jou.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Detailed Info -->
+            <div class="space-y-8">
+                <div class="p-10 rounded-3xl border border-white/5 bg-white/2 backdrop-blur-sm">
+                    <h2 class="font-barlow font-bold text-3xl text-white uppercase mb-6 tracking-tight">Vervoerders & Tracking</h2>
+                    <p class="text-[#acaab1] mb-6">
+                        Wij werken samen met PostNL en DHL om een betrouwbare levering te garanderen. Zodra je pakket ons magazijn verlaat, ontvang je per e-mail de Track & Trace gegevens om je bestelling op de voet te volgen.
+                    </p>
+                    <div class="flex flex-wrap gap-8 opacity-50 grayscale hover:grayscale-0 transition-all hover:opacity-100">
+                        <span class="text-white font-black text-2xl italic tracking-tighter">PostNL</span>
+                        <span class="text-white font-black text-2xl italic tracking-tighter">DHL Express</span>
+                    </div>
+                </div>
+
+                <div class="p-10 rounded-3xl border border-white/5 bg-white/2 backdrop-blur-sm">
+                    <h2 class="font-barlow font-bold text-3xl text-white uppercase mb-6 tracking-tight">Internationale Verzending</h2>
+                    <p class="text-[#acaab1]">
+                        Buiten Nederland verzenden wij naar België, Duitsland en Frankrijk. De verzendkosten hiervoor worden automatisch berekend bij het afrekenen op basis van het gewicht en de bestemming.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </BaseLayout>
+

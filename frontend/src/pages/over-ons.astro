@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Over Ons | ABigBoysGame" description="Het verhaal achter ABigBoysGame: passie voor retro gaming en kwaliteit.">
+    <div class="relative min-h-screen pt-32 pb-24 overflow-hidden" style="background-color: #0e0e13;">
+        
+        <!-- Animated Geometric Background Elements -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <!-- Floating Circles -->
+            <div class="absolute top-[10%] left-[5%] w-64 h-64 border border-[#9b5fe0]/20 rounded-full animate-pulse"></div>
+            <div class="absolute bottom-[20%] right-[10%] w-96 h-96 border border-[#9b5fe0]/10 rounded-full animate-float" style="animation-delay: 2s;"></div>
+            
+            <!-- Triangles -->
+            <div class="absolute top-[40%] right-[15%] opacity-20 animate-spin-slow">
+                <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 5L95 85H5L50 5Z" stroke="#9b5fe0" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="absolute bottom-[30%] left-[12%] opacity-10 animate-float">
+                <svg width="150" height="150" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 5L95 85H5L50 5Z" stroke="#9b5fe0" stroke-width="2"/>
+                </svg>
+            </div>
+
+            <!-- Purple Glows -->
+            <div class="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-[#9b5fe0]/10 blur-[120px] rounded-full"></div>
+            <div class="absolute bottom-[-10%] right-[20%] w-[400px] h-[400px] bg-[#9b5fe0]/5 blur-[100px] rounded-full"></div>
+        </div>
+
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <!-- Hero Content -->
+            <div class="mb-24 text-center">
+                <span class="font-orbitron text-[#9b5fe0] text-sm tracking-[0.4em] uppercase mb-4 block animate-fade-in">Powered by Passion</span>
+                <h1 class="font-barlow font-black text-6xl md:text-8xl text-white uppercase italic tracking-tighter leading-none mb-8">
+                    Het <span class="text-transparent" style="-webkit-text-stroke: 1px #9b5fe0;">Verhaal</span>
+                </h1>
+                <p class="text-[#acaab1] text-xl max-w-2xl mx-auto leading-relaxed">
+                    ABigBoysGame is ontstaan vanuit een pure liefde voor de gouden tijden van console gaming. Wij verzamelen niet alleen, wij preserveren historie.
+                </p>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-32">
+                <div class="relative group">
+                    <div class="absolute -inset-4 bg-gradient-to-tr from-[#9b5fe0]/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    <div class="relative aspect-square rounded-[3rem] border border-white/10 overflow-hidden bg-white/5 backdrop-blur-md flex items-center justify-center">
+                         <img src="/images/logo.jpg" alt="Logo" class="w-48 h-48 mix-blend-lighten opacity-80 group-hover:scale-110 transition-transform duration-1000"/>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <h2 class="font-barlow font-bold text-4xl text-white uppercase italic">Onze Missie</h2>
+                    <p class="text-[#acaab1] leading-relaxed italic">
+                        "Echte games, eerlijke kwaliteit." Dat is waar we voor staan. In een wereld vol snelle downloads en digitale abonnementen, brengen wij het plezier van fysiek gamen terug. Of het nu gaat om die ene obscure PS2-titel of een volledig gerestaureerde Nintendo 64.
+                    </p>
+                    <p class="text-[#acaab1] leading-relaxed">
+                        Elk item in onze collectie wordt met de hand uitgezocht, grondig schoongemaakt en technisch nagekeken. Wij zijn geen massaverkoper; we zijn curators voor de echte liefhebber.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats/Values -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 rounded-3xl border border-white/5 bg-white/2 backdrop-blur-sm text-center">
+                    <div class="text-[#9b5fe0] font-barlow font-black text-5xl mb-2">100%</div>
+                    <div class="font-orbitron text-[10px] tracking-widest text-[#acaab1] uppercase">Orginele Hardware</div>
+                </div>
+                <div class="p-8 rounded-3xl border border-white/5 bg-white/2 backdrop-blur-sm text-center">
+                    <div class="text-[#9b5fe0] font-barlow font-black text-5xl mb-2">3MND</div>
+                    <div class="font-orbitron text-[10px] tracking-widest text-[#acaab1] uppercase">Standaard Garantie</div>
+                </div>
+                <div class="p-8 rounded-3xl border border-white/5 bg-white/2 backdrop-blur-sm text-center">
+                    <div class="text-[#9b5fe0] font-barlow font-black text-5xl mb-2">15:00</div>
+                    <div class="font-orbitron text-[10px] tracking-widest text-[#acaab1] uppercase">Cut-off Verzendtijd</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+    .animate-fade-in { animation: fade-in 1s ease-out forwards; }
+</style>

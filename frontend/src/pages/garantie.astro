@@ -2,18 +2,92 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Garantie & Kwaliteitscontrole | ABigBoysGame" description="Lees meer over onze uitgebreide kwaliteitscontrole en garanties op retro games.">
-    <div class="relative min-h-[60vh] pt-32 pb-24" style="background-color: #07070D;">
-        <div class="max-w-3xl mx-auto px-6">
-            <h1 class="font-barlow font-black text-5xl md:text-6xl text-white uppercase mb-8" style="color: #f9f5fd;">Garantie & Kwaliteit</h1>
-            <div class="prose prose-invert prose-p:text-[#acaab1] prose-headings:text-[#f9f5fd] prose-a:text-[#9b5fe0]">
-                <h3>Getest & Gegarandeerd</h3>
-                <p>Elk product in onze webshop wordt grondig getest en geïnspecteerd. Wij zorgen ervoor dat alle consoles, accessoires en games naar behoren werken voordat we ze aanbieden.</p>
-                <h3>Onze Garantie</h3>
-                <p>Wij bieden een standaard garantie van 3 maanden op alle consoles en accessoires voor functionele hardwarefouten.</p>
-                <h3>Retourneren</h3>
-                <p>Alle verkopen zijn in principe definitief. Mocht er echter een defect zijn, neem dan binnen 14 dagen contact met ons op via de klantenservice, en we zoeken naar een passende oplossing.</p>
+<BaseLayout title="Garantie & Kwaliteit | ABigBoysGame" description="Onze belofte: de hoogste kwaliteit retro hardware en software, met 3 maanden garantie.">
+    <div class="relative min-h-screen pt-32 pb-24" style="background-color: #0e0e13;">
+        <!-- Background Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl pointer-events-none opacity-20" 
+             style="background: radial-gradient(circle at 50% 10%, #9b5fe0 0%, transparent 70%);">
+        </div>
+
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <!-- Header Section -->
+            <div class="text-center mb-20">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00FF88]/20 bg-[#00FF88]/5 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-[#00FF88] animate-pulse"></span>
+                    <span class="font-orbitron text-[#00FF88] text-[10px] tracking-widest uppercase">Gegarandeerde Kwaliteit</span>
+                </div>
+                <h1 class="font-barlow font-black text-6xl md:text-7xl text-white uppercase leading-none italic tracking-tighter">
+                   Onze Belofte
+                </h1>
+                <p class="text-[#acaab1] mt-6 text-lg max-w-2xl mx-auto">
+                    Bij ABigBoysGame verkopen we geen 'misschien'. Elke game en console die ons magazijn verlaat, voldoet aan onze strikte kwaliteitsstandaard.
+                </p>
+            </div>
+
+            <!-- Quality Pillars Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                <!-- Pillar 1: Testing -->
+                <div class="p-10 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl relative group">
+                    <div class="absolute -top-6 -left-6 w-32 h-32 bg-[#9b5fe0]/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-[#9b5fe0] rounded-2xl flex items-center justify-center mb-8 rotate-3 group-hover:rotate-0 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="font-barlow font-black text-4xl text-white uppercase mb-4 italic">100% Getest</h2>
+                        <p class="text-[#acaab1] leading-relaxed">
+                            Geen verrassingen aan de deur. Elke console wordt intern gereinigd en intensief getest op beeld, geluid en controller-respons. Games worden gecontroleerd op pins-corrosie en originele componenten.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Pillar 2: Warranty -->
+                <div class="p-10 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl relative group">
+                    <div class="absolute -top-6 -right-6 w-32 h-32 bg-[#9b5fe0]/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-8 -rotate-3 group-hover:rotate-0 transition-transform">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#0e0e13]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="font-barlow font-black text-4xl text-white uppercase mb-4 italic">3 Maanden Garantie</h2>
+                        <p class="text-[#acaab1] leading-relaxed">
+                            Wij staan achter onze producten. Op alle hardware (consoles en accessoires) bieden wij een functionele garantie van 3 maanden. Mocht er technisch iets misgaan, dan herstellen of vervangen wij het kosteloos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Return Policy Section -->
+            <div class="p-12 rounded-[3.5rem] border border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-md relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:rotate-12 transition-transform duration-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-64 w-64 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L1 21h22L12 2zm0 3.45L19.53 19H4.47L12 5.45zM11 16h2v2h-2v-2zm0-7h2v5h-2V9z"/>
+                    </svg>
+                </div>
+                
+                <div class="max-w-2xl relative z-10">
+                    <h2 class="font-barlow font-black text-5xl text-white uppercase mb-6 italic italic tracking-tighter">Retourbeleid</h2>
+                    <p class="text-[#acaab1] text-lg mb-8 leading-relaxed">
+                        ABigBoysGame is een specialist in <strong class="text-white">pre-owned retro verzamelobjecten</strong>. Vanwege de unieke en gebruikte aard van onze voorraad geldt voor al onze artikelen:
+                    </p>
+                    
+                    <div class="inline-block px-8 py-4 bg-[#9b5fe0] text-white font-orbitron text-xs tracking-[0.4em] uppercase rounded-xl mb-10 shadow-lg shadow-[#9b5fe0]/20">
+                        Alle verkopen zijn definitief
+                    </div>
+                    
+                    <p class="text-[#acaab1]">
+                        Uitzonderingen worden enkel gemaakt voor producten die binnen de garantieperiode een technisch defect vertonen dat niet in de productomschrijving vermeld stond. Heb je een technisch probleem? Neem dan direct contact op via onze <a href="/contact" class="text-white underline decoration-[#9b5fe0] underline-offset-4 hover:text-[#9b5fe0] transition-all">Support Desk</a>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Final Trust Stamp -->
+            <div class="mt-20 text-center opacity-30">
+                <p class="font-orbitron text-[10px] tracking-[0.5em] text-white uppercase">Certified Retro Dealer — Est. 2024</p>
             </div>
         </div>
     </div>
 </BaseLayout>
+
