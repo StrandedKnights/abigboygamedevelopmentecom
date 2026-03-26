@@ -1,26 +1,6 @@
 ---
-// Fetch products dynamically from backend API
-let products = [];
-const fallbackProducts = [
-    { id: '1', title: 'Super Mario World', platform: 'Nintendo Switch', priceInCents: 4999, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTj3C5Yj894z0VKWQwybVwB-FTh6ir8hBnVji8eZQUdyQuUjlSG9zyjwvGW5QBEub-AXJerM5DLqXYIEK3aCPa9SHN0r_xo-Tsi_Pg_1sterUtsA2LHqZ8doGse04XatcmFDyoJIeNV4LuC1hm8dQnfUzNhh3Ce5i1xSjvSG-Y8kzuzcfMaraWU7B39f-aFWED1zXzMlsqjJE1UnDoiblaPHcLFadaIOHQEkpxx8n_EIS_FbjAJlXaMe1eIuWxfjYDuOYCv4d1RYU', platformColor: '#ff4b4b' },
-    { id: '2', title: 'Final Fantasy VII', platform: 'PlayStation 1', priceInCents: 8500, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPS9P2VK2V1sVznp-_2TsReaBA0iGnIt9gxWWS8gvq0ua-jIFrFsIo-sDyKyYTpxiPM7lLTmDFXpFygewSSpPuW_JOv-Z0ZWtimsuTNzsOqXQEkheSYQgfGv182RTSk0rrpEMSBUAdionmhF4HBPO7MdlGqXPJrohVOo3JSGMzGT0oOMbbpGJFmv8gNWG4iydS5CpU8LvdbODV1iNAXEtG4NS-CUXzbHx06WijkNH8Ftllth12xKEKU7ktx6nmQnqctWQ2C65jVmk', platformColor: '#00439c' },
-    { id: '3', title: 'Halo: Combat Evolved', platform: 'Xbox', priceInCents: 2450, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD1YIMvcmOS4WueXsKoBILLQ0oAklOnTsAewl-W8rUe5Qg9wBaysqmanN35wRR-dn_077sdAxrzrVeyqBfDeA1e71RK0NzrSrfw1SA1iNk9CHfyMf2QNH39AB9bEsobEGvRZY-KK7Kr4PlQJSOcCgwGt_exBfSR5ApsvHsoRH9YGl-FKfDvEb_Dm4D1MuqGKvE6a8Y2GcS-o9zQbz29nwlRq5S7dah2rCeM-i3eoFIjJaBrbzB93GeIz7JFjrVPxV6KTsNwLqXFqqA', platformColor: '#107c10' },
-    { id: '4', title: 'Sonic the Hedgehog 2', platform: 'Sega Mega Drive', priceInCents: 3995, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC_WR_CJULssLm-ShRvzp3KE9R74jAP7R4nTKLZCYU8rj4v_XimcJKPCA1Saom3Vmt2wknxFK34ZTTqHC207MGWbe1Fa85VOHV6sdlpgyOXbPFWF7fG9TSRkjjvdoHPd1UUK0p3FvUGtP5dmRzwool2guWjFQtbzborjVFwolJdYAE7etR-8PuS1AZep_etG8kkp0Q2Zj6v3BDMqSNLAbMf8nAGjTPAYbNSk90vfH2FNOIXe_ouosLbY19KP4hKmp2Z3S8V6Myy-Hs', platformColor: '#0054a6' },
-    { id: '5', title: 'Pokémon Yellow', platform: 'Game Boy', priceInCents: 7400, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuABQ7o2wI46_3WBWi5SyvWvtnY73XAf5Yi2v1I-EukfUKSH3qWegENEVTmE5QyxfwX7-7Zfc27qpsSQ1SIFcuI6LzvkeeQ0XdIoBT0ic7liTWlSCNzYuJaKpznW2ILj3C0VG7evtwUzm8DWLc4bYD0_8_7_vOyDrnrzNexUAD86oK2hGu_kRf7RpjS8hHpo5tp25KBWFGev3Ou5wbDdKq6uFuKoYmm84c6B3aXHlqu7u5phugt6IGyrHWFfcw8fiXGjtpowhTDGQIw', platformColor: '#6c2891' },
-    { id: '6', title: 'GoldenEye 007', platform: 'Nintendo 64', priceInCents: 5500, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA9f9e7cxJx_3k0IWes77auUoq2N2hEUbXfq8LKM8kWdwKaC9j9hg_OXm0vegfuUQRiNVw2jAczPnoO5jxG1JtIgS1dLAF162Wi4ZmrC3mOteiY_sUKUKBjxrurIDdweXgDZJSZPFWVvIqJaE8vw_TYrJoRxRSJtNw_OwIeqsy-7zZMlAf5Rp1ymJvZR4PS9COaMccp7l0u2XzHWnS-lNsJVWNSo_cjqmQN7E2Ev-dNOOFC7_IiCIuvFxMqrv3nuvehLaUEf-jfFlk', platformColor: '#ff4b4b' },
-];
-
-try {
-    const res = await fetch('http://localhost:3000/api/products');
-    if (res.ok) {
-        const data = await res.json();
-        if (data.length > 0) {
-            products = data.map(p => ({ ...p, platformColor: '#9b5fe0' }));
-        }
-    }
-} catch (e) {}
-
-if (products.length === 0) products = fallbackProducts;
+import ProductCard from './ProductCard.astro';
+import ProductSkeleton from './ProductSkeleton.astro';
 ---
 
 <section class="py-16 px-6 overflow-hidden" style="background-color: #0d0d12;">
@@ -32,55 +12,120 @@ if (products.length === 0) products = fallbackProducts;
             </div>
       <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
         <div class="flex items-center gap-3">
-          <button id="scroll-prev" onclick="document.getElementById('card-track').scrollBy({left:-285,behavior:'smooth'})" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;" onmouseover="this.style.borderColor='rgba(155,95,224,0.5)';this.style.color='#9b5fe0'" onmouseout="this.style.borderColor='rgba(72,71,77,0.4)';this.style.color='#acaab1'">
+          <button id="scroll-prev" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;">
             <span class="material-symbols-outlined text-base">chevron_left</span>
           </button>
-          <button id="scroll-next" onclick="document.getElementById('card-track').scrollBy({left:285,behavior:'smooth'})" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;" onmouseover="this.style.borderColor='rgba(155,95,224,0.5)';this.style.color='#9b5fe0'" onmouseout="this.style.borderColor='rgba(72,71,77,0.4)';this.style.color='#acaab1'">
+          <button id="scroll-next" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;">
             <span class="material-symbols-outlined text-base">chevron_right</span>
           </button>
         </div>
-        <a href="#" class="group ml-4 inline-flex items-center gap-1 font-orbitron text-xs font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap" style="color: #9b5fe0;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+        <a href="#" class="group ml-4 inline-flex items-center gap-1 font-orbitron text-xs font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap" style="color: #9b5fe0;">
           Toon alles
           <span class="material-symbols-outlined text-sm transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
         </a>
       </div>
     </div>
 
-    <!-- Product cards row -->
+    <!-- Product cards container (starts with skeletons) -->
     <div id="card-track" class="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory" style="scrollbar-width:none;-ms-overflow-style:none;">
-      {products.map((product, index) => (
-        <div class="reveal reveal-up min-w-[240px] md:min-w-[260px] snap-start flex-shrink-0 rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1" 
-             style={`background: #1a1a22; border: 1px solid rgba(72,71,77,0.2); transition-delay: ${index * 100}ms;`}>
-
-          <!-- Image area -->
-          <div class="relative overflow-hidden" style="height: 260px; background: #111118;">
-            <img
-              src={product.imageUrl}
-              alt={product.title}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <!-- PRE-OWNED badge -->
-            <span class="absolute top-3 left-3 font-orbitron text-[9px] font-black uppercase tracking-widest px-2 py-1" style="background: #f5c518; color: #000;">Pre-owned</span>
-            <!-- Add to cart overlay on hover -->
-            <div class="absolute bottom-0 left-0 right-0 py-3 text-center font-orbitron text-[10px] font-bold uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300" style="background: #9b5fe0; color: #fff;">
-              + Toevoegen
-            </div>
-          </div>
-
-          <!-- Info area -->
-          <div class="px-4 pt-4 pb-5 space-y-1.5">
-            <h3 class="font-bold text-sm leading-snug line-clamp-1" style="color: #f9f5fd;">{product.title}</h3>
-            <p class="font-orbitron text-[10px] uppercase tracking-wider" style={`color: ${product.platformColor};`}>{product.platform}</p>
-            <div class="flex items-center justify-between pt-2">
-              <span class="font-orbitron text-lg font-bold" style="color: #f9f5fd;">€{(product.priceInCents / 100).toFixed(2).replace('.', ',')}</span>
-              <button class="transition-colors p-1" style="color: #48474d;" onmouseover="this.style.color='#f5c518'" onmouseout="this.style.color='#48474d'">
-                <span class="material-symbols-outlined text-base">star</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
+      <ProductSkeleton />
+      <ProductSkeleton />
+      <ProductSkeleton />
+      <ProductSkeleton />
+      <ProductSkeleton />
     </div>
+
+    <!-- Template for client-side card creation -->
+    <template id="product-card-template">
+      <ProductCard />
+    </template>
 
   </div>
 </section>
+
+<script>
+  import { getLatestAdditions } from '../services/apiClient.js';
+
+  async function loadProducts() {
+    const track = document.getElementById('card-track');
+    const template = document.getElementById('product-card-template') as HTMLTemplateElement;
+
+    if (!track || !template) return;
+
+    try {
+      const products = await getLatestAdditions();
+      
+      // Clear skeletons
+      track.innerHTML = '';
+
+      products.forEach((product, index) => {
+        const clone = template.content.cloneNode(true) as DocumentFragment;
+        const card = clone.querySelector('.product-card') as HTMLElement;
+        
+        if (card) {
+          // Fill data
+          card.setAttribute('data-id', product.id);
+          card.style.transitionDelay = `${index * 100}ms`;
+          
+          const titleEl = card.querySelector('.product-title');
+          if (titleEl) titleEl.textContent = product.title;
+          
+          const platformEl = card.querySelector('.product-platform') as HTMLElement;
+          if (platformEl) {
+            platformEl.textContent = product.platform;
+            platformEl.style.color = product.platformColor;
+          }
+          
+          const imageEl = card.querySelector('.product-image') as HTMLImageElement;
+          if (imageEl) {
+            imageEl.src = product.imageUrl;
+            imageEl.alt = product.title;
+          }
+          
+          const priceEl = card.querySelector('.product-price');
+          if (priceEl) {
+            priceEl.textContent = `€${(product.priceInCents / 100).toFixed(2).replace('.', ',')}`;
+          }
+
+          track.appendChild(clone);
+        }
+      });
+
+      // Re-trigger intersection observer for the new cards
+      // This matches the logic in BaseLayout.astro
+      const observerOptions = { threshold: 0.1 };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, observerOptions);
+
+      track.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    } catch (error) {
+      console.error('Failed to load products:', error);
+      track.innerHTML = '<p class="text-[#acaab1] py-10 w-full text-center">Fout bij het laden van producten.</p>';
+    }
+  }
+
+  // Handle scrolling
+  document.getElementById('scroll-prev')?.addEventListener('click', () => {
+    document.getElementById('card-track')?.scrollBy({ left: -285, behavior: 'smooth' });
+  });
+  
+  document.getElementById('scroll-next')?.addEventListener('click', () => {
+    document.getElementById('card-track')?.scrollBy({ left: 285, behavior: 'smooth' });
+  });
+
+  // Initialize
+  loadProducts();
+</script>
+
+<style>
+  /* Ensure the hover styles work for dynamically injected elements */
+  #card-track::-webkit-scrollbar {
+    display: none;
+  }
+</style>
