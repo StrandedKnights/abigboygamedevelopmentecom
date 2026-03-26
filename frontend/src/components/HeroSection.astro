@@ -6,15 +6,57 @@
 <img alt="" class="w-full h-full object-cover mix-blend-lighten opacity-25" src="/images/logo.jpg"/>
 </div>
 <div class="absolute inset-0 scanline-overlay z-10 opacity-30"></div>
-<div class="max-w-7xl mx-auto px-6 relative z-20 w-full">
-<div class="max-w-xl space-y-8">
-<h1 class="font-barlow font-black text-6xl md:text-8xl leading-none tracking-tight uppercase" style="color: #f9f5fd;">
-                    JOUW RETRO <br/>
-<span style="color: #9b5fe0;">GAMING PARADIJS</span>
-</h1>
-<p style="color: #acaab1;" class="text-lg max-w-lg font-body leading-relaxed">
-                    Herbeleef de gouden jaren van gaming. Van zeldzame NES-cartridges tot legendarische PlayStation-klassiekers — exclusief tweedehands, uitvoerig getest.
-                </p>
+    <div class="relative z-10 container mx-auto px-6 pt-32 pb-20 md:pt-48 md:pb-32">
+        <div class="max-w-4xl">
+            <h1 class="reveal reveal-up font-barlow font-black text-6xl md:text-9xl leading-[0.85] tracking-tighter uppercase text-white mb-6" 
+                style="-webkit-text-stroke: 1px rgba(0,0,0,0.5); text-shadow: 2px 2px 0px #000, 0 0 20px rgba(155,95,224,0.3);">
+                A BIG BOY'S <br/>
+                <span id="cycle-text" class="text-primary inline-block min-h-[1em]" style="color: #9b5fe0; border-right: 2px solid #9b5fe0; padding-right: 5px;">GAMING</span>
+            </h1>
+
+            <script>
+                const words = ["GAMING", "COLLECTIBLES", "PARADIJS"];
+                let wordIndex = 0;
+                let charIndex = 0;
+                let isDeleting = false;
+                const cycleText = document.getElementById('cycle-text');
+
+                function type() {
+                    const currentWord = words[wordIndex];
+                    if (isDeleting) {
+                        cycleText.textContent = currentWord.substring(0, charIndex - 1);
+                        charIndex--;
+                    } else {
+                        cycleText.textContent = currentWord.substring(0, charIndex + 1);
+                        charIndex++;
+                    }
+
+                    let typeSpeed = isDeleting ? 50 : 150;
+
+                    if (!isDeleting && charIndex === currentWord.length) {
+                        typeSpeed = 2500; // Pause at the end
+                        isDeleting = true;
+                        cycleText.style.borderRightColor = 'transparent';
+                        setTimeout(() => { cycleText.style.borderRightColor = '#9b5fe0'; }, 500);
+                        setTimeout(() => { cycleText.style.borderRightColor = 'transparent'; }, 1000);
+                        setTimeout(() => { cycleText.style.borderRightColor = '#9b5fe0'; }, 1500);
+                    } else if (isDeleting && charIndex === 0) {
+                        isDeleting = false;
+                        wordIndex = (wordIndex + 1) % words.length;
+                        typeSpeed = 500;
+                    }
+
+                    setTimeout(type, typeSpeed);
+                }
+
+                if (cycleText) {
+                    // Start the typing effect
+                    setTimeout(type, 1000);
+                }
+            </script>
+            <p class="reveal reveal-up font-orbitron text-sm md:text-base tracking-[0.3em] uppercase text-on-surface-variant font-medium mb-10 [transition-delay:200ms]" style="color: #acaab1;">
+                Premium Retro & Next-Gen Gaming Collectibles
+            </p>
 <div class="flex flex-wrap gap-4 pt-2">
 <button class="font-orbitron font-bold py-4 px-8 rounded-sm neon-glow transform hover:scale-105 transition-all uppercase tracking-widest text-sm" style="background: linear-gradient(to right, #9b5fe0, #8b4fd0); color: #f9f5fd;">
                         Bekijk Aanbod
@@ -28,8 +70,8 @@
 <!-- Scrolling Ticker -->
 <div class="absolute top-[64px] w-full backdrop-blur-sm py-3 overflow-hidden z-30" style="background: rgba(0,0,0,0.8); border-top: 1px solid rgba(155,95,224,0.2); border-bottom: 1px solid rgba(155,95,224,0.2);">
 <div class="ticker-scroll flex items-center gap-12 font-orbitron text-sm font-bold tracking-[0.3em]" style="color: #9b5fe0;">
-<span>NES · SNES · N64 · PS1 · PS2 · XBOX · SEGA · GAMEBOY · ATARI · DREAMCAST · GAME CUBE · WII · NEO GEO · COMMODORE 64</span>
-<span>NES · SNES · N64 · PS1 · PS2 · XBOX · SEGA · GAMEBOY · ATARI · DREAMCAST · GAME CUBE · WII · NEO GEO · COMMODORE 64</span>
+<span>NES · N64 · PS1 · PS2 · XBOX · SEGA · GAMEBOY · GAME CUBE · WII · 3DS · NINTENDO SWITCH · XBOX 360 · WII U · NINTENDO DS</span>
+<span>NES · N64 · PS1 · PS2 · XBOX · SEGA · GAMEBOY · GAME CUBE · WII · 3DS · NINTENDO SWITCH · XBOX 360 · WII U · NINTENDO DS</span>
 </div>
 </div>
 </section>

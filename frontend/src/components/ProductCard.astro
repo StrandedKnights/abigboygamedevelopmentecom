@@ -1,7 +1,8 @@
 ---
 const { product } = Astro.props;
 ---
-<div class="group relative bg-primary/10 backdrop-blur-md border border-primary/10 rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-300 flex flex-col h-full shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+<div class="reveal reveal-up group relative bg-surface border border-white/5 rounded-sm p-4 transition-all duration-300 hover:border-primary/30 hover:shadow-[0_0_30px_rgba(155,95,224,0.1)]">
+    <div class="relative aspect-square overflow-hidden rounded-sm mb-4">
     
     {product.isLegacy && (
         <div class="absolute -right-12 top-6 bg-accent text-background font-teko font-bold text-xl uppercase tracking-widest px-12 py-1 rotate-45 z-20 shadow-md">

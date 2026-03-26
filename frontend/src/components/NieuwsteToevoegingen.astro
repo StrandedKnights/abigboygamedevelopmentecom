@@ -24,14 +24,12 @@ if (products.length === 0) products = fallbackProducts;
 ---
 
 <section class="py-16 overflow-hidden" style="background-color: #0d0d12;">
-  <div class="max-w-7xl mx-auto px-6">
-
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-      <div>
-        <p class="font-orbitron text-[10px] font-bold tracking-[0.4em] uppercase mb-2" style="color: #9b5fe0;">Hot Drops</p>
-        <h2 class="font-barlow font-black text-5xl md:text-6xl tracking-tight uppercase" style="color: #f9f5fd;">Nieuwste <span style="color: #9b5fe0;">Toevoegingen</span></h2>
-      </div>
+    <div class="max-w-7xl mx-auto">
+        <div class="reveal reveal-left flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div>
+                <p class="font-orbitron text-xs tracking-[0.4em] uppercase mb-4" style="color: #9b5fe0;">Fresh drops</p>
+                <h2 class="font-barlow font-black text-5xl md:text-7xl tracking-tight uppercase" style="color: #f9f5fd;">Nieuwste <br class="md:hidden"/> <span style="color: #9b5fe0;">Toevoegingen</span></h2>
+            </div>
       <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
         <div class="flex items-center gap-3">
           <button id="scroll-prev" onclick="document.getElementById('card-track').scrollBy({left:-285,behavior:'smooth'})" class="w-10 h-10 flex items-center justify-center rounded-sm transition-all" style="background:#1a1a22;border:1px solid rgba(72,71,77,0.4);color:#acaab1;" onmouseover="this.style.borderColor='rgba(155,95,224,0.5)';this.style.color='#9b5fe0'" onmouseout="this.style.borderColor='rgba(72,71,77,0.4)';this.style.color='#acaab1'">
@@ -50,8 +48,9 @@ if (products.length === 0) products = fallbackProducts;
 
     <!-- Product cards row -->
     <div id="card-track" class="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory" style="scrollbar-width:none;-ms-overflow-style:none;">
-      {products.map((product) => (
-        <div class="min-w-[240px] md:min-w-[260px] snap-start flex-shrink-0 rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1" style="background: #1a1a22; border: 1px solid rgba(72,71,77,0.2);">
+      {products.map((product, index) => (
+        <div class="reveal reveal-up min-w-[240px] md:min-w-[260px] snap-start flex-shrink-0 rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1" 
+             style={`background: #1a1a22; border: 1px solid rgba(72,71,77,0.2); transition-delay: ${index * 100}ms;`}>
 
           <!-- Image area -->
           <div class="relative overflow-hidden" style="height: 260px; background: #111118;">
