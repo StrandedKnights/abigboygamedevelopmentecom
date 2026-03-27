@@ -1,51 +1,41 @@
+# Unified Dockerfile for consolidated Astro SSR + Prisma project
 # Stage 1: Build
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package configurations
-COPY frontend/package*.json ./frontend/
-COPY backend/package*.json ./backend/
+# Copy package configurations from the frontend directory
+COPY frontend/package*.json ./
+# prisma is inside the frontend directory
+COPY frontend/prisma ./prisma/
 
-# Install dependencies (clean install for container environment)
-RUN cd frontend && npm ci
-RUN cd backend && npm ci
+# Install dependencies
+RUN npm ci
 
-# Copy full source (excluding what's in .dockerignore)
-COPY frontend ./frontend
-COPY backend ./backend
+# Copy full source from the frontend directory
+COPY frontend .
 
 # Generate Prisma Client & Build Astro SSR
-# Explicitly use npx and ensure it's executable if needed (npm ci usually handles this)
-RUN cd backend && npx prisma generate
-RUN cd frontend && npm run build
+RUN npx prisma generate
+RUN npm run build
 
 # Stage 2: Production
 FROM node:20-alpine AS production
 
 WORKDIR /app
 
-# Install concurrently to run both Express and Astro Node SSR
-RUN npm install -g concurrently
+# Copy built frontend bits
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
 
-# Copy built frontend
-COPY --from=build /app/frontend/dist ./frontend/dist
-COPY --from=build /app/frontend/node_modules ./frontend/node_modules
-COPY --from=build /app/frontend/package.json ./frontend/package.json
-
-# Copy production backend
-COPY --from=build /app/backend/node_modules ./backend/node_modules
-COPY --from=build /app/backend/prisma ./backend/prisma
-COPY --from=build /app/backend/package.json ./backend/package.json
-COPY --from=build /app/backend/src ./backend/src
-
-# Variables for Astro Node adapter
+# Environment variables for Astro Node adapter
 ENV HOST=0.0.0.0
 ENV PORT=4321
 ENV NODE_ENV=production
 
-# Coolify will map exposed ports
-EXPOSE 4321 3000
+# Database is handled at runtime via environment variables passed to the container
+EXPOSE 4321
 
-# Start both servers simultaneously
-CMD ["concurrently", "\"cd backend && npm start\"", "\"cd frontend && node ./dist/server/entry.mjs\""]
+# Start the unified Astro SSR server
+CMD ["node", "./dist/server/entry.mjs"]
