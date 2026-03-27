@@ -10,7 +10,7 @@
 - **Source of Truth:**
     - Primary Data: Production PostgreSQL on Supabase.
     - Reference UI: `source2.html` (Original High-Fidelity Mockup).
-- **Delivery Payload:** Live e-commerce platform hosted on Coolify (Dockerized Astro + Node).
+- **Delivery Payload:** Unified Astro SSR app hosted on Coolify (replacing the dual Astro/Express setup).
 - **Behavioral Rules:** STRICT "No Returns" policy. Branding must feel "Morphism/Glassy" and "Dark Retro".
 
 ## 🛠️ Technical Revelations
@@ -32,6 +32,14 @@
 **Resolution**: Moved from standard `grid-cols-4` to a responsive `sm:grid-cols-2 lg:grid-cols-4` pattern with optical padding-top on headers to maintain a uniform top-line baseline.
 
 ### 5. Deployment Architecture
-**Issue**: Serving both Astro (SSR) and Express (API) usually requires two separate containers.
-**Resolution**: Using a multi-stage Dockerfile that installs dependencies for both, then uses a single entrypoint script to manage both processes, simplifying Coolify management.
+**Issue**: Serving both Astro (SSR) and Express (API) usually requires two separate containers or complex process management.
+**Resolution**: Refactored to a **Unified Astro SSR** architecture. APIs are now handled by Astro API routes (`pages/api/...`), simplifying the Docker image and reducing memory overhead on Coolify.
 
+### 6. Prisma Versioning & Schema Compatibility
+**Issue**: Upgrading to Prisma 7.x introduced breaking changes in the `datasource` block (Error `P1012`), requiring a `prisma.config.ts`.
+**Resolution**: Pinning both `@prisma/client` and `prisma` to version **5.11.0**. This maintains compatibility with the existing schema structure and ensures a stable connection to Supabase without new configuration overhead.
+
+
+### 7. Centralized API Enforcement
+**Issue**: Fragmentation of data-fetching logic between direct Prisma calls (SSR) and raw `fetch` calls (Client-side) creates a maintenance burden.
+**Resolution**: Implemented a mandatory `apiClient.ts` layer. All interactions—including internal loopback requests in SSR—must now route through this service. This ensures that authentication headers, base URLs, and error-handling structures are unified and type-safe across the entire application.

@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNavBar from '../components/TopNavBar.astro';
+import Footer from '../components/Footer.astro';
+import ProductGrid from '../components/ProductGrid.tsx';
+import ShopFilters from '../components/ShopFilters.tsx';
+import { ProductsAPI } from '../services/apiClient';
+
+// Server-side initial fetch for SEO and fast first paint
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+let initialProducts = [];
+let initialMeta = { totalItems: 0 };
+
+try {
+  const response = await ProductsAPI.getShopProducts({
+    ...searchParams,
+    page: parseInt(searchParams.page || '1'),
+    limit: 12
+  });
+  initialProducts = response.products;
+  initialMeta = response.meta;
+} catch (error) {
+  console.error('Initial SSR fetch failed:', error);
+}
+---
+
+<BaseLayout title="Kluis Catalogus | A Big Boy's Game">
+  <TopNavBar />
+  
+  <main class="pt-24 md:pt-32 pb-20 min-h-screen bg-[#0e0e13]" style="background-image: radial-gradient(circle at 50% -20%, rgba(213, 147, 255, 0.08) 0%, transparent 50%);">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <!-- Page Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 reveal reveal-left">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+             <div class="w-2 h-2 rounded-full bg-deal-green animate-pulse shadow-[0_0_10px_rgba(0,255,136,0.5)]"></div>
+             <p class="font-orbitron text-[10px] tracking-[0.4em] uppercase text-deal-green">Live Inventory v2.5</p>
+          </div>
+          <h1 class="font-orbitron font-black text-5xl md:text-6xl tracking-tighter uppercase text-white leading-[0.9]">
+            KLUIS <span class="text-deal-green">CATALOGUS</span>
+          </h1>
+        </div>
+        
+        <div class="flex items-center gap-4 border-l border-white/5 pl-6">
+          <div class="text-right">
+            <p class="font-headline text-[10px] text-on-surface-variant uppercase tracking-widest opacity-60">Collectie Omvang</p>
+            <p class="font-orbitron text-2xl font-bold text-white tracking-widest">{initialMeta.totalItems || '---'}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-10">
+        
+        <!-- Sidebar Filters -->
+        <aside class="w-full lg:w-72 flex-shrink-0">
+          <div class="glass-panel p-7 sticky top-28 border-deal-purple/5 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+             <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+                <h2 class="font-headline text-lg uppercase tracking-widest text-white">Configuratie</h2>
+                <div class="flex gap-1.5">
+                   <div class="w-1.5 h-1.5 rounded-full bg-deal-purple opacity-40"></div>
+                   <div class="w-1.5 h-1.5 rounded-full bg-deal-purple opacity-70"></div>
+                   <div class="w-1.5 h-1.5 rounded-full bg-deal-purple"></div>
+                </div>
+             </div>
+             
+             <ShopFilters client:load />
+          </div>
+        </aside>
+
+        <!-- Product Grid (Reactive) -->
+        <ProductGrid client:load initialProducts={initialProducts} initialMeta={initialMeta} />
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .glass-panel {
+    background: rgba(26, 26, 34, 0.4);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 28px;
+  }
+</style>

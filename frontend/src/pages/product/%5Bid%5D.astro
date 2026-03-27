@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopNavBar from '../../components/TopNavBar.astro';
+import Footer from '../../components/Footer.astro';
+import { ProductsAPI } from '../../services/apiClient';
+
+const { id } = Astro.params;
+
+if (!id) {
+    return Astro.redirect('/404');
+}
+
+// Fetch single product via centralized API Client (Architectural Requirement)
+let product: any = null;
+
+try {
+    product = await ProductsAPI.getProductById(id);
+} catch (error) {
+    console.error('Failed to fetch product:', error);
+    return Astro.redirect('/404');
+}
+
+if (!product) {
+    return Astro.redirect('/404');
+}
+
+const isSoldOut = product.stock === 0;
+const hasDiscount = product.isWeekdeal && product.discountPriceInCents;
+
+// Platform color mapping
+const getPlatformColor = (platform: string) => {
+    const p = platform.toLowerCase();
+    if (p.includes('nintendo')) return '#e60012';
+    if (p.includes('playstation')) return '#003791';
+    if (p.includes('xbox')) return '#107c10';
+    if (p.includes('sega')) return '#0089cf';
+    return '#d593ff';
+};
+
+const platformColor = getPlatformColor(product.platform);
+---
+
+<BaseLayout title={`${product.title} | A Big Boy's Game`}>
+    <TopNavBar />
+
+    <main class="relative min-h-screen pt-32 pb-24" style="background-color: #0e0e13;">
+        <!-- Background Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] max-w-7xl pointer-events-none opacity-20" 
+             style="background: radial-gradient(circle at 50% 20%, #d593ff 0%, transparent 70%);">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                
+                <!-- Column A: Hero Image -->
+                <div class="reveal reveal-left">
+                    <div class="relative group p-1 rounded-[2rem] overflow-hidden" 
+                         style={`background: linear-gradient(135deg, rgba(213,147,255,0.2) 0%, transparent 100%); box-shadow: 0 20px 50px rgba(213,147,255,0.1);`}>
+                        <div class="bg-[#0e0e13] rounded-[1.8rem] overflow-hidden backdrop-blur-3xl border border-white/5">
+                            <img 
+                                src={product.imageUrl} 
+                                alt={product.title} 
+                                class="w-full aspect-[3/4] object-contain md:object-cover group-hover:scale-105 transition-transform duration-700"
+                            />
+                        </div>
+                        
+                        <!-- Sold Out Overlay -->
+                        {isSoldOut && (
+                            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center pointer-events-none">
+                                <span class="font-barlow font-black text-6xl text-white/40 uppercase italic tracking-tighter -rotate-12 border-8 border-white/10 px-8 py-4">
+                                    VERKOCHT
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <!-- Column B: Product Data & Action -->
+                <div class="space-y-8 reveal reveal-right" style="transition-delay: 200ms;">
+                    <!-- Badges -->
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-1.5 rounded-full font-orbitron text-[10px] font-black uppercase tracking-widest border border-white/10 bg-white/5" 
+                              style={`color: ${platformColor}; border-color: ${platformColor}33;`}>
+                            {product.platform}
+                        </span>
+                        <span class="px-4 py-1.5 rounded-full font-orbitron text-[10px] font-black uppercase tracking-widest border border-white/10 bg-white/5 text-[#acaab1]">
+                            {product.condition}
+                        </span>
+                        {product.isWeekdeal && (
+                            <span class="px-4 py-1.5 rounded-full font-orbitron text-[10px] font-black uppercase tracking-widest bg-[#00FF88] text-black">
+                                WEEKDEAL
+                            </span>
+                        )}
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="font-barlow font-black text-5xl md:text-7xl text-white uppercase leading-none italic tracking-tighter">
+                        {product.title}
+                    </h1>
+
+                    <!-- Price Block -->
+                    <div class="flex items-baseline space-x-6">
+                        {hasDiscount ? (
+                            <>
+                                <span class="font-orbitron text-2xl text-[#48474d] line-through">
+                                    €{(product.priceInCents / 100).toFixed(2).replace('.', ',')}
+                                </span>
+                                <span class="font-orbitron text-6xl font-black text-[#00FF88] drop-shadow-[0_0_15px_rgba(0,255,136,0.3)]">
+                                    €{(product.discountPriceInCents / 100).toFixed(2).replace('.', ',')}
+                                </span>
+                            </>
+                        ) : (
+                            <span class="font-orbitron text-6xl font-black text-[#d593ff] drop-shadow-[0_0_15px_rgba(155,95,224,0.3)]">
+                                €{(product.priceInCents / 100).toFixed(2).replace('.', ',')}
+                            </span>
+                        )}
+                    </div>
+
+                    <!-- Description Placeholder / Specs -->
+                    <div class="p-8 rounded-3xl border border-white/5 bg-white/2 backdrop-blur-md space-y-4">
+                        <p class="text-[#acaab1] leading-relaxed">
+                            Originele uitgave voor de <span class="text-white font-bold italic">{product.platform}</span>. 
+                            Dit exemplaar verkeert in <span class="text-white font-bold italic">"{product.condition}"</span> staat en is volledig gecheckt op werking. 
+                            Bij A Big Boy's Game garanderen wij de authenticiteit van al onze retro items.
+                        </p>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <div class="pt-4">
+                        {isSoldOut ? (
+                            <button 
+                                disabled
+                                class="w-full py-6 rounded-2xl bg-white/5 border border-white/10 text-[#48474d] font-barlow font-black text-2xl uppercase italic tracking-widest cursor-not-allowed"
+                            >
+                                UITVERKOCHT
+                            </button>
+                        ) : (
+                            <button 
+                                id="add-to-cart-btn"
+                                data-id={product.id}
+                                class="w-full py-6 rounded-2xl bg-[#00FF88] hover:bg-[#00e67a] text-black font-barlow font-black text-2xl uppercase italic tracking-tighter transition-all shadow-[0_0_30px_rgba(0,255,136,0.3)] hover:shadow-[0_0_50px_rgba(0,255,136,0.5)] active:scale-[0.98]"
+                            >
+                                IN WINKELWAGEN
+                            </button>
+                        )}
+                    </div>
+
+                    <!-- Trust Pillar -->
+                    <div class="flex items-center space-x-4 p-6 rounded-2xl border border-white/5 bg-white/2 backdrop-blur-md group hover:border-[#d593ff]/30 transition-all">
+                        <div class="w-12 h-12 rounded-xl bg-[#d593ff]/20 flex items-center justify-center text-[#d593ff]">
+                            <span class="material-symbols-outlined text-3xl">verified</span>
+                        </div>
+                        <div>
+                            <h4 class="font-orbitron text-xs font-bold text-white uppercase tracking-widest">Kwaliteit Gegarandeerd</h4>
+                            <p class="text-[10px] text-[#acaab1] mt-1 uppercase tracking-tight">Uitvoerig getest, geen retouren mogelijk.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+</BaseLayout>
+
+<script>
+    // Logic for Add to Cart (Placeholder for Nano Stores integration)
+    const btn = document.getElementById('add-to-cart-btn');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            const productId = btn.getAttribute('data-id');
+            console.log('Added to cart:', productId);
+            // Future state logic here
+            alert('Toegevoegd aan winkelwagen!');
+        });
+    }
+</script>

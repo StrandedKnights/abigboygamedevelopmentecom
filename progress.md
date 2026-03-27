@@ -1,21 +1,23 @@
 # Progress — A Big Boy's Game (BLAST Execution Log)
 
 ## 🏁 Phase 1: Blueprint (B) - Complete
-- [x] Initialized architecture: Express + Prisma + Mollie + Sharp.
+- [x] Initialized architecture: Unified Astro SSR + Prisma + Mollie.
 - [x] Defined "North Star" and "Data Schema" in `gemini.md`.
 - [x] Completed Project Discovery (findings.md).
 
-## 🪢 Phase 2: Link (L) - In Progress
+## 🪢 Phase 2: Link (L) - Complete
 - [x] Successfully linked Web3Forms for contact handling.
 - [x] Verified Mollie Sandbox credentials.
-- [ ] Connect production DB (Supabase) to Coolify environment.
+- [x] Integrated Prisma Native into Astro (Singleton pattern).
+- [x] Connected production DB (Supabase) to Astro environment.
 
-## 🏛️ Phase 3: Architect (A) - In Progress
+## 🏛️ Phase 3: Architect (A) - Complete
 - [x] Built core Component Library (Hero, Bento, Nieuwste, Weekdeals).
 - [x] Implemented Customer Service infrastructure (Contact, FAQ, Policies).
-- [ ] Implement cart state (Nano Stores) and Checkout flow.
-
-## 🎨 Phase 4: Stylize (S) - Complete
+- [x] Implemented Checkout UI and Cart Pop-up.
+- [x] Unified Architecture refactor (Express -> Astro Native API).
+- [x] Implementation of `/shop` with advanced filtering API.
+- [x] **Refactored to zero-JS SSR fetching (Zero Layout Shift).**
 - [x] Overhauled Hero with logo `mix-blend-lighten` trick and typewriter animation.
 - [x] Refined Global Typography (Barlow Condensed / Orbitron).
 - [x] Muted branding from `#d593ff` to `#9b5fe0` for dark-mode readability.
@@ -26,6 +28,7 @@
 - [x] Multi-stage Dockerfile creation.
 - [x] Initial GitHub migration.
 - [x] Thorough Protocol Document implementation (`gemini.md`, `findings.md`, `task_plan.md`).
+- [x] **API Centralization**: Mandatory `apiClient.ts` enforcement (Single Source of Truth).
 
 
 ---

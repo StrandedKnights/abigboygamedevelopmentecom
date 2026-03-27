@@ -7,8 +7,8 @@ import ProductSkeleton from './ProductSkeleton.astro';
     <div class="max-w-7xl mx-auto">
         <div class="reveal reveal-left flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-                <p class="font-orbitron text-xs tracking-[0.4em] uppercase mb-4" style="color: #9b5fe0;">Fresh drops</p>
-                <h2 class="font-barlow font-black text-5xl md:text-7xl tracking-tight uppercase" style="color: #f9f5fd;">Nieuwste <br class="md:hidden"/> <span style="color: #9b5fe0;">Toevoegingen</span></h2>
+                <p class="font-orbitron text-xs tracking-[0.4em] uppercase mb-4" style="color: #d593ff;">Fresh drops</p>
+                <h2 class="font-barlow font-black text-5xl md:text-7xl tracking-tight uppercase" style="color: #f9f5fd;">Nieuwste <br class="md:hidden"/> <span style="color: #d593ff;">Toevoegingen</span></h2>
             </div>
       <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
         <div class="flex items-center gap-3">
@@ -19,7 +19,7 @@ import ProductSkeleton from './ProductSkeleton.astro';
             <span class="material-symbols-outlined text-base">chevron_right</span>
           </button>
         </div>
-        <a href="#" class="group ml-4 inline-flex items-center gap-1 font-orbitron text-xs font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap" style="color: #9b5fe0;">
+        <a href="#" class="group ml-4 inline-flex items-center gap-1 font-orbitron text-xs font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap" style="color: #d593ff;">
           Toon alles
           <span class="material-symbols-outlined text-sm transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
         </a>
@@ -44,7 +44,7 @@ import ProductSkeleton from './ProductSkeleton.astro';
 </section>
 
 <script>
-  import { getLatestAdditions } from '../services/apiClient.js';
+  import { ProductsAPI } from '../services/apiClient';
 
   async function loadProducts() {
     const track = document.getElementById('card-track');
@@ -53,7 +53,7 @@ import ProductSkeleton from './ProductSkeleton.astro';
     if (!track || !template) return;
 
     try {
-      const products = await getLatestAdditions();
+      const products = await ProductsAPI.getLatestAdditions();
       
       // Clear skeletons
       track.innerHTML = '';

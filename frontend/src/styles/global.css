@@ -44,7 +44,7 @@
 
 /* Custom Effects */
 @keyframes neon-flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(155,95,224,0.6)); }
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(213,147,255,0.6)); }
   20%, 24%, 55% { opacity: 0.7; filter: none; }
 }
 .animate-neon-flicker {
@@ -65,4 +65,27 @@
 }
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+/* Morphism Utility Classes */
+.glass-panel {
+  background: rgba(213, 147, 255, 0.05);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(213, 147, 255, 0.1);
+}
+
+.neon-border-focus:focus-within {
+  border-color: rgba(213, 147, 255, 0.4);
+  box-shadow: 0 0 15px rgba(213, 147, 255, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0e0e13;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #25252b;
+  border-radius: 10px;
 }

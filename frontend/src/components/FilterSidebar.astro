@@ -1,0 +1,165 @@
+---
+const categories = [
+    {
+        name: 'Nintendo',
+        platforms: ['Switch', 'Wii U', 'Wii', 'GameCube', 'N64', 'SNES', 'NES', '3DS', 'DS', 'GBA', 'GBC', 'GB']
+    },
+    {
+        name: 'PlayStation',
+        platforms: ['PS5', 'PS4', 'PS3', 'PS2', 'PS1', 'PS Vita', 'PSP']
+    },
+    {
+        name: 'Xbox',
+        platforms: ['Xbox Series X', 'Xbox One', 'Xbox 360', 'Xbox Original']
+    },
+    {
+        name: 'Retro / Other',
+        platforms: ['Sega Dreamcast', 'Sega Saturn', 'Sega Mega Drive', 'Sega Master System', 'Atari', 'PC', 'Commodore 64']
+    }
+];
+
+const conditions = ['NEW', 'LIKE NEW', 'GOOD', 'FAIR'];
+
+// Get active filters from URL to highlight them
+const selectedPlatforms = Astro.url.searchParams.get('platforms')?.split(',') || [];
+const selectedConditions = Astro.url.searchParams.get('conditions')?.split(',') || [];
+const minPrice = Astro.url.searchParams.get('minPrice') || '';
+const maxPrice = Astro.url.searchParams.get('maxPrice') || '';
+const search = Astro.url.searchParams.get('search') || '';
+---
+
+<aside class="w-full lg:w-80 space-y-8 sticky top-32 h-fit pb-12">
+    <!-- Search Bar -->
+    <div class="relative group">
+        <input 
+            type="text" 
+            placeholder="ZOEK PRODUCT..." 
+            id="shop-search"
+            value={search}
+            class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white font-orbitron text-sm tracking-widest focus:outline-none focus:border-[#d593ff]/50 transition-all placeholder:text-white/20"
+        />
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-[#d593ff] transition-colors">search</span>
+    </div>
+
+    <!-- Filter Categories -->
+    <div class="space-y-4">
+        {categories.map((cat, idx) => (
+            <div class="border border-white/5 bg-white/2 rounded-3xl overflow-hidden backdrop-blur-md">
+                <button 
+                    class="w-full px-6 py-5 flex items-center justify-between group hover:bg-white/5 transition-colors"
+                    onclick={`document.getElementById('cat-content-${idx}').classList.toggle('hidden'); document.getElementById('cat-chevron-${idx}').classList.toggle('rotate-180');`}
+                >
+                    <span class="font-barlow font-black text-xl text-white uppercase tracking-tight italic">{cat.name}</span>
+                    <span id={`cat-chevron-${idx}`} class="material-symbols-outlined text-[#d593ff] transition-transform duration-300">expand_more</span>
+                </button>
+                <div id={`cat-content-${idx}`} class="px-6 pb-6 space-y-3 hidden lg:block">
+                    {cat.platforms.map(platform => (
+                        <label class="flex items-center space-x-3 cursor-pointer group">
+                            <input 
+                                type="checkbox" 
+                                value={platform}
+                                checked={selectedPlatforms.includes(platform)}
+                                class="platform-checkbox w-5 h-5 rounded border-white/10 bg-white/5 text-[#d593ff] focus:ring-0 focus:ring-offset-0 transition-all"
+                            />
+                            <span class="font-orbitron text-[10px] tracking-widest text-[#acaab1] group-hover:text-white transition-colors">{platform}</span>
+                        </label>
+                    ))}
+                </div>
+            </div>
+        ))}
+    </div>
+
+    <!-- Condition Filter -->
+    <div class="p-8 border border-white/5 bg-white/2 rounded-3xl backdrop-blur-md">
+        <h3 class="font-barlow font-black text-2xl text-white uppercase tracking-tight italic mb-6">CONDITIE</h3>
+        <div class="space-y-3">
+            {conditions.map(cond => (
+                <label class="flex items-center space-x-3 cursor-pointer group">
+                    <input 
+                        type="checkbox" 
+                        value={cond}
+                        checked={selectedConditions.includes(cond)}
+                        class="condition-checkbox w-5 h-5 rounded border-white/10 bg-white/5 text-[#d593ff] focus:ring-0 focus:ring-offset-0 transition-all"
+                    />
+                    <span class="font-orbitron text-[10px] tracking-widest text-[#acaab1] group-hover:text-white transition-colors">{cond}</span>
+                </label>
+            ))}
+        </div>
+    </div>
+
+    <!-- Price Range -->
+    <div class="p-8 border border-white/5 bg-white/2 rounded-3xl backdrop-blur-md">
+        <h3 class="font-barlow font-black text-2xl text-white uppercase tracking-tight italic mb-6">PRIJS (CENTEN)</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <input 
+                type="number" 
+                id="price-min"
+                placeholder="MIN" 
+                value={minPrice}
+                class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white font-orbitron text-[10px] tracking-widest focus:outline-none focus:border-[#d593ff]/50"
+            />
+            <input 
+                type="number" 
+                id="price-max"
+                placeholder="MAX" 
+                value={maxPrice}
+                class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white font-orbitron text-[10px] tracking-widest focus:outline-none focus:border-[#d593ff]/50"
+            />
+        </div>
+        <button 
+            id="apply-filters"
+            class="w-full mt-6 py-4 bg-[#d593ff] hover:bg-[#8346c9] text-white font-barlow font-black text-lg uppercase italic tracking-tighter transition-all rounded-2xl shadow-[0_0_20px_rgba(155,95,224,0.3)] hover:shadow-[0_0_30px_rgba(155,95,224,0.5)]"
+        >
+            FILTERS TOEPASSEN
+        </button>
+    </div>
+</aside>
+
+<script>
+    const searchInput = document.getElementById('shop-search') as HTMLInputElement;
+    const platformChecks = document.querySelectorAll('.platform-checkbox') as NodeListOf<HTMLInputElement>;
+    const conditionChecks = document.querySelectorAll('.condition-checkbox') as NodeListOf<HTMLInputElement>;
+    const priceMin = document.getElementById('price-min') as HTMLInputElement;
+    const priceMax = document.getElementById('price-max') as HTMLInputElement;
+    const applyBtn = document.getElementById('apply-filters');
+
+    function updateFilters() {
+        const params = new URLSearchParams(window.location.search);
+        
+        // Search
+        if (searchInput.value) params.set('search', searchInput.value);
+        else params.delete('search');
+
+        // Platforms
+        const selectedPlatforms = Array.from(platformChecks)
+            .filter(i => i.checked)
+            .map(i => i.value);
+        if (selectedPlatforms.length > 0) params.set('platforms', selectedPlatforms.join(','));
+        else params.delete('platforms');
+
+        // Conditions
+        const selectedConditions = Array.from(conditionChecks)
+            .filter(i => i.checked)
+            .map(i => i.value);
+        if (selectedConditions.length > 0) params.set('conditions', selectedConditions.join(','));
+        else params.delete('conditions');
+
+        // Prices
+        if (priceMin.value) params.set('minPrice', priceMin.value);
+        else params.delete('minPrice');
+        if (priceMax.value) params.set('maxPrice', priceMax.value);
+        else params.delete('maxPrice');
+
+        // Reset to page 1
+        params.delete('page');
+
+        window.location.search = params.toString();
+    }
+
+    applyBtn?.addEventListener('click', updateFilters);
+
+    // Debounced Search optionally, but logic above is trigger-based for performance
+    searchInput?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') updateFilters();
+    });
+</script>

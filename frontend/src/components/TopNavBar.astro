@@ -4,24 +4,49 @@
   <!-- Brand -->
   <div class="flex items-center gap-3">
     <img src="/images/logo.jpg" alt="A Big Boy's Game" class="w-8 h-8 object-cover rounded-sm mix-blend-lighten"/>
-    <span class="font-orbitron text-base font-black tracking-tighter uppercase" style="color: #f9f5fd;">Abig<span style="color: #9b5fe0;">Boys</span>Game</span>
+    <span class="font-orbitron text-base font-black tracking-tighter uppercase" style="color: #f9f5fd;">Abig<span style="color: #d593ff;">Boys</span>Game</span>
   </div>
 
   <!-- Nav links -->
-  <div class="hidden md:flex items-center space-x-8 font-headline tracking-wider uppercase text-sm">
-    <a class="transition-all pb-1 hover:text-white" style="color: #acaab1;" href="/">Home</a>
-    <a class="transition-all hover:text-[#9b5fe0]" style="color: #acaab1;" href="/shop">Shop</a>
-    <a class="transition-all hover:text-[#9b5fe0]" style="color: #acaab1;" href="/contact">Contact</a>
-    <a class="transition-all hover:text-[#9b5fe0]" style="color: #acaab1;" href="/over-ons">Over Ons</a>
+  <div class="hidden md:flex items-center gap-8 font-headline tracking-wider uppercase text-sm">
+    <a class="transition-all hover:text-white" style="color: #acaab1;" href="/">Home</a>
+    <a class="transition-all hover:text-[#d593ff]" style="color: #acaab1;" href="/shop">Shop</a>
+    <a class="transition-all hover:text-[#d593ff]" style="color: #acaab1;" href="/contact">Contact</a>
+    <a class="transition-all hover:text-[#d593ff]" style="color: #acaab1;" href="/over-ons">Over Ons</a>
   </div>
 
 
   <!-- Icons -->
-  <div class="flex items-center gap-4" style="color: #9b5fe0;">
+  <div class="flex items-center gap-4" style="color: #d593ff;">
     <button class="material-symbols-outlined p-2 scale-95 active:scale-90 duration-200 hover:opacity-80">search</button>
     <button class="material-symbols-outlined p-2 scale-95 active:scale-90 duration-200 hover:opacity-80">account_circle</button>
-    <button class="material-symbols-outlined p-2 scale-95 active:scale-90 duration-200 hover:opacity-80 relative">
-      shopping_cart
-    </button>
+    <div class="relative group">
+      <button class="material-symbols-outlined p-2 scale-95 active:scale-90 duration-200 hover:opacity-80">
+        shopping_cart
+      </button>
+      
+      <!-- Mini Cart Pop-up -->
+      <div class="absolute right-0 top-full mt-2 w-80 bg-[#19191f]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right group-hover:translate-y-0 translate-y-2 z-50 p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-headline text-xl uppercase tracking-widest text-white">Jouw Mandje</h3>
+          <span class="font-orbitron text-[10px] text-on-surface-variant">0 ITEMS</span>
+        </div>
+        
+        <div id="mini-cart-items" class="py-8 text-center opacity-40 border-b border-white/5 mb-6">
+           <span class="material-symbols-outlined text-3xl mb-1">shopping_basket</span>
+           <p class="font-headline text-xs uppercase tracking-widest text-white">Leeg</p>
+        </div>
+        
+        <div class="pt-4 space-y-4">
+          <div class="flex justify-between items-center">
+            <span class="text-xs text-on-surface-variant uppercase tracking-widest font-headline">Totaal</span>
+            <span class="font-orbitron text-sm text-white">€ 0,00</span>
+          </div>
+          <a href="/checkout" class="block w-full bg-[#d593ff] text-center py-3 rounded-lg font-orbitron font-black text-xs tracking-widest text-white shadow-[0_0_15px_rgba(155,95,224,0.3)] hover:shadow-[0_0_25px_rgba(155,95,224,0.5)] transition-all active:scale-[0.98]">
+            AFREKENEN
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>

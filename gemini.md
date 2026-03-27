@@ -5,10 +5,10 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 
 ## Source of Truth
 - Design: `source2.html` in root project directory
-- Backend: Express + Prisma + Mollie (`backend/`)
-- Frontend: Astro + Tailwind CSS v3 (`frontend/`)
+- Backend: Astro API Routes + Prisma Native
+- Frontend: Astro + Tailwind CSS v3 (SSR Enabled)
 - Logo: `/frontend/public/images/logo.jpg` (user-provided, has black bg → use mix-blend-lighten)
-- Deployment: Dockerfile for Coolify hosting (Frontend on port 4321, Backend on port 3000)
+- Deployment: Dockerfile for Coolify hosting (Unified Astro app on port 4321)
 
 ## Data Schema
 
@@ -71,11 +71,13 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 6. **Error Handling**: Every API response must include a `status` (success/error), `data` (payload), and `message` (human-readable).
 
 ## Architectural Invariants
-- **SSR Strategy**: Astro SSR for the frontend to enable dynamic metadata and session management.
-- **Backend API**: Node.js/Express with Prisma ORM and PostgreSQL.
-- **Payment Lifecycle**: Webhook-driven status updates from Mollie.
+- **Architecture**: Unified Astro Project (No standalone Express server).
+- **SSR Strategy**: Astro SSR for all dynamic pages (Shop, Checkout, Success).
+- **Data Layer**: Prisma ORM with singleton pattern in `src/lib/prisma.ts`.
+- **Payment Lifecycle**: Webhook-driven status updates handled by Astro API routes.
 - **CI/CD**: Auto-deployment to Coolify on push to `main` branch.
 - **Asset Optimization**: All product images processed via Sharp to WebP format.
+- **Centralized API**: ABSOLUTE RULE — All frontend-to-backend communication MUST route through `src/services/apiClient.ts`. No raw `fetch` or direct Prisma calls in the UI layer.
 
 ## Maintenance Log
 | Date | Change | Reason |
@@ -83,7 +85,8 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 | 2026-03-26 | Integrated Web3Forms | Added professional contact capability. |
 | 2026-03-26 | Updated Subcategories | Aligned categories with user inventory (PS2, Switch, Xbox 360). |
 | 2026-03-26 | Global Purple Refinement | Swapped `#d593ff` for `#9b5fe0` for better accessibility. |
-| 2026-03-26 | Footer Alignment Fix | Adjusted grid for mobile/tablet symmetry. |
+| 2026-03-27 | Architecture Refactor | Migrated from Express to Astro-native SSR + Prisma Client 5.11.0. |
+| 2026-03-27 | API Centralization | Enforced `apiClient.ts` as the single source of truth for all network requests. |
 
 
 ## Component Inventory
