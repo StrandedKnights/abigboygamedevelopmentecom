@@ -6,7 +6,7 @@ import ProductCard from './ProductCard';
 
 interface ProductGridProps {
   initialProducts: Product[];
-  initialMeta: { totalItems: number };
+  initialMeta: { totalCount: number; [key: string]: any };
 }
 
 export default function ProductGrid({ initialProducts, initialMeta }: ProductGridProps) {
@@ -30,8 +30,8 @@ export default function ProductGrid({ initialProducts, initialMeta }: ProductGri
         page: filters.page,
         limit: 12
       });
-      setProducts(response.products);
-      setMeta(response.meta);
+      setProducts(response.products || []);
+      setMeta(response.pagination || { totalCount: 0 });
     } catch (err: any) {
       console.error('Fetch error:', err);
       setError('Er is een fout opgetreden bij het laden van de producten.');
@@ -47,7 +47,7 @@ export default function ProductGrid({ initialProducts, initialMeta }: ProductGri
     fetchProducts();
   }, [filters]);
 
-  const totalPages = Math.ceil(meta.totalItems / 12);
+  const totalPages = Math.ceil((meta?.totalCount || 0) / 12);
 
   return (
     <div class="flex-1 space-y-12">

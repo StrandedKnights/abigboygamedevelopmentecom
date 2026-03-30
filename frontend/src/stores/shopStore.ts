@@ -4,6 +4,7 @@ export interface ShopFiltersState {
   search: string;
   platforms: string[];
   conditions: string[];
+  minPrice: number;
   maxPrice: number;
   inStockOnly: boolean;
   sortBy: 'newest' | 'price_asc' | 'price_desc';
@@ -17,7 +18,8 @@ const getInitialState = (): ShopFiltersState => {
       search: '',
       platforms: [],
       conditions: [],
-      maxPrice: 500,
+      minPrice: 0,
+      maxPrice: 1000,
       inStockOnly: false,
       sortBy: 'newest',
       page: 1
@@ -29,7 +31,8 @@ const getInitialState = (): ShopFiltersState => {
     search: params.get('search') || '',
     platforms: params.get('platforms')?.split(',').filter(Boolean) || [],
     conditions: params.get('conditions')?.split(',').filter(Boolean) || [],
-    maxPrice: parseInt(params.get('maxPrice') || '50000') / 100, // DB stores in cents, URL displays in euros
+    minPrice: parseInt(params.get('minPrice') || '0') / 100,
+    maxPrice: parseInt(params.get('maxPrice') || '100000') / 100,
     inStockOnly: params.get('inStockOnly') === 'true',
     sortBy: (params.get('sortBy') as any) || 'newest',
     page: parseInt(params.get('page') || '1')
@@ -51,7 +54,8 @@ export function updateFilters(updates: Partial<ShopFiltersState>) {
     if (newState.search) params.set('search', newState.search);
     if (newState.platforms.length) params.set('platforms', newState.platforms.join(','));
     if (newState.conditions.length) params.set('conditions', newState.conditions.join(','));
-    if (newState.maxPrice < 500) params.set('maxPrice', (newState.maxPrice * 100).toString());
+    if (newState.minPrice > 0) params.set('minPrice', (newState.minPrice * 100).toString());
+    if (newState.maxPrice < 1000) params.set('maxPrice', (newState.maxPrice * 100).toString());
     if (newState.inStockOnly) params.set('inStockOnly', 'true');
     if (newState.sortBy !== 'newest') params.set('sortBy', newState.sortBy);
     if (newState.page > 1) params.set('page', newState.page.toString());

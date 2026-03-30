@@ -9,7 +9,7 @@ import { ProductsAPI } from '../services/apiClient';
 // Server-side initial fetch for SEO and fast first paint
 const searchParams = Object.fromEntries(Astro.url.searchParams);
 let initialProducts = [];
-let initialMeta = { totalItems: 0 };
+let initialMeta = { totalCount: 0 };
 
 try {
   const response = await ProductsAPI.getShopProducts({
@@ -17,8 +17,8 @@ try {
     page: parseInt(searchParams.page || '1'),
     limit: 12
   });
-  initialProducts = response.products;
-  initialMeta = response.meta;
+  initialProducts = response.products || [];
+  initialMeta = response.pagination || { totalCount: 0 };
 } catch (error) {
   console.error('Initial SSR fetch failed:', error);
 }

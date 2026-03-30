@@ -62,7 +62,11 @@ async function fetcher<T>(endpoint: string, options: Omit<RequestInit, 'body'> &
     
     // Headers
     const headers = new Headers(options.headers);
-    headers.set('Content-Type', 'application/json');
+    
+    const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
+    if (!isFormData) {
+        headers.set('Content-Type', 'application/json');
+    }
 
     // Auth Token (Client-side only)
     if (typeof window !== 'undefined') {
@@ -74,7 +78,9 @@ async function fetcher<T>(endpoint: string, options: Omit<RequestInit, 'body'> &
 
     // Body handling
     const fetchOptions: RequestInit = { ...options };
-    if (options.body && typeof options.body === 'object') {
+    if (isFormData) {
+        fetchOptions.body = options.body;
+    } else if (options.body && typeof options.body === 'object') {
         fetchOptions.body = JSON.stringify(options.body);
     }
 
@@ -90,7 +96,14 @@ async function fetcher<T>(endpoint: string, options: Omit<RequestInit, 'body'> &
         throw new APIError(errorData.message || response.statusText, response.status, errorData);
     }
 
-    return response.json();
+    const result = await response.json();
+    
+    // Auto-unwrap the standard envelope if it exists
+    if (result && typeof result === 'object' && result.status === 'success' && 'data' in result) {
+        return result.data as T;
+    }
+    
+    return result as T;
 }
 
 // --- API Modules ---
@@ -112,7 +125,7 @@ export const ProductsAPI = {
                 query.append(key, String(value));
             }
         });
-        return fetcher<{ products: Product[], pagination: any }>(`/products?${query.toString()}`);
+        return fetcher<{ products: Product[], pagination: { totalCount: number, totalPages: number, currentPage: number, limit: number } }>(`/products?${query.toString()}`);
     },
 
     /** Fetches a single product for the PDP. */
@@ -153,5 +166,15 @@ export const AdminAPI = {
         fetcher<Product>('/admin/products', {
             method: 'POST',
             body: productData
-        })
+        }),
+
+    /** POSTs an image upload to the secure server endpoint. */
+    uploadImage: (file: File) => {
+        const formData = new FormData();
+        formData.append('image', file);
+        return fetcher<{ success: boolean; imageUrl?: string; error?: string }>('/admin/upload', {
+            method: 'POST',
+            body: formData
+        });
+    }
 };
