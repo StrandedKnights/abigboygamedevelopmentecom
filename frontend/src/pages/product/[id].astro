@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopNavBar from '../../components/TopNavBar.astro';
+import Footer from '../../components/Footer.astro';
+import { getProductById } from '../../lib/products';
+import AddToCartBtn from '../../components/shop/AddToCartBtn';
+
+const { id } = Astro.params;
+
+if (!id) {
+    return Astro.redirect('/404');
+}
+
+const product = await getProductById(id);
+
+if (!product) {
+    return Astro.redirect('/404');
+}
+
+const formattedPrice = (product.priceInCents / 100).toLocaleString('nl-NL', {
+    style: 'currency',
+    currency: 'EUR',
+});
+
+const getPlatformColor = (platform: string) => {
+    if (platform.includes('PlayStation')) return '#3344ff';
+    if (platform.includes('Nintendo')) return '#e60012';
+    if (platform.includes('Xbox')) return '#107c10';
+    return '#d593ff';
+};
+
+const platformColor = getPlatformColor(product.platform);
+---
+
+<BaseLayout title={`${product.title} - A Big Boy's Game`}>
+    <TopNavBar />
+    
+    <main class="min-h-screen pt-24 pb-20 px-6 bg-[#0a0a0f]">
+        <div class="max-w-7xl mx-auto">
+            <!-- Breadcrumbs -->
+            <nav class="flex items-center gap-2 mb-8 font-orbitron text-[10px] uppercase tracking-widest text-[#76747b]">
+                <a href="/" class="hover:text-[#d593ff] transition-colors">Home</a>
+                <span class="material-symbols-outlined text-xs">chevron_right</span>
+                <a href="/shop" class="hover:text-[#d593ff] transition-colors">Shop</a>
+                <span class="material-symbols-outlined text-xs">chevron_right</span>
+                <span class="text-[#f9f5fd]">{product.title}</span>
+            </nav>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
+                <!-- Product Image Container -->
+                <div class="reveal reveal-left relative group">
+                    <!-- Glow effect -->
+                    <div class="absolute -inset-4 bg-[#d593ff]/10 blur-3xl opacity-50 rounded-full"></div>
+                    
+                    <div class="relative rounded-2xl overflow-hidden aspect-square flex items-center justify-center p-8 bg-[#131319] border border-[#d593ff]/10 shadow-2xl">
+                        <img 
+                            src={product.imageUrl} 
+                            alt={product.title}
+                            class="max-w-full max-h-full object-contain filter drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform duration-700"
+                        />
+                        
+                        <!-- Condition Badge -->
+                        <div class="absolute top-6 left-6 font-orbitron text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-sm" 
+                             style={`background: #00FF88; color: #000; box-shadow: 0 0 15px rgba(0,255,136,0.3);`}>
+                            {product.condition}
+                        </div>
+                    </div>
+
+                    <!-- Small Meta Info -->
+                    <div class="flex items-center justify-between mt-6 px-2">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-1.5 font-orbitron text-[9px] uppercase tracking-widest text-[#76747b]">
+                                <span class="material-symbols-outlined text-sm">verified</span>
+                                Authentic
+                            </div>
+                            <div class="flex items-center gap-1.5 font-orbitron text-[9px] uppercase tracking-widest text-[#76747b]">
+                                <span class="material-symbols-outlined text-sm">package_2</span>
+                                Fast Shipping
+                            </div>
+                        </div>
+                        <div class="font-orbitron text-[9px] uppercase tracking-widest text-[#76747b] underline decoration-[#d593ff]/50 underline-offset-4 cursor-pointer hover:text-[#f9f5fd] transition-colors">
+                            Shipping Policy
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Content Info -->
+                <div class="reveal reveal-right">
+                    <div class="space-y-6">
+                        <!-- Header -->
+                        <div>
+                            <span class="font-orbitron text-xs font-bold uppercase tracking-[0.4em] mb-4 block" style={`color: ${platformColor}; text-shadow: 0 0 10px ${platformColor}44;`}>
+                                {product.platform} Edition
+                            </span>
+                            <h1 class="font-barlow font-black text-5xl md:text-7xl uppercase tracking-tighter text-[#f9f5fd] leading-[0.9] mb-4">
+                                {product.title}
+                            </h1>
+                            <div class="flex items-center gap-3">
+                                <span class="font-orbitron text-3xl font-black text-[#f9f5fd] tracking-tighter">
+                                    {formattedPrice}
+                                </span>
+                                {product.isWeekdeal && product.discountPriceInCents && (
+                                    <span class="font-orbitron text-lg text-[#76747b] line-through mt-1 op-70">
+                                        €{(product.discountPriceInCents / 100).toFixed(2).replace('.', ',')}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+
+                        <!-- Availability & Stock -->
+                        <div class="flex items-center gap-4 py-4 border-y border-[#1a1a22]">
+                            <div class="flex items-center gap-2">
+                                <div class={`w-2 h-2 rounded-full ${product.isAvailable ? 'bg-[#00FF88] animate-pulse' : 'bg-red-500'}`}></div>
+                                <span class="font-orbitron text-[11px] uppercase tracking-widest" style={`color: ${product.isAvailable ? '#00FF88' : '#ff4b4b'}`}>
+                                    {product.isAvailable ? 'Op voorraad (Slechts 1 beschikbaar)' : 'Niet beschikbaar'}
+                                </span>
+                            </div>
+                            <div class="w-1 h-1 rounded-full bg-[#1a1a22]"></div>
+                            <span class="font-orbitron text-[11px] uppercase tracking-widest text-[#76747b]">
+                                Gratis verzending v.a. €100
+                            </span>
+                        </div>
+
+                        <!-- Short Features / USP -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 rounded-xl bg-[#131319] border border-[#1a1a22] flex items-center gap-3">
+                                <span class="material-symbols-outlined text-[#d593ff]">shield_with_heart</span>
+                                <span class="font-orbitron text-[10px] uppercase tracking-widest text-[#f9f5fd]">Hand-tested</span>
+                            </div>
+                            <div class="p-4 rounded-xl bg-[#131319] border border-[#1a1a22] flex items-center gap-3">
+                                <span class="material-symbols-outlined text-[#d593ff]">history</span>
+                                <span class="font-orbitron text-[10px] uppercase tracking-widest text-[#f9f5fd]">7-day returns</span>
+                            </div>
+                        </div>
+
+                        <!-- Description placeholder (Actual CMS data would go here later) -->
+                        <div class="prose prose-invert prose-sm">
+                            <p class="text-[#acaab1] leading-relaxed font-body">
+                                Duik terug in de klassieke ervaring met {product.title} voor de {product.platform}. 
+                                Dit exemplaar is zorgvuldig gecontroleerd op kwaliteit en functionaliteit. 
+                                Perfect voor de verzamelaar die alleen genoegen neemt met het beste voor zijn retro vault.
+                            </p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pt-8">
+                            <AddToCartBtn 
+                                client:load 
+                                product={{
+                                    id: product.id,
+                                    title: product.title,
+                                    priceInCents: product.priceInCents,
+                                    imageUrl: product.imageUrl,
+                                    platform: product.platform,
+                                    stock: product.stock
+                                }}
+                                isAvailable={product.isAvailable}
+                            />
+                        </div>
+
+                        <!-- Payment Methods Placeholder -->
+                        <div class="pt-10 opacity-30 grayscale hover:opacity-100 transition-opacity flex flex-wrap items-center gap-6">
+                            <div class="font-orbitron text-[10px] uppercase tracking-widest text-[#f9f5fd] mb-2 w-full">Safe checkout via</div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Ideal_logo.svg" alt="iDEAL" class="h-6"/>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="h-3"/>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="h-6"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+</BaseLayout>
+
+<style>
+    /* Custom spacing for product page */
+    main {
+        background-image: 
+            radial-gradient(circle at 0% 0%, rgba(213,147,255,0.03) 0%, transparent 50%),
+            radial-gradient(circle at 100% 100%, rgba(51,68,255,0.03) 0%, transparent 50%);
+    }
+</style>

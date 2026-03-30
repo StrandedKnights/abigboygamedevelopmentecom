@@ -24,9 +24,10 @@ const p = product || {
 };
 ---
 
-<div class="product-card reveal reveal-up min-w-[240px] md:min-w-[260px] snap-start flex-shrink-0 rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1" 
-     style={`background: #1a1a22; border: 1px solid rgba(72,71,77,0.2); transition-delay: ${index * 100}ms;`}
-     data-id={p.id}>
+<a href={p.id ? `/product/${p.id}` : '#'} 
+   class="product-card reveal reveal-up min-w-[240px] md:min-w-[260px] snap-start flex-shrink-0 rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1 block no-underline" 
+   style={`background: #1a1a22; border: 1px solid rgba(72,71,77,0.2); transition-delay: ${index * 100}ms;`}
+   data-id={p.id}>
 
   <!-- Image area -->
   <div class="relative overflow-hidden" style="height: 260px; background: #111118;">
@@ -40,7 +41,7 @@ const p = product || {
     <span class="absolute top-3 left-3 font-orbitron text-[9px] font-black uppercase tracking-widest px-2 py-1" style="background: #00FF88; color: #000;">Pre-owned</span>
     <!-- Add to cart overlay on hover -->
     <div class="absolute bottom-0 left-0 right-0 py-3 text-center font-orbitron text-[10px] font-bold uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300 shadow-[0_-10px_30px_rgba(155,95,224,0.3)]" style="background: #d593ff; color: #fff;">
-      + Toevoegen
+      + Bekijken
     </div>
   </div>
 
@@ -50,9 +51,9 @@ const p = product || {
     <p class="product-platform font-orbitron text-[10px] uppercase tracking-wider" style={`color: ${p.platformColor};`}>{p.platform}</p>
     <div class="flex items-center justify-between pt-2">
       <span class="product-price font-orbitron text-lg font-bold" style="color: #f9f5fd;">€{(p.priceInCents / 100).toFixed(2).replace('.', ',')}</span>
-      <button class="transition-colors p-1" style="color: #48474d;" onmouseover="this.style.color='#00FF88'" onmouseout="this.style.color='#48474d'">
+      <div class="transition-colors p-1" style="color: #48474d;">
         <span class="material-symbols-outlined text-base">star</span>
-      </button>
+      </div>
     </div>
   </div>
-</div>
+</a>

@@ -76,3 +76,20 @@ export async function getProducts(params: {
         }
     };
 }
+
+export async function getProductById(id: string) {
+    const product = await prisma.product.findUnique({
+        where: { id }
+    });
+
+    if (!product) return null;
+
+    // Check availability
+    const now = new Date();
+    const isAvailable = product.stock > 0 && (!product.reservedUntil || new Date(product.reservedUntil) < now);
+
+    return {
+        ...product,
+        isAvailable
+    };
+}

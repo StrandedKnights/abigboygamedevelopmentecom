@@ -19,6 +19,7 @@ model Product {
   isLegacy              Boolean     @default(false)
   isWeekdeal            Boolean     @default(false)
   discountPriceInCents  Int?
+  reservedUntil         DateTime?
   createdAt             DateTime    @default(now())
   updatedAt             DateTime    @updatedAt
   orderItems            OrderItem[]
