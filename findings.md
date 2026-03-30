@@ -39,7 +39,6 @@
 **Issue**: Upgrading to Prisma 7.x introduced breaking changes in the `datasource` block (Error `P1012`), requiring a `prisma.config.ts`.
 **Resolution**: Pinning both `@prisma/client` and `prisma` to version **5.11.0**. This maintains compatibility with the existing schema structure and ensures a stable connection to Supabase without new configuration overhead.
 
-
 ### 7. Centralized API Enforcement
 **Issue**: Fragmentation of data-fetching logic between direct Prisma calls (SSR) and raw `fetch` calls (Client-side) creates a maintenance burden.
 **Resolution**: Implemented a mandatory `apiClient.ts` layer. All interactions—including internal loopback requests in SSR—must now route through this service. This ensures that authentication headers, base URLs, and error-handling structures are unified and type-safe across the entire application.
@@ -47,5 +46,9 @@
 ### 8. Supabase Connectivity & Prisma Locking
 **Issue**: Using the standard Supabase Pooler (transaction mode) led to persistent `FATAL: Tenant or user not found` errors during high-frequency SSR requests.
 **Resolution**: Switched connection strings to the **Direct Supabase Host** (`db.lcffetewbstixbrijuch.supabase.co:5432`). This bypassed the AWS pooler's authentication drift and stabilized all database interactions.
-**Issue**: Local development often locks the Prisma Client DLL, causing "out of sync" errors when modifying the schema without a full server restart.
-**Resolution**: During development sprints, use `as any` type-casting in the `seed.ts` and `api/admin` routes. This permits rapid iteration without waiting for the Prisma client to fully re-generate and unlock.
+
+### 9. Admin Dashboard & Image Upload Fixes
+**Issue**: Image uploads were failing with 500 errors in production (Linux/Coolify).
+**Resolution 1 (Buffer)**: Refactored `File.arrayBuffer()` to use `Buffer.from(arrayBuffer)` for better Node.js compatibility in containerized environments.
+**Resolution 2 (Auth)**: Identified "Invalid Compact JWS" error, tracing it back to an incorrectly configured `SUPABASE_SERVICE_ROLE_KEY` in the production environment variables.
+**Resolution 3 (Storage)**: Ensured the `product-images` bucket in Supabase is set to 'Public' to allow direct URL access for product cards.

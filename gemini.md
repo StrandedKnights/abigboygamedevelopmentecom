@@ -88,6 +88,8 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 | 2026-03-27 | Architecture Refactor | Migrated from Express to Astro-native SSR + Prisma Client 5.11.0. |
 | 2026-03-27 | API Centralization | Enforced `apiClient.ts` as the single source of truth for all network requests. |
 | 2026-03-30 | Taxonomy & Catalog Sync | Implemented 30-platform source of truth, 20-game seeder, and brand-based accordions. |
+| 2026-03-30 | Cyberpunk PDP & Cart | Integrated high-fidelity "Morphism" PDP design and Nanostores reactive cart. |
+| 2026-03-30 | Admin Dashboard v1.0 | Added real-time metrics, product creation with image uploads, and order status management. |
 
 
 ## Component Inventory
@@ -102,3 +104,6 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 | Footer | `components/Footer.astro` | ✅ Done — `#9b5fe0` tone down |
 | ShopFilters | `components/ShopFilters.tsx` | ✅ Done — Brand Accordions & Price Pills |
 | ProductGrid | `components/ProductGrid.tsx` | ✅ Done — Responsive SSR-first grid |
+| CartDrawer | `components/shop/CartDrawer.tsx` | ✅ Done — Cyberpunk Reactive Drawer |
+| ProductDetail | `pages/product/[id].astro` | ✅ Done — High-fidelity PDP |
+| AdminDashboard | `pages/admin/index.astro` | ✅ Done — Live metrics & CRUD |
