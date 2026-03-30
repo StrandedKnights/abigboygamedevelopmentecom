@@ -46,7 +46,15 @@ export interface AuthResponse {
 }
 
 // --- Configuration ---
-const API_BASE_URL = (import.meta as any).env.PUBLIC_API_URL || '/api';
+let API_BASE_URL = (import.meta as any).env.PUBLIC_API_URL || '/api';
+
+// CRITICAL FIX: During Server-Side Rendering (SSR), fetching the public internet domain
+// often throws 503s or SSL errors because the proxy isn't ready or rejects local loopbacks.
+// By forcefully using 127.0.0.1 locally, Astro connects directly to its own endpoints instantly.
+if (typeof window === 'undefined') {
+    const port = process.env.PORT || 4321;
+    API_BASE_URL = `http://127.0.0.1:${port}/api`;
+}
 
 // --- Error Handling ---
 export class APIError extends Error {
