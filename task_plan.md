@@ -17,22 +17,22 @@
 - [x] Component Library Implementation (Bento, Hero, etc.)
 - [x] Contact Page & Form Integration
 - [x] Legal & Customer Service Pages Structure
-- [ ] **Implementation of `/api/products` (Advanced Filtering API)**
-- [ ] **Implementation of `/shop` (Astro SSR avec URL Sync)**
-- [ ] Global State Management (Shopping Cart with Nano Stores)
-- [ ] Checkout Logic & Payment Redirects (Astro API routes)
+- [x] **Implementation of `/api/products` (Advanced Filtering API)**
+- [x] **Implementation of `/shop` (Astro SSR avec URL Sync)**
+- [x] Global State Management (Shopping Cart with Nano Stores)
+- [x] Checkout Logic & Payment Redirects (Astro API routes)
 
 ## ✨ Phase 4: Stylize (S)
 - [x] Apply "Morphism" Dark Theme globally
 - [x] Integrate Barlow & Orbitron Typography
 - [x] Brand Color Tone-Down (`#d593ff` -> `#9b5fe0`)
 - [x] Add Micro-interactions (Hover states, Typewriter animation)
-- [ ] Polish Shop Filter UI (Glassmorphic Sidebar)
+- [x] Polish Shop Filter UI (Glassmorphic Sidebar)
 - [ ] Success/Receipt Pages Implementation
 
 ## 🛰️ Phase 5: Trigger (T)
 - [x] Dockerization (Unified Astro build)
-- [x] Initial Push to GitHub
+- [x] GitHub Push & Production Sync
 - [ ] Final Production Launch & Testing (Coolify)
 - [x] Documentation Sync complete
 

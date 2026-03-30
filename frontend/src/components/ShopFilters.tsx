@@ -84,7 +84,7 @@ export default function ShopFilters() {
             value={filters.sortBy}
             onChange={(e: any) => updateFilters({ sortBy: e.target.value })}
             title="Sorteer Filter"
-            class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg py-2.5 px-4 text-xs focus:outline-none focus:border-deal-green/50 text-white appearance-none cursor-pointer font-orbitron font-bold tracking-widest uppercase transition-all"
+            class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg py-2.5 pl-4 pr-10 text-[9px] sm:text-[10px] focus:outline-none focus:border-deal-green/50 text-white appearance-none cursor-pointer font-orbitron font-bold tracking-[0.15em] uppercase transition-all whitespace-nowrap text-ellipsis"
           >
             {SORT_OPTIONS.map(opt => (
               <option key={opt.value} value={opt.value} class="bg-[#1a1a22] text-white py-2">{opt.label}</option>
@@ -161,28 +161,29 @@ export default function ShopFilters() {
         </div>
       </div>
 
-      {/* Price Pills */}
+      {/* Price Slider */}
       <div>
-        <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-deal-purple mb-4">PRIJS FILTERS</h3>
-        <div class="grid grid-cols-1 gap-2">
-          {PRICE_RANGES.map(range => (
-            <button 
-              key={range.id}
-              onClick={() => setPriceRange(range)}
-              class={`text-[10px] font-orbitron font-bold py-2.5 px-4 rounded-xl border transition-all text-left flex items-center justify-between group ${
-                isRangeActive(range)
-                ? 'bg-deal-green border-deal-green text-black shadow-[0_0_15px_rgba(0,255,136,0.2)]'
-                : 'bg-white/2 border-white/10 text-on-surface-variant hover:border-deal-green/40 hover:text-white'
-              }`}
-            >
-              <span class="uppercase tracking-widest">{range.label}</span>
-              {isRangeActive(range) ? (
-                <span class="material-symbols-outlined text-sm">check_circle</span>
-              ) : (
-                <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-40 transition-opacity">arrow_forward</span>
-              )}
-            </button>
-          ))}
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-deal-purple">MAXIMALE PRIJS</h3>
+          <span class="font-orbitron text-[10px] text-deal-green font-bold text-right px-2 py-1 bg-deal-green/10 border border-deal-green/20 rounded shadow-[0_0_10px_rgba(0,255,136,0.1)]">
+            {filters.maxPrice < 1000 ? `€${filters.maxPrice}` : 'Geen Limiet'}
+          </span>
+        </div>
+        <div class="px-2 relative">
+          <input 
+            type="range"
+            title="Maximum Prijs"
+            min="10"
+            max="1000"
+            step="10"
+            value={filters.maxPrice}
+            onInput={(e: any) => updateFilters({ maxPrice: Number(e.target.value) })}
+            class="w-full h-1.5 bg-surface-container-high rounded-full appearance-none cursor-pointer transition-all custom-range-slider"
+          />
+          <div class="flex justify-between mt-2 px-1">
+            <span class="text-[9px] font-orbitron text-on-surface-variant/50">€10</span>
+            <span class="text-[9px] font-orbitron text-on-surface-variant/50">€1000+</span>
+          </div>
         </div>
       </div>
 
@@ -227,6 +228,21 @@ export default function ShopFilters() {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(213, 147, 255, 0.4);
+        }
+        
+        .custom-range-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 16px;
+          height: 16px;
+          background: #00FF88;
+          border-radius: 50%;
+          cursor: pointer;
+          box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+          transition: transform 0.2s;
+        }
+        .custom-range-slider::-webkit-slider-thumb:hover {
+          transform: scale(1.2);
         }
       `}} />
     </div>

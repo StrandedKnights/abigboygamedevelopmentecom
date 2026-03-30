@@ -1,6 +1,7 @@
 # Unified Dockerfile for consolidated Astro SSR + Prisma project
 # Stage 1: Build
 FROM node:20-alpine AS build
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 
@@ -21,6 +22,7 @@ RUN npm run build
 
 # Stage 2: Production
 FROM node:20-alpine AS production
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 
@@ -37,5 +39,9 @@ ENV NODE_ENV=production
 # Database is handled at runtime via environment variables passed to the container
 EXPOSE 4321
 
-# Start the unified Astro SSR server
+# Start the unified Astro SSR server using our secrets aware entrypoint
+COPY scripts/entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["node", "./dist/server/entry.mjs"]

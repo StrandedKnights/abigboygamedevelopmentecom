@@ -1,0 +1,35 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import OrderList from '../../components/admin/OrderList';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+let initialOrders = [];
+try {
+   const ordersData = await (prisma.order as any).findMany({
+       include: {
+           items: {
+               include: {
+                   product: true
+               }
+           }
+       },
+       orderBy: { createdAt: 'desc' }
+   });
+   // Strip Date objects for seamless JSON serialization bound to Preact component
+   initialOrders = JSON.parse(JSON.stringify(ordersData));
+} catch (err: any) {
+   console.error("Failed fetching orders from backend:", err);
+}
+---
+
+<AdminLayout title="Verkoop & Bestellingen">
+    <div class="mb-8 border-b border-white/5 pb-6">
+        <h2 class="font-barlow font-bold text-2xl uppercase tracking-widest text-white mb-2">Ordermanagement</h2>
+        <p class="text-on-surface-variant text-sm font-medium">Beheer hier betalingen, verstrek tracking codes en monitor de algemene verkoopcijfers.</p>
+    </div>
+    
+    <div class="bg-surface-container-high/20 border border-white/5 rounded-2xl p-6 backdrop-blur-sm shadow-xl">
+        <OrderList client:load initialOrders={initialOrders as any} />
+    </div>
+</AdminLayout>

@@ -43,3 +43,9 @@
 ### 7. Centralized API Enforcement
 **Issue**: Fragmentation of data-fetching logic between direct Prisma calls (SSR) and raw `fetch` calls (Client-side) creates a maintenance burden.
 **Resolution**: Implemented a mandatory `apiClient.ts` layer. All interactions—including internal loopback requests in SSR—must now route through this service. This ensures that authentication headers, base URLs, and error-handling structures are unified and type-safe across the entire application.
+
+### 8. Supabase Connectivity & Prisma Locking
+**Issue**: Using the standard Supabase Pooler (transaction mode) led to persistent `FATAL: Tenant or user not found` errors during high-frequency SSR requests.
+**Resolution**: Switched connection strings to the **Direct Supabase Host** (`db.lcffetewbstixbrijuch.supabase.co:5432`). This bypassed the AWS pooler's authentication drift and stabilized all database interactions.
+**Issue**: Local development often locks the Prisma Client DLL, causing "out of sync" errors when modifying the schema without a full server restart.
+**Resolution**: During development sprints, use `as any` type-casting in the `seed.ts` and `api/admin` routes. This permits rapid iteration without waiting for the Prisma client to fully re-generate and unlock.

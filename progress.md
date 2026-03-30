@@ -17,6 +17,8 @@
 - [x] Implemented Checkout UI and Cart Pop-up.
 - [x] Unified Architecture refactor (Express -> Astro Native API).
 - [x] Implementation of `/shop` with advanced filtering API.
+- [x] **Taxonomy Synchronization (Centralized 30-platform source of truth).**
+- [x] **Production Seeding (20 high-fidelity test products in live DB).**
 - [x] **Refactored to zero-JS SSR fetching (Zero Layout Shift).**
 - [x] Overhauled Hero with logo `mix-blend-lighten` trick and typewriter animation.
 - [x] Refined Global Typography (Barlow Condensed / Orbitron).
@@ -24,9 +26,9 @@
 - [x] Fixed Footer/Header symmetry for mobile/tablet responsive states.
 - [x] Updated subcategories in Bento Grid (PS2, Switch, Xbox 360).
 
-## 🚀 Phase 5: Trigger (T) - In Progress
+## 🚀 Phase 5: Trigger (T) - Complete
 - [x] Multi-stage Dockerfile creation.
-- [x] Initial GitHub migration.
+- [x] GitHub migration & Production Synchronization.
 - [x] Thorough Protocol Document implementation (`gemini.md`, `findings.md`, `task_plan.md`).
 - [x] **API Centralization**: Mandatory `apiClient.ts` enforcement (Single Source of Truth).
 

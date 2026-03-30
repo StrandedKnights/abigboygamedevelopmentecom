@@ -1,14 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
+import { SECRETS } from './secrets';
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = SECRETS.SUPABASE_URL();
+const supabaseServiceKey = SECRETS.SUPABASE_SERVICE_KEY();
 
-if (!supabaseUrl) {
-    throw new Error('❌ Missing required environment variable: PUBLIC_SUPABASE_URL. Server-side uploads will fail.');
-}
-
-if (!supabaseServiceKey) {
-    throw new Error('❌ Missing required environment variable: SUPABASE_SERVICE_ROLE_KEY. Server-side uploads will fail.');
+if (!supabaseUrl || !supabaseServiceKey) {
+   // Local dev warning only if envs and secrets are missing
+   console.warn("⚠️ [Supabase Admin] Missing required connection strings or service role keys. Server-side features like image uploads or account creation will fail without either .env configuration OR Docker Secrets.");
 }
 
 /**

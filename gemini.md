@@ -87,6 +87,7 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 | 2026-03-26 | Global Purple Refinement | Swapped `#d593ff` for `#9b5fe0` for better accessibility. |
 | 2026-03-27 | Architecture Refactor | Migrated from Express to Astro-native SSR + Prisma Client 5.11.0. |
 | 2026-03-27 | API Centralization | Enforced `apiClient.ts` as the single source of truth for all network requests. |
+| 2026-03-30 | Taxonomy & Catalog Sync | Implemented 30-platform source of truth, 20-game seeder, and brand-based accordions. |
 
 
 ## Component Inventory
@@ -99,3 +100,5 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 | WeekdealsBanner | `components/WeekdealsBanner.astro` | ✅ Done |
 | TrustBar | `components/TrustBar.astro` | ✅ Done — no-returns copy, deep purple icons |
 | Footer | `components/Footer.astro` | ✅ Done — `#9b5fe0` tone down |
+| ShopFilters | `components/ShopFilters.tsx` | ✅ Done — Brand Accordions & Price Pills |
+| ProductGrid | `components/ProductGrid.tsx` | ✅ Done — Responsive SSR-first grid |
