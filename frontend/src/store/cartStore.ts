@@ -1,5 +1,4 @@
 import { persistentAtom } from '@nanostores/persistent';
-import { action } from 'nanostores';
 
 export interface CartItem {
   id: string;
@@ -22,8 +21,8 @@ export const isItemInCart = (id: string) => {
 };
 
 // Add to Cart with Validation
-export const addToCart = action(cartItems, 'add', (store, product: CartItem) => {
-  const current = store.get();
+export const addToCart = (product: CartItem) => {
+  const current = cartItems.get();
   
   // Prevent duplicate additions since each item is unique (likely for an ecom/game shop)
   if (current.some(item => item.id === product.id)) return;
@@ -34,16 +33,16 @@ export const addToCart = action(cartItems, 'add', (store, product: CartItem) => 
     return;
   }
 
-  store.set([...current, product]);
-});
+  cartItems.set([...current, product]);
+};
 
 // Remove from Cart
-export const removeFromCart = action(cartItems, 'remove', (store, productId: string) => {
-  const current = store.get();
-  store.set(current.filter(item => item.id !== productId));
-});
+export const removeFromCart = (productId: string) => {
+  const current = cartItems.get();
+  cartItems.set(current.filter(item => item.id !== productId));
+};
 
 // Clear Cart
-export const clearCart = action(cartItems, 'clear', (store) => {
-  store.set([]);
-});
+export const clearCart = () => {
+  cartItems.set([]);
+};
