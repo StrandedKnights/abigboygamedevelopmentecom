@@ -1,0 +1,131 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import prisma from '../../lib/prisma';
+
+// Fetch only PAID or SHIPPED orders that actually generated revenue
+const orders = await prisma.order.findMany({
+    where: {
+        status: { in: ['PAID', 'SHIPPED'] }
+    },
+    include: {
+        items: true
+    },
+    orderBy: { createdAt: 'desc' }
+});
+
+const formatPrice = (cents: number) => `€${Math.max(0, cents / 100).toFixed(2)}`;
+const formatDate = (dateInfo: Date) => dateInfo.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
+
+let totalRevenue = 0;
+let totalCost = 0;
+let totalMargin = 0;
+let totalVat = 0;
+
+const rows = orders.map(order => {
+    const revenue = order.totalAmountInCents;
+    
+    // Sum purchase prices. Fallback to 0 if an item had no purchase price logged.
+    // Cost = purchasePrice * quantity 
+    const cost = order.items.reduce((sum, item) => sum + ((item.purchasePriceAtPurchaseInCents || 0) * item.quantity), 0);
+    
+    const margin = revenue - cost;
+    const vat = Math.round(margin * (21 / 121)); // BTW Margeregeling: 21% from the inside out (21/121 of profit margin)
+    
+    totalRevenue += revenue;
+    totalCost += cost;
+    totalMargin += margin;
+    totalVat += vat;
+
+    return {
+        id: order.id,
+        date: order.createdAt,
+        revenue,
+        cost,
+        margin,
+        vat,
+        customerName: order.customerName,
+        status: order.status
+    };
+});
+---
+
+<AdminLayout title="Finance & Margeregeling">
+    <div class="mb-8 border-b border-white/5 pb-6">
+        <h2 class="font-barlow font-bold text-2xl uppercase tracking-widest text-white mb-2">BTW & Marge Calculator</h2>
+        <p class="text-on-surface-variant text-sm font-medium">Overzicht van nettoverkopen, inkoopwaardes en de 21% BTW berekend via de Margeregeling voor tweedehands goederen.</p>
+    </div>
+
+    {/* Summary Cards */}
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-surface-container-high/40 border border-white/5 rounded-2xl p-6">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Totale Omzet</h3>
+            <div class="font-barlow font-black text-3xl text-white">{formatPrice(totalRevenue)}</div>
+        </div>
+        <div class="bg-surface-container-high/40 border border-deal-purple/20 rounded-2xl p-6">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-deal-purple mb-2">Totale Inkoop</h3>
+            <div class="font-barlow font-black text-3xl text-white">{formatPrice(totalCost)}</div>
+        </div>
+        <div class="bg-surface-container-high/40 border border-deal-green/20 rounded-2xl p-6">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-deal-green mb-2">Winstmarge (Bruto)</h3>
+            <div class="font-barlow font-black text-3xl text-deal-green">{formatPrice(totalMargin)}</div>
+        </div>
+        <div class="bg-[#ff4b4b]/10 border border-[#ff4b4b]/20 rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-[#ff4b4b]/10 to-transparent"></div>
+            <h3 class="relative z-10 font-orbitron text-[10px] tracking-[0.2em] uppercase text-[#ff4b4b] mb-2">Te Betalen BTW (21%)</h3>
+            <div class="relative z-10 font-barlow font-black text-3xl text-white">{formatPrice(totalVat)}</div>
+            <div class="relative z-10 text-[10px] font-medium text-[#ff4b4b]/80 uppercase mt-1">Via Margeregeling</div>
+        </div>
+    </div>
+
+    {/* Table */}
+    <div class="bg-surface-container-high/20 border border-white/5 rounded-2xl p-6 backdrop-blur-sm shadow-xl overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left min-w-[900px]">
+            <thead>
+                <tr class="border-b border-white/5 text-[10px] font-orbitron uppercase tracking-[0.15em] text-on-surface-variant">
+                    <th class="py-4 px-2 font-bold">Datum & ID</th>
+                    <th class="py-4 px-2 font-bold text-right">Verkoop (Omzet)</th>
+                    <th class="py-4 px-2 font-bold text-right text-deal-purple">Inkoopwaarde</th>
+                    <th class="py-4 px-2 font-bold text-right text-deal-green">Marge (Winst)</th>
+                    <th class="py-4 px-2 font-bold text-right text-[#ff4b4b]">BTW 21% (Marge)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {rows.length === 0 ? (
+                    <tr>
+                        <td colspan="5" class="py-12 text-center text-on-surface-variant text-sm font-orbitron uppercase tracking-widest">
+                            Geen voltooide bestellingen om te berekenen.
+                        </td>
+                    </tr>
+                ) : null}
+                {rows.map((row) => (
+                    <tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+                        <td class="py-4 px-2">
+                            <div class="font-bold text-white text-sm">{formatDate(row.date)}</div>
+                            <div class="text-[10px] text-on-surface-variant/50 font-mono mt-0.5">#{row.id.split('-')[0]} • {row.customerName || 'Gast'}</div>
+                        </td>
+                        <td class="py-4 px-2 text-right font-barlow font-bold text-[18px] text-white tracking-widest">
+                            {formatPrice(row.revenue)}
+                        </td>
+                        <td class="py-4 px-2 text-right font-barlow font-bold text-[18px] text-deal-purple/80 tracking-widest">
+                            {formatPrice(row.cost)}
+                            {row.cost === 0 && <span class="block text-[9px] font-inter uppercase text-on-surface-variant/50">Geen inkoop bekend</span>}
+                        </td>
+                        <td class="py-4 px-2 text-right font-barlow font-bold text-[18px] text-deal-green tracking-widest">
+                            {formatPrice(row.margin)}
+                        </td>
+                        <td class="py-4 px-2 text-right font-barlow font-black text-[18px] text-[#ff4b4b] tracking-widest bg-[#ff4b4b]/5 rounded-lg group-hover:bg-[#ff4b4b]/10 transition-colors">
+                            {formatPrice(row.vat)}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+
+    <style is:inline>
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+</AdminLayout>

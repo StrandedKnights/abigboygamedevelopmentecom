@@ -1,16 +1,27 @@
 import { useState } from 'preact/hooks';
-import { AdminAPI } from '../../services/apiClient';
+import { AdminAPI, type Product } from '../../services/apiClient';
 
-export default function AdminProductForm({ platforms, conditions }: { platforms: readonly string[], conditions: readonly string[] }) {
-    const [title, setTitle] = useState('');
-    const [platform, setPlatform] = useState(platforms[0] || '');
-    const [condition, setCondition] = useState(conditions[0] || '');
-    const [price, setPrice] = useState('0.00');
-    const [stock, setStock] = useState('1');
-    const [isWeekdeal, setIsWeekdeal] = useState(false);
+export default function AdminProductForm({ 
+    platforms, 
+    conditions,
+    initialData
+}: { 
+    platforms: readonly string[], 
+    conditions: readonly string[],
+    initialData?: Product
+}) {
+    const isEditMode = !!initialData;
+    
+    const [title, setTitle] = useState(initialData?.title || '');
+    const [platform, setPlatform] = useState(initialData?.platform || platforms[0] || '');
+    const [condition, setCondition] = useState(initialData?.condition || conditions[0] || '');
+    const [price, setPrice] = useState(initialData ? (initialData.priceInCents / 100).toFixed(2) : '0.00');
+    const [purchasePrice, setPurchasePrice] = useState(initialData?.purchasePriceInCents ? (initialData.purchasePriceInCents / 100).toFixed(2) : '');
+    const [stock, setStock] = useState(initialData ? String(initialData.stock) : '1');
+    const [isWeekdeal, setIsWeekdeal] = useState(initialData?.isWeekdeal || false);
     
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageUrl || null);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -31,8 +42,8 @@ export default function AdminProductForm({ platforms, conditions }: { platforms:
         setSuccess(false);
 
         try {
-            // 1. Upload Image First
-            let imageUrl = '';
+            // 1. Upload Image (Only if changed in edit mode, or always for new)
+            let imageUrl = initialData?.imageUrl || '';
             if (imageFile) {
                 const uploadRes = await AdminAPI.uploadImage(imageFile);
                 if (!uploadRes.success || !uploadRes.imageUrl) {
@@ -40,37 +51,48 @@ export default function AdminProductForm({ platforms, conditions }: { platforms:
                     throw new Error(detailedError);
                 }
                 imageUrl = uploadRes.imageUrl;
-            } else {
-                throw new Error("Een afbeelding is verplicht voor webshop producten.");
+            } else if (!isEditMode) {
+                throw new Error("Een afbeelding is verplicht voor nieuwe webshop producten.");
             }
 
-            // 2. Create Product
+            // 2. Data Validation & Formatting
             const priceInCents = Math.round(parseFloat(price) * 100);
+            const parsedPurchasePrice = parseFloat(purchasePrice);
+            const purchasePriceInCents = !isNaN(parsedPurchasePrice) && parsedPurchasePrice > 0 ? Math.round(parsedPurchasePrice * 100) : null;
             const stockUnits = parseInt(stock, 10);
 
-            if (isNaN(priceInCents) || priceInCents <= 0) throw new Error("Ongeldige prijs.");
+            if (isNaN(priceInCents) || priceInCents <= 0) throw new Error("Ongeldige verkoopprijs.");
             if (isNaN(stockUnits) || stockUnits < 0) throw new Error("Ongeldige voorraad.");
 
-            await AdminAPI.createProduct({
+            const payload = {
                 title,
                 platform,
                 condition,
                 priceInCents,
+                purchasePriceInCents,
                 stock: stockUnits,
                 isWeekdeal,
                 imageUrl
-            });
+            };
 
-            setSuccess(true);
-            setTitle('');
-            setPrice('0.00');
-            setStock('1');
-            setImageFile(null);
-            setImagePreview(null);
-            window.scrollTo(0, 0);
+            // 3. API Execution
+            if (isEditMode) {
+                await AdminAPI.updateProduct(initialData.id, payload);
+                setSuccess(true);
+            } else {
+                await AdminAPI.createProduct(payload);
+                setSuccess(true);
+                setTitle('');
+                setPrice('0.00');
+                setPurchasePrice('');
+                setStock('1');
+                setImageFile(null);
+                setImagePreview(null);
+                window.scrollTo(0, 0);
+            }
 
         } catch (err: any) {
-            setError(err.message || 'Mislukt om product aan te maken');
+            setError(err.message || (isEditMode ? 'Mislukt om product te wijzigen' : 'Mislukt om product aan te maken'));
         } finally {
             setLoading(false);
         }
@@ -88,7 +110,9 @@ export default function AdminProductForm({ platforms, conditions }: { platforms:
             {success && (
                 <div class="bg-deal-green/10 border border-deal-green/30 p-4 rounded-xl flex items-center gap-3">
                     <span class="material-symbols-outlined text-deal-green text-xl">check_circle</span>
-                    <p class="text-deal-green text-sm font-bold tracking-wide">Product succesvol gepubliceerd naar de shop!</p>
+                    <p class="text-deal-green text-sm font-bold tracking-wide">
+                        {isEditMode ? 'Product succesvol gewijzigd!' : 'Product succesvol gepubliceerd naar de shop!'}
+                    </p>
                 </div>
             )}
 
@@ -115,9 +139,16 @@ export default function AdminProductForm({ platforms, conditions }: { platforms:
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block font-orbitron text-[10px] font-bold text-deal-purple uppercase tracking-[0.2em] mb-2">Koopprijs (€)</label>
+                            <label class="block font-orbitron text-[10px] font-bold text-deal-purple uppercase tracking-[0.2em] mb-2">Inkoop (Excl.)</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium">€</span>
+                                <input type="number" step="0.01" value={purchasePrice} onInput={(e: any) => setPurchasePrice(e.target.value)} class="w-full bg-[#0a0a0d] border border-white/10 rounded-lg pl-8 pr-4 py-3 text-white text-sm font-barlow font-bold focus:outline-none focus:border-deal-green transition-all" placeholder="0.00" title="Koopprijs / Inkoopwaarde voor marge-berekening" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-orbitron text-[10px] font-bold text-deal-purple uppercase tracking-[0.2em] mb-2">Verkoopprijs</label>
                             <div class="relative">
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium">€</span>
                                 <input type="number" step="0.01" required value={price} onInput={(e: any) => setPrice(e.target.value)} class="w-full bg-[#0a0a0d] border border-white/10 rounded-lg pl-8 pr-4 py-3 text-white text-sm font-barlow font-bold focus:outline-none focus:border-deal-green transition-all" placeholder="0.00" />
@@ -156,7 +187,7 @@ export default function AdminProductForm({ platforms, conditions }: { platforms:
                             type="file" 
                             accept="image/png, image/jpeg, image/webp" 
                             onChange={handleImageChange}
-                            required
+                            required={!isEditMode}
                             title="Upload Product Foto"
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
@@ -173,9 +204,9 @@ export default function AdminProductForm({ platforms, conditions }: { platforms:
             <div class="pt-6 border-t border-white/10 mt-6 flex justify-end">
                 <button type="submit" disabled={loading} class="bg-deal-green text-black px-8 py-4 rounded-xl font-orbitron font-black uppercase tracking-widest hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition-all flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
                     {loading ? (
-                        <><span class="material-symbols-outlined animate-spin text-sm">refresh</span> Bezig met Uploaden & Opslaan...</>
+                        <><span class="material-symbols-outlined animate-spin text-sm">refresh</span> {isEditMode ? 'Bezig met Opslaan...' : 'Bezig met Uploaden & Opslaan...'}</>
                     ) : (
-                        <><span class="material-symbols-outlined text-sm">publish</span> Product Publiceren</>
+                        <><span class="material-symbols-outlined text-sm">{isEditMode ? 'save' : 'publish'}</span> {isEditMode ? 'Wijzigingen Opslaan' : 'Product Publiceren'}</>
                     )}
                 </button>
             </div>

@@ -1,0 +1,38 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+import AdminProductForm from '../../../../components/admin/AdminProductForm';
+import { PLATFORMS, CONDITIONS } from '../../../../config/taxonomy';
+import prisma from '../../../../lib/prisma';
+
+const { id } = Astro.params;
+
+// Fetch existing product data SSR
+const product = await prisma.product.findUnique({
+  where: { id: id as string }
+});
+
+if (!product) {
+  // If product doesn't exist, redirect back or show 404
+  return Astro.redirect('/admin/products?error=notfound');
+}
+---
+<AdminLayout title={`Bewerk: ${product.title}`}>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <a href="/admin/products" class="text-on-surface-variant hover:text-deal-green flex items-center gap-2 text-[10px] font-orbitron font-bold uppercase tracking-[0.2em] no-underline transition-colors w-fit mb-4">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> Terug naar overzicht
+      </a>
+      <h2 class="font-barlow font-black text-3xl uppercase tracking-widest text-white mb-2">Product Bewerken</h2>
+      <p class="text-on-surface-variant text-sm font-medium">Wijzig de specificaties, voorraad of prijs van {product.title}.</p>
+    </div>
+
+    <div class="bg-surface-container-high/40 border border-white/5 rounded-2xl p-8 backdrop-blur-md relative overflow-hidden">
+        <div class="absolute -top-32 -right-32 w-96 h-96 bg-deal-green/10 blur-[100px] pointer-events-none"></div>
+      
+        <div class="relative z-10">
+            {/* We pass initialData to trigger "Edit Mode" inside the form */}
+            <AdminProductForm client:load platforms={PLATFORMS} conditions={CONDITIONS} initialData={product} />
+        </div>
+    </div>
+  </div>
+</AdminLayout>

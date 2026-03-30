@@ -1,6 +1,6 @@
 ---
 import AdminLayout from '../../layouts/AdminLayout.astro';
-import { supabaseAdmin } from '../../lib/supabaseAdmin';
+import prisma from '../../lib/prisma';
 
 // Fetch key metrics on the server before rendering
 let totalProducts = 0;
@@ -9,43 +9,43 @@ let totalRevenue = 0;
 let outOfStock = 0;
 
 try {
-  // 1. Total Products
-  const { count: productCount } = await supabaseAdmin
-    .from('Product')
-    .select('*', { count: 'exact', head: true });
-  totalProducts = productCount || 0;
+  // 1. Products
+  totalProducts = await prisma.product.count();
+  outOfStock = await prisma.product.count({
+    where: { stock: { lte: 0 } }
+  });
 
-  // 2. Out of Stock Products
-  const { count: outOfStockCount } = await supabaseAdmin
-    .from('Product')
-    .select('*', { count: 'exact', head: true })
-    .eq('inStock', false);
-  outOfStock = outOfStockCount || 0;
-
-  // 3. Orders & Revenue
-  // Note: Depending on your schema, it might be named 'Order', 'Orders' etc. Let's assume 'Order'.
-  // We'll wrap in try-catch in case it's not created yet.
-  const { data: ordersData, error: ordersError } = await supabaseAdmin
-    .from('Order')
-    .select('totalAmount, status');
+  // 2. Orders & Revenue (Only counting actual revenue from PAID/SHIPPED)
+  totalOrders = await prisma.order.count();
+  const paidOrders = await prisma.order.findMany({
+    where: {
+      status: { in: ['PAID', 'SHIPPED'] }
+    },
+    select: { totalAmountInCents: true }
+  });
   
-  if (!ordersError && ordersData) {
-    totalOrders = ordersData.length;
-    // Calculate revenue from PAID and SHIPPED orders
-    totalRevenue = ordersData
-        .filter(o => o.status !== 'PENDING')
-        .reduce((sum, o) => sum + (Number(o.totalAmount) || 0), 0);
-  }
+  totalRevenue = paidOrders.reduce((sum, o) => sum + o.totalAmountInCents, 0) / 100;
 } catch (e) {
   console.error("Failed to fetch admin metrics", e);
 }
 ---
 
+<style>
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-stagger {
+    opacity: 0;
+    animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+</style>
+
 <AdminLayout title="Dashboard Overview">
    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
       
       <!-- Metric Card: Total Revenue -->
-      <div class="bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group">
+      <div class="animate-stagger bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group" style="animation-delay: 100ms;">
          <div class="absolute inset-0 bg-gradient-to-br from-deal-green/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
          <div class="flex items-center justify-between mb-4">
             <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">Totale Omzet</h3>
@@ -59,7 +59,7 @@ try {
       </div>
 
       <!-- Metric Card: Total Orders -->
-      <div class="bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group">
+      <div class="animate-stagger bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group" style="animation-delay: 200ms;">
          <div class="absolute inset-0 bg-gradient-to-br from-deal-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
          <div class="flex items-center justify-between mb-4">
             <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">Bestellingen</h3>
@@ -73,7 +73,7 @@ try {
       </div>
 
       <!-- Metric Card: Total Products -->
-      <div class="bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group">
+      <div class="animate-stagger bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group" style="animation-delay: 300ms;">
          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
          <div class="flex items-center justify-between mb-4">
             <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">Actieve Producten</h3>
@@ -88,7 +88,7 @@ try {
       </div>
 
       <!-- Metric Card: Out of Stock Alerts -->
-      <div class="bg-surface-container-high/40 border border-[#ff4b4b]/20 rounded-2xl p-6 relative overflow-hidden group">
+      <div class="animate-stagger bg-surface-container-high/40 border border-[#ff4b4b]/20 rounded-2xl p-6 relative overflow-hidden group" style="animation-delay: 400ms;">
          <div class="absolute inset-0 bg-gradient-to-br from-[#ff4b4b]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
          <div class="flex items-center justify-between mb-4">
             <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-[#ff4b4b]">Niet Leverbaar (Actie Vereist)</h3>

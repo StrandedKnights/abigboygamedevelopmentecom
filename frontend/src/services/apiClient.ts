@@ -9,6 +9,7 @@ export interface Product {
     title: string;
     platform: string;
     priceInCents: number;
+    purchasePriceInCents?: number | null;
     stock: number;
     condition: string;
     imageUrl: string;
@@ -23,6 +24,7 @@ export interface OrderItem {
     id: string;
     quantity: number;
     priceAtPurchaseInCents: number;
+    purchasePriceAtPurchaseInCents?: number | null;
     productId: string;
     product?: Product;
 }
@@ -175,6 +177,13 @@ export const AdminAPI = {
     createProduct: (productData: Partial<Product>) =>
         fetcher<Product>('/admin/products', {
             method: 'POST',
+            body: productData
+        }),
+
+    /** PATCHes an existing retro game in the inventory. */
+    updateProduct: (id: string, productData: Partial<Product>) =>
+        fetcher<Product>(`/admin/products/${id}`, {
+            method: 'PATCH',
             body: productData
         }),
 

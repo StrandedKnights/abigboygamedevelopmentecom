@@ -19,6 +19,7 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
   "title": "String", 
   "platform": "String (PlayStation|Nintendo|Xbox|Sega)", 
   "priceInCents": "Int", 
+  "purchasePriceInCents": "Int? (For margin calculator)",
   "stock": "Int", 
   "condition": "String (NEW|LIKE NEW|GOOD|FAIR)", 
   "imageUrl": "String", 
@@ -40,6 +41,7 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
   "status": "PENDING|PAID|CANCELED|EXPIRED|FAILED", 
   "trackingCode": "String?",
   "orderNumber": "String (Optional, for Web3Forms correlation)",
+  "marginVAT": "Calculated as 21% of (Sale Price - Purchase Price)",
   "createdAt": "DateTime"
 }
 ```
@@ -58,7 +60,8 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 
 ## Behavioral Rules
 1. **No Returns**: All copy = "alle verkopen zijn definitief". Never mention "bedenktijd" or "retour" unless clarifying they don't exist.
-2. **Dark Theme Invariant**: Backgrounds must be `#0e0e13` (Morphism Dark). 
+2. **Margeregeling VAT**: Accounting treats secondhand items under the European "Margeregeling". VAT (21%) is strictly calculated over the profit margin, not the gross invoice.
+3. **Dark Theme Invariant**: Backgrounds must be `#0e0e13` (Morphism Dark). 
 3. **Typography Standards**: 
     - Barlow Condensed: ALL CAPS for H1/H2 headings.
     - Orbitron: 0.3em letter-spacing for UI labels and accents.

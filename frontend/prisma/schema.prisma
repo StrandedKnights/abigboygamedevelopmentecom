@@ -13,6 +13,7 @@ model Product {
   title                 String
   platform              String
   priceInCents          Int
+  purchasePriceInCents  Int?
   stock                 Int
   condition             String
   imageUrl              String
@@ -40,10 +41,11 @@ model Order {
 
 model OrderItem {
   id                     String  @id @default(cuid())
-  quantity               Int
-  priceAtPurchaseInCents Int
+  quantity                       Int
+  priceAtPurchaseInCents         Int
+  purchasePriceAtPurchaseInCents Int?
   
-  orderId                String
+  orderId                        String
   order                  Order   @relation(fields: [orderId], references: [id])
   
   productId              String

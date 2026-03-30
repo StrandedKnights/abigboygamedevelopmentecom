@@ -38,10 +38,20 @@
 - [x] **Documentation Sync (Gemini, Findings, Progress, Task) COMPLETED**
 - [ ] Final Production Launch & Testing (Coolify)
 
-## 🛠️ Phase 6: Admin & Operations [COMPLETED]
-- [x] **Admin Dashboard v1.0 (Live metrics & CRUD operations)**
-- [x] **Image Upload pipeline to Supabase Storage**
-- [x] **Robust Buffer Fix for Docker environments**
+## 🛠️ Phase 6: Enterprise Admin Dashboard (CMS & CRM) [COMPLETED]
+- [x] **Phase 6.1: Foundation & Data Schema**
+    - [x] Update `schema.prisma` with `purchasePriceInCents` for the Margin Calculator.
+    - [x] Run `prisma db push` and update `apiClient.ts` types.
+- [x] **Phase 6.2: Fixing the Edit Route & Warehouse (Bugfix)**
+    - [x] Create `src/pages/admin/products/edit/[id].astro` (SSR fetching).
+    - [x] Implement `PATCH /api/admin/products/[id].ts`.
+    - [x] Add Form fields for `Koopprijs (Inkoop)` and enforce strict taxonomy.
+- [x] **Phase 6.3: Dashboard Overview & Animations**
+    - [x] SSR Aggregation for Revenue, Orders, and Low Stock in `index.astro`.
+    - [x] Implement CSS staggered fade-ins and number counting animations.
+- [x] **Phase 6.4: CRM & Finance Module (The Margin Calculator)**
+    - [x] Order search and status mutation (`PATCH` route).
+    - [x] "Margeregeling" calculator: VAT calculated at 21% of the margin (Selling - Purchase).
 
 ## 🛒 Phase 7: Checkout & Post-Purchase [NEXT]
 - [ ] **Mollie API Integration (Live Checkout Flow)**
