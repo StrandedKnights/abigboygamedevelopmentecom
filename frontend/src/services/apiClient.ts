@@ -46,7 +46,9 @@ export interface AuthResponse {
 }
 
 // --- Configuration ---
-let API_BASE_URL = (import.meta as any).env.PUBLIC_API_URL || '/api';
+// Always use a relative URL on the client browser (`/api`).
+// This perfectly inherits whatever domain/SSL the user's browser is currently connected to (fixes ERR_CERT_AUTHORITY_INVALID).
+let API_BASE_URL = '/api';
 
 // CRITICAL FIX: During Server-Side Rendering (SSR), fetching the public internet domain
 // often throws 503s or SSL errors because the proxy isn't ready or rejects local loopbacks.
