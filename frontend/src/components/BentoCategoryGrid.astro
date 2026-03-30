@@ -1,4 +1,14 @@
 ---
+import { ProductsAPI } from '../services/apiClient';
+
+let totalProducts = 28; // Fallback
+try {
+    // Only grab 1 product to get the fast pagination counts
+    const result = await ProductsAPI.getShopProducts({ limit: 1 });
+    totalProducts = result.pagination.totalCount || 28;
+} catch (e) {
+    console.warn("Failed to fetch product count on SSR", e);
+}
 ---
 <section class="py-20 px-6" style="background-color: #0e0e13;">
 <div class="max-w-7xl mx-auto">
@@ -11,7 +21,7 @@
     </div>
     <a href="#" class="group flex items-center gap-2 font-orbitron text-xs font-bold uppercase tracking-[0.25em] px-4 py-2.5 rounded-sm transition-all" style="background: #1f1f26; border: 1px solid rgba(155,95,224,0.25); color: #d593ff;" onmouseover="this.style.background='rgba(155,95,224,0.15)';this.style.borderColor='rgba(155,95,224,0.5)'" onmouseout="this.style.background='#1f1f26';this.style.borderColor='rgba(155,95,224,0.25)'">
       Toon alles
-      <span style="color: #acaab1;">(28)</span>
+      <span style="color: #acaab1;">({totalProducts})</span>
       <span class="material-symbols-outlined text-sm transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
     </a>
   </div>

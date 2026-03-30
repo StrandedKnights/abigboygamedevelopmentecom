@@ -1,6 +1,21 @@
 ---
 import ProductCard from './ProductCard.astro';
-import ProductSkeleton from './ProductSkeleton.astro';
+import { ProductsAPI } from '../services/apiClient';
+
+let products: Array<any> = [];
+
+try {
+  products = await ProductsAPI.getLatestAdditions();
+} catch (e) {
+  console.error("SSR failed to fetch Nieuwste Toevoegingen", e);
+}
+
+const getPlatformColor = (platform: string) => {
+  if (platform.includes('PlayStation')) return '#3344ff';
+  if (platform.includes('Nintendo')) return '#e60012';
+  if (platform.includes('Xbox')) return '#107c10';
+  return '#d593ff'; // Default purple
+};
 ---
 
 <section class="py-16 px-6 overflow-hidden" style="background-color: #0d0d12;">
@@ -19,98 +34,27 @@ import ProductSkeleton from './ProductSkeleton.astro';
             <span class="material-symbols-outlined text-base">chevron_right</span>
           </button>
         </div>
-        <a href="#" class="group ml-4 inline-flex items-center gap-1 font-orbitron text-xs font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap" style="color: #d593ff;">
+        <a href="/shop?sortBy=newest" class="group ml-4 inline-flex items-center gap-1 font-orbitron text-xs font-bold uppercase tracking-[0.2em] transition-all whitespace-nowrap" style="color: #d593ff;">
           Toon alles
           <span class="material-symbols-outlined text-sm transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
         </a>
       </div>
     </div>
 
-    <!-- Product cards container (starts with skeletons) -->
+    <!-- Product cards container -->
     <div id="card-track" class="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory" style="scrollbar-width:none;-ms-overflow-style:none;">
-      <ProductSkeleton />
-      <ProductSkeleton />
-      <ProductSkeleton />
-      <ProductSkeleton />
-      <ProductSkeleton />
+      {products.length > 0 ? products.map((product, index) => (
+        <ProductCard product={{ ...product, platformColor: getPlatformColor(product.platform) }} index={index} />
+      )) : (
+        <p class="text-[#acaab1] py-10 w-full text-center font-orbitron text-sm uppercase tracking-widest">Momenteel geen producten gevonden.</p>
+      )}
     </div>
-
-    <!-- Template for client-side card creation -->
-    <template id="product-card-template">
-      <ProductCard />
-    </template>
 
   </div>
 </section>
 
 <script>
-  import { ProductsAPI } from '../services/apiClient';
-
-  async function loadProducts() {
-    const track = document.getElementById('card-track');
-    const template = document.getElementById('product-card-template') as HTMLTemplateElement;
-
-    if (!track || !template) return;
-
-    try {
-      const products = await ProductsAPI.getLatestAdditions();
-      
-      // Clear skeletons
-      track.innerHTML = '';
-
-      products.forEach((product, index) => {
-        const clone = template.content.cloneNode(true) as DocumentFragment;
-        const card = clone.querySelector('.product-card') as HTMLElement;
-        
-        if (card) {
-          // Fill data
-          card.setAttribute('data-id', product.id);
-          card.style.transitionDelay = `${index * 100}ms`;
-          
-          const titleEl = card.querySelector('.product-title');
-          if (titleEl) titleEl.textContent = product.title;
-          
-          const platformEl = card.querySelector('.product-platform') as HTMLElement;
-          if (platformEl) {
-            platformEl.textContent = product.platform;
-            platformEl.style.color = product.platformColor;
-          }
-          
-          const imageEl = card.querySelector('.product-image') as HTMLImageElement;
-          if (imageEl) {
-            imageEl.src = product.imageUrl;
-            imageEl.alt = product.title;
-          }
-          
-          const priceEl = card.querySelector('.product-price');
-          if (priceEl) {
-            priceEl.textContent = `€${(product.priceInCents / 100).toFixed(2).replace('.', ',')}`;
-          }
-
-          track.appendChild(clone);
-        }
-      });
-
-      // Re-trigger intersection observer for the new cards
-      // This matches the logic in BaseLayout.astro
-      const observerOptions = { threshold: 0.1 };
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-          }
-        });
-      }, observerOptions);
-
-      track.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    } catch (error) {
-      console.error('Failed to load products:', error);
-      track.innerHTML = '<p class="text-[#acaab1] py-10 w-full text-center">Fout bij het laden van producten.</p>';
-    }
-  }
-
-  // Handle scrolling
+  // Simple Horizontal Scroll Handling
   document.getElementById('scroll-prev')?.addEventListener('click', () => {
     document.getElementById('card-track')?.scrollBy({ left: -285, behavior: 'smooth' });
   });
@@ -118,9 +62,6 @@ import ProductSkeleton from './ProductSkeleton.astro';
   document.getElementById('scroll-next')?.addEventListener('click', () => {
     document.getElementById('card-track')?.scrollBy({ left: 285, behavior: 'smooth' });
   });
-
-  // Initialize
-  loadProducts();
 </script>
 
 <style>
