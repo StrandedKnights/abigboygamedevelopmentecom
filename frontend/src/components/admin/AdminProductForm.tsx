@@ -36,7 +36,8 @@ export default function AdminProductForm({ platforms, conditions }: { platforms:
             if (imageFile) {
                 const uploadRes = await AdminAPI.uploadImage(imageFile);
                 if (!uploadRes.success || !uploadRes.imageUrl) {
-                    throw new Error("Afbeelding uploaden mislukt: " + (uploadRes.error || "Onbekende fout in backend. Controleer console."));
+                    const detailedError = uploadRes.error || "Onbekende serverfout bij uploaden naar Supabase.";
+                    throw new Error(detailedError);
                 }
                 imageUrl = uploadRes.imageUrl;
             } else {

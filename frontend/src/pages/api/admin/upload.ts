@@ -43,21 +43,22 @@ export const POST: APIRoute = async ({ request }) => {
         const extension = extensionMatch ? extensionMatch[1].toLowerCase().replace(/[^a-z0-9]/g, '') : 'png';
         const safeFilename = `${crypto.randomUUID()}.${extension}`;
 
-        // 4. Buffer Conversion
+        // 4. Buffer Conversion (Robust Node-compatible method)
         const arrayBuffer = await file.arrayBuffer();
-        const buffer = new Uint8Array(arrayBuffer);
+        const buffer = Buffer.from(arrayBuffer);
 
         // 5. Secure Supabase Upload
+        console.log(`[Upload] Attempting to upload ${safeFilename} to Supabase...`);
         const { error: uploadError } = await supabaseAdmin.storage
             .from('product-images')
             .upload(safeFilename, buffer, {
                 contentType: file.type,
-                upsert: false // Never overwrite existing unique UUIDs
+                upsert: false
             });
 
         if (uploadError) {
-            console.error('Supabase Storage Upload Error:', uploadError);
-            throw new Error(`Storage upload failed: ${uploadError.message}`);
+            console.error('Supabase Storage Upload Error details:', JSON.stringify(uploadError));
+            throw new Error(`Supabase Storage Error: ${uploadError.message}`);
         }
 
         // 6. URL Retrieval
