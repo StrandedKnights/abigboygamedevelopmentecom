@@ -5,6 +5,9 @@ RUN apk add --no-cache openssl
 
 WORKDIR /app
 
+# Prevent Astro SSR prerendering from failing when fetching from local/proxy
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
 # Copy package configurations from the frontend directory
 COPY frontend/package*.json ./
 # prisma is inside the frontend directory
@@ -35,6 +38,8 @@ COPY --from=build /app/package.json ./package.json
 ENV HOST=0.0.0.0
 ENV PORT=4321
 ENV NODE_ENV=production
+# Prevent Next/Astro SSR fetch from failing on internal proxy SSL
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 # Database is handled at runtime via environment variables passed to the container
 EXPOSE 4321
