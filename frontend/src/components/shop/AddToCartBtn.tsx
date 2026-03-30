@@ -41,11 +41,9 @@ export default function AddToCartBtn({ product, isAvailable }: Props) {
     return (
       <button 
         disabled
-        class="w-full h-16 rounded-xl flex items-center justify-center gap-3 font-orbitron font-bold text-sm uppercase tracking-[0.2em] transition-all"
-        style="background: #1a1a22; border: 1px solid rgba(72,71,77,0.3); color: #76747b; cursor: not-allowed;"
+        class="w-full bg-surface-container-high text-on-surface-variant py-6 font-orbitron font-black text-xl tracking-[0.15em] rounded-xl opacity-50 cursor-not-allowed uppercase"
       >
-        <span class="material-symbols-outlined">block</span>
-        Uitverkocht
+        UITVERKOCHT
       </button>
     );
   }
@@ -55,30 +53,17 @@ export default function AddToCartBtn({ product, isAvailable }: Props) {
       <button 
         onClick={handleAdd}
         disabled={added}
-        class={`w-full h-16 rounded-xl flex items-center justify-center gap-3 font-orbitron font-bold text-sm uppercase tracking-[0.2em] transition-all relative overflow-hidden group hvr-neon-green`}
-        style={added 
-          ? "background: #131319; border: 1px solid #d593ff; color: #f9f5fd;" 
-          : "background: #00FF88; border: 1px solid #00FF88; color: #000;"
-        }
+        class={`w-full py-6 font-orbitron font-black text-xl tracking-[0.15em] rounded-xl uppercase transition-all duration-300 ${added ? 'bg-surface-container-high text-[#d593ff] border border-[#d593ff]/30 cursor-default' : 'bg-[#00FF88] text-[#0e0e13] hover:brightness-110 active:scale-[0.98] shadow-[0_0_30px_rgba(0,255,136,0.3)]'}`}
       >
-        {/* Hover glow effect (only when not added) */}
-        {!added && (
-            <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-        )}
-        
-        <span class="material-symbols-outlined">
-          {added ? 'check_circle' : 'shopping_bag'}
-        </span>
-        
-        {added ? 'In je mandje' : 'Toevoegen aan Vault'}
+        {added ? 'IN JE KLUIS' : 'IN WINKELWAGEN'}
       </button>
 
       {/* Toast Notification */}
       {showToast && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 animate-bounce-in">
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] animate-bounce-in">
             <div className="bg-[#d593ff] text-white px-8 py-4 rounded-full font-orbitron text-xs font-black uppercase tracking-widest shadow-[0_0_40px_rgba(213,147,255,0.4)] flex items-center gap-3 border border-white/20">
                 <span className="material-symbols-outlined text-lg">verified</span>
-                Added to your vault!
+                Toegevoegd aan je kluis!
             </div>
         </div>
       )}
@@ -91,10 +76,6 @@ export default function AddToCartBtn({ product, isAvailable }: Props) {
         }
         .animate-bounce-in {
           animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        .hvr-neon-green:hover:not(:disabled) {
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
-            transform: translateY(-2px);
         }
       `}} />
     </div>
