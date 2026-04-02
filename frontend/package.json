@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
+    "start": "node ./dist/server/entry.mjs",
+    "build": "prisma generate && astro build",
     "astro": "astro"
   },
   "dependencies": {
