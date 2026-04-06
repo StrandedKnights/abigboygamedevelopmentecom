@@ -1,0 +1,292 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import prisma from '../../lib/prisma';
+
+let topSelling: any[] = [];
+let platformRevenue: Array<{platform: string, revenue: number}> = [];
+let totalOrders = 0;
+let averageOrderValue = 0;
+let totalSalesItems = 0;
+
+let chartDataTopGames = { labels: [] as string[], data: [] as number[] };
+let chartDataPlatforms = { labels: [] as string[], data: [] as number[], colors: [] as string[] };
+let chartDataMargins = { labels: [] as string[], marginData: [] as number[], revenueData: [] as number[] };
+
+try {
+    // 1. Get all relevant orders
+    const completedOrders = await prisma.order.findMany({
+        where: { status: { in: ['PAID', 'SHIPPED'] } },
+        include: { items: { include: { product: true } } },
+        orderBy: { createdAt: 'asc' }
+    });
+
+    totalOrders = completedOrders.length;
+    let totalRev = 0;
+
+    // Platform aggregation map
+    const platMap = new Map<string, number>();
+    // Product sales map
+    const productSalesMap = new Map<string, { title: string, count: number }>();
+    
+    // Monthly margins map for Line chart
+    const monthlyData = new Map<string, { revenue: number, cost: number }>();
+
+    completedOrders.forEach(order => {
+        totalRev += order.totalAmountInCents;
+        
+        const monthKey = order.createdAt.toLocaleString('nl-NL', { month: 'short', year: 'numeric' });
+        if (!monthlyData.has(monthKey)) monthlyData.set(monthKey, { revenue: 0, cost: 0 });
+
+        let orderCost = 0;
+
+        order.items.forEach(item => {
+            totalSalesItems += item.quantity;
+            const rev = item.priceAtPurchaseInCents * item.quantity;
+            const cost = (item.purchasePriceAtPurchaseInCents || 0) * item.quantity;
+            orderCost += cost;
+            
+            // Platform calc
+            const plat = item.product?.platform || 'Onbekend';
+            platMap.set(plat, (platMap.get(plat) || 0) + rev);
+
+            // Product calc
+            const pId = item.productId;
+            if (!productSalesMap.has(pId)) {
+                productSalesMap.set(pId, { title: item.product?.title || 'Unknown', count: 0 });
+            }
+            productSalesMap.get(pId)!.count += item.quantity;
+        });
+
+        const mData = monthlyData.get(monthKey)!;
+        mData.revenue += order.totalAmountInCents;
+        mData.cost += orderCost;
+    });
+
+    if (totalOrders > 0) {
+        averageOrderValue = totalRev / totalOrders;
+    }
+
+    // Process Top Selling
+    topSelling = Array.from(productSalesMap.values())
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5);
+
+    chartDataTopGames.labels = topSelling.map(p => p.title.substring(0, 20) + (p.title.length > 20 ? '...' : ''));
+    chartDataTopGames.data = topSelling.map(p => p.count);
+
+    // Process Platforms
+    platformRevenue = Array.from(platMap.entries()).map(([platform, rev]) => ({ platform, revenue: rev }));
+    chartDataPlatforms.labels = platformRevenue.map(p => p.platform);
+    chartDataPlatforms.data = platformRevenue.map(p => p.revenue / 100);
+    
+    const getPlatColor = (plat: string) => {
+        const p = plat.toLowerCase();
+        if (p.includes('playstation')) return '#3344ff';
+        if (p.includes('nintendo')) return '#e60012';
+        if (p.includes('xbox')) return '#107c10';
+        return '#d593ff';
+    }
+    chartDataPlatforms.colors = chartDataPlatforms.labels.map(L => getPlatColor(L));
+
+    // Process Margins (Line Chart)
+    const monthKeys = Array.from(monthlyData.keys());
+    chartDataMargins.labels = monthKeys;
+    chartDataMargins.revenueData = monthKeys.map(k => monthlyData.get(k)!.revenue / 100);
+    chartDataMargins.marginData = monthKeys.map(k => {
+        const d = monthlyData.get(k)!;
+        return (d.revenue - d.cost) / 100;
+    });
+
+
+} catch (e: any) {
+    console.error("Failed to compile advanced stats", e);
+}
+
+const formatPrice = (cents: number) => `€${(cents / 100).toFixed(2)}`;
+---
+<script src="https://cdn.jsdelivr.net/npm/chart.js" is:inline></script>
+
+<AdminLayout title="Geavanceerde Statistieken">
+    <div class="mb-8 border-b border-white/5 pb-6">
+        <h2 class="font-barlow font-bold text-2xl uppercase tracking-widest text-white mb-2">Groei & Data Science</h2>
+        <p class="text-on-surface-variant text-sm font-medium">Uitgebreide datasets, platform dominantie en product iteratie grafieken.</p>
+    </div>
+
+    <!-- Quick Insights -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-surface-container-high/40 border border-deal-green/20 rounded-2xl p-6">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-deal-green mb-2">Gem. Bestelwaarde</h3>
+            <div class="font-barlow font-black text-3xl text-white">{formatPrice(averageOrderValue)}</div>
+            <div class="text-[10px] text-on-surface-variant uppercase mt-1">Gegeneerd uit {totalOrders} orders</div>
+        </div>
+        <div class="bg-surface-container-high/40 border border-blue-500/20 rounded-2xl p-6">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-blue-400 mb-2">Soldeerde Items</h3>
+            <div class="font-barlow font-black text-3xl text-white">{totalSalesItems} <span class="text-sm font-medium text-on-surface-variant lowercase">stuks</span></div>
+        </div>
+        <div class="bg-surface-container-high/40 border border-deal-purple/20 rounded-2xl p-6">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-deal-purple mb-2">Topprestatie Platform</h3>
+            <div class="font-barlow font-black text-3xl text-white">
+                {platformRevenue.length > 0 ? platformRevenue.sort((a,b)=>b.revenue-a.revenue)[0].platform : 'Geen data'}
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
+        
+        <!-- Platform Dominance (Pie Chart) -->
+        <div class="bg-[#0a0a0d] border border-white/5 rounded-2xl p-8 backdrop-blur-sm relative overflow-hidden flex flex-col justify-between">
+            <h2 class="font-barlow font-bold text-xl uppercase tracking-widest text-white mb-4">Platform Verdeling (Omzet)</h2>
+            <div class="h-64 w-full relative flex justify-center">
+                <canvas id="platformPieChart"></canvas>
+            </div>
+            
+            <div class="mt-6 space-y-2">
+                {platformRevenue.map((p, i) => (
+                    <div class="flex justify-between text-sm py-2 border-b border-white/5">
+                        <span class="text-on-surface-variant flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-sm" style={`background-color: ${chartDataPlatforms.colors?.[i]}`}></span>
+                            {p.platform}
+                        </span>
+                        <span class="font-bold text-white font-mono">{formatPrice(p.revenue)}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <!-- Top Selling Products (Bar Chart) -->
+        <div class="bg-[#0a0a0d] border border-white/5 rounded-2xl p-8 backdrop-blur-sm relative overflow-hidden flex flex-col justify-between">
+            <h2 class="font-barlow font-bold text-xl uppercase tracking-widest text-white mb-4">Top 5 Bestsellers (Volume)</h2>
+            <div class="h-64 w-full relative">
+                <canvas id="topGamesChart"></canvas>
+            </div>
+            
+            <div class="mt-6">
+                {topSelling.map((game, i) => (
+                    <div class="flex justify-between items-center text-sm py-2 border-b border-white/5">
+                        <span class="text-on-surface-variant font-medium flex gap-3">
+                            <span class="text-deal-purple font-orbitron">#{i+1}</span>
+                            {game.title}
+                        </span>
+                        <span class="font-bold text-deal-green bg-deal-green/10 px-2 py-0.5 rounded text-xs">{game.count}x verkocht</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Long Term Margins (Line Chart) -->
+    <div class="bg-[#0a0a0d] border border-white/5 rounded-2xl p-8 backdrop-blur-sm relative overflow-hidden mb-12">
+         <h2 class="font-barlow font-bold text-xl uppercase tracking-widest text-white mb-4">Omzet vs Bruto Winst (Maandelijks)</h2>
+         <div class="h-80 w-full relative">
+            <canvas id="marginsChart"></canvas>
+         </div>
+    </div>
+
+
+    <script define:vars={{ chartDataTopGames, chartDataPlatforms, chartDataMargins }}>
+        document.addEventListener('DOMContentLoaded', () => {
+            // PIE CHART
+            const ctxPie = document.getElementById('platformPieChart');
+            if(ctxPie && chartDataPlatforms.labels.length > 0) {
+                new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: {
+                        labels: chartDataPlatforms.labels,
+                        datasets: [{
+                            data: chartDataPlatforms.data,
+                            backgroundColor: chartDataPlatforms.colors,
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '75%',
+                        plugins: {
+                            legend: { display: false } // Custom legend below
+                        }
+                    }
+                });
+            }
+
+            // BAR CHART
+            const ctxBar = document.getElementById('topGamesChart');
+            if(ctxBar && chartDataTopGames.labels.length > 0) {
+                new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: chartDataTopGames.labels,
+                        datasets: [{
+                            label: 'Verkochte Eenheden',
+                            data: chartDataTopGames.data,
+                            backgroundColor: '#985fe0',
+                            borderRadius: 4,
+                            barThickness: 24
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)', stepSize: 1 } },
+                            x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.7)', font: { size: 10 } } }
+                        }
+                    }
+                });
+            }
+
+            // LINE CHART
+            const ctxLine = document.getElementById('marginsChart');
+            if(ctxLine && chartDataMargins.labels.length > 0) {
+                new Chart(ctxLine, {
+                    type: 'line',
+                    data: {
+                        labels: chartDataMargins.labels,
+                        datasets: [
+                            {
+                                label: 'Totale Omzet (€)',
+                                data: chartDataMargins.revenueData,
+                                borderColor: 'rgba(255, 255, 255, 0.2)',
+                                backgroundColor: 'transparent',
+                                borderDash: [5, 5],
+                                borderWidth: 2,
+                                tension: 0.4,
+                                pointRadius: 0
+                            },
+                            {
+                                label: 'Bruto Winstmarge (€)',
+                                data: chartDataMargins.marginData,
+                                borderColor: '#00ff88',
+                                backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: '#1A1A2E',
+                                pointBorderColor: '#00ff88',
+                                pointBorderWidth: 2,
+                                pointRadius: 5,
+                                pointHoverRadius: 7
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: 'rgba(255,255,255,0.7)', font: { family: 'Orbitron' } }
+                            }
+                        },
+                        scales: {
+                            x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Orbitron', size: 10 } } },
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Orbitron', size: 10 }, callback: (val) => '€' + val } }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</AdminLayout>

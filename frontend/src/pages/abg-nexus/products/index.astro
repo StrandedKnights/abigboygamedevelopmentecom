@@ -1,0 +1,52 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import AdminProductsTable from '../../../components/admin/AdminProductsTable';
+import prisma from '../../../lib/prisma';
+
+// Fetch all products server-side for fast initial render
+let products: any[] = [];
+let error: any = null;
+
+const currentFilter = Astro.url.searchParams.get('filter');
+
+try {
+  let whereClause = {};
+  
+  if (currentFilter === 'no-stock') {
+      whereClause = { stock: { lte: 0 } };
+  }
+
+  products = await prisma.product.findMany({
+    where: whereClause,
+    orderBy: { createdAt: 'desc' }
+  });
+} catch (e: any) {
+  console.error("Failed to fetch products for admin", e);
+  error = e;
+}
+---
+
+<AdminLayout title="Magazijn & Inventaris">
+  <div class="mb-8 flex justify-between items-center">
+    <div>
+        <h2 class="font-barlow font-bold text-2xl uppercase tracking-widest text-white mb-2">Webshop Catalogus</h2>
+        <p class="text-on-surface-variant text-sm">Beheer hier alle {products.length} games en consoles in de database.</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <a href="/abg-nexus/products/bulk" class="flex items-center gap-2 bg-deal-purple/10 border border-deal-purple/50 text-deal-purple px-5 py-3 rounded-lg font-orbitron text-[11px] font-black uppercase tracking-widest hover:bg-deal-purple hover:text-white hover:shadow-[0_0_15px_rgba(155,95,224,0.3)] transition-all no-underline">
+            <span class="material-symbols-outlined text-sm font-bold">edit_square</span> Bulk Update
+        </a>
+        <a href="/abg-nexus/products/new" class="flex items-center gap-2 bg-deal-green text-black px-5 py-3 rounded-lg font-orbitron text-[11px] font-black uppercase tracking-widest hover:bg-[#00e57a] hover:shadow-[0_0_15px_rgba(0,255,136,0.3)] transition-all no-underline">
+           <span class="material-symbols-outlined text-sm font-bold">add</span> Product Toevoegen
+        </a>
+    </div>
+  </div>
+
+  {error && (
+     <div class="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-6 font-medium">
+       Database Fout: {error.message} - Refresh de pagina.
+     </div>
+  )}
+
+  <AdminProductsTable client:load initialProducts={products as any} />
+</AdminLayout>

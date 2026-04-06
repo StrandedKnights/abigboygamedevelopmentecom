@@ -34,8 +34,10 @@ export default function AdminProductsTable({ initialProducts }: { initialProduct
                                 <th class="p-5 font-bold rounded-tl-xl w-16">Foto</th>
                                 <th class="p-5 font-bold">Gamedata</th>
                                 <th class="p-5 font-bold">Staat</th>
-                                <th class="p-5 font-bold">Voorraad</th>
+                                <th class="p-5 font-bold">Stock</th>
                                 <th class="p-5 font-bold text-deal-green">Prijs</th>
+                                <th class="p-5 font-bold text-deal-purple">Inkoop/Marge</th>
+                                <th class="p-5 font-bold">Regeling</th>
                                 <th class="p-5 font-bold text-right rounded-tr-xl">Acties</th>
                             </tr>
                         </thead>
@@ -75,8 +77,19 @@ export default function AdminProductsTable({ initialProducts }: { initialProduct
                                     <td class="p-5 font-barlow font-black text-lg tracking-wide text-white">
                                         {formatPrice(product.priceInCents)}
                                     </td>
+                                    <td class="p-5">
+                                        <div class="font-barlow font-bold text-deal-purple/80 text-xs tracking-widest">{formatPrice(product.purchasePriceInCents || 0)}</div>
+                                        <div class="font-orbitron font-black text-[12px] text-deal-green mt-0.5">
+                                            +{formatPrice((product.priceInCents || 0) - (product.purchasePriceInCents || 0))} 
+                                        </div>
+                                    </td>
+                                    <td class="p-5">
+                                        <div class={`inline-block px-3 py-1 rounded text-[9px] font-black uppercase tracking-[0.1em] ${product.taxScheme === 'MARGIN' ? 'bg-deal-purple/10 text-deal-purple border border-deal-purple/20' : 'bg-deal-green/10 text-deal-green border border-deal-green/20'}`}>
+                                            {product.taxScheme === 'MARGIN' ? 'Margeregeling' : '21% BTW'}
+                                        </div>
+                                    </td>
                                     <td class="p-5 text-right space-x-2">
-                                        <a href={`/admin/products/edit/${product.id}`} class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500 text-white transition-all cursor-not-allowed opacity-50" title="Edit coming soon">
+                                        <a href={`/abg-nexus/products/edit/${product.id}`} class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white transition-all shadow-sm" title="Edit Product">
                                             <span class="material-symbols-outlined text-[18px]">edit</span>
                                         </a>
                                         <button class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 text-[#ff4b4b] hover:bg-[#ff4b4b] hover:text-white transition-all cursor-not-allowed opacity-50" title="Delete coming soon">

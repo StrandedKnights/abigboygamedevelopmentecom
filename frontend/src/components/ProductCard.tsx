@@ -41,9 +41,22 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           {p.platform}
         </p>
         <div class="flex items-center justify-between pt-2">
-          <span class="font-orbitron text-lg font-bold text-[#f9f5fd]">
-            €{(p.priceInCents / 100).toFixed(2).replace('.', ',')}
-          </span>
+          <div class="flex flex-col">
+            {p.discountPriceInCents ? (
+              <>
+                <span class="text-xs line-through text-[#acaab1]">
+                  €{(p.priceInCents / 100).toFixed(2).replace('.', ',')}
+                </span>
+                <span class="font-orbitron text-lg font-bold text-deal-green">
+                  €{(p.discountPriceInCents / 100).toFixed(2).replace('.', ',')}
+                </span>
+              </>
+            ) : (
+              <span class="font-orbitron text-lg font-bold text-[#f9f5fd]">
+                €{(p.priceInCents / 100).toFixed(2).replace('.', ',')}
+              </span>
+            )}
+          </div>
           <div class="text-on-surface-variant group-hover:text-deal-green transition-colors">
             <span class="material-symbols-outlined text-base">star</span>
           </div>

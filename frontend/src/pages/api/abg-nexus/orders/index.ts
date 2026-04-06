@@ -1,7 +1,5 @@
 import type { APIRoute } from 'astro';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../lib/prisma';
 
 export const GET: APIRoute = async () => {
     try {
@@ -24,7 +22,7 @@ export const GET: APIRoute = async () => {
         });
     } catch (error: any) {
         console.error('Fetch Orders Error:', error);
-        return new Response(JSON.stringify({ status: 'error', message: error.message || 'Internal Server Error' }), { 
+        return new Response(JSON.stringify({ status: 'error', message: 'Er is iets misgegaan bij het laden van de bestellingen.' }), { 
             status: 500,
              headers: { 'Content-Type': 'application/json' }
         });

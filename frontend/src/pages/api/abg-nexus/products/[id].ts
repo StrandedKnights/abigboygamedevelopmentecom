@@ -1,14 +1,17 @@
 import type { APIRoute } from 'astro';
-import { PrismaClient } from '@prisma/client';
-import { PLATFORMS, CONDITIONS } from '../../../config/taxonomy';
+import prisma from '../../../../lib/prisma';
+import { PLATFORMS, CONDITIONS } from '../../../../config/taxonomy';
 
-const prisma = new PrismaClient();
-
-export const POST: APIRoute = async ({ request }) => {
+export const PATCH: APIRoute = async ({ request, params }) => {
     try {
+        const id = params.id;
+        if (!id) {
+            return new Response(JSON.stringify({ error: "Product ID is missing." }), { status: 400 });
+        }
+
         const body = await request.json();
         
-        const { title, platform, priceInCents, purchasePriceInCents, stock, condition, imageUrl, isWeekdeal } = body;
+        const { title, platform, priceInCents, purchasePriceInCents, stock, condition, imageUrl, isWeekdeal, taxScheme } = body;
 
         // 1. Mandatory Field Validation
         if (!title || !platform || !priceInCents || stock === undefined || !condition || !imageUrl) {
@@ -33,8 +36,9 @@ export const POST: APIRoute = async ({ request }) => {
             return new Response(JSON.stringify({ error: "Price must be positive and stock cannot be negative." }), { status: 400 });
         }
 
-        // 4. Database Creation
-        const product = await (prisma.product as any).create({
+        // 4. Update Database
+        const product = await (prisma.product as any).update({
+            where: { id },
             data: {
                 title,
                 platform,
@@ -44,14 +48,14 @@ export const POST: APIRoute = async ({ request }) => {
                 condition,
                 imageUrl,
                 isWeekdeal: !!isWeekdeal,
-                isLegacy: false
+                taxScheme: taxScheme || "MARGIN"
             }
         });
 
-        return new Response(JSON.stringify(product), { status: 201 });
+        return new Response(JSON.stringify(product), { status: 200 });
 
     } catch (error: any) {
-        console.error("API Product Creation Error:", error);
-        return new Response(JSON.stringify({ error: error.message || "Internal Server Error" }), { status: 500 });
+        console.error("API Product Update Error:", error);
+        return new Response(JSON.stringify({ error: "Er is iets misgegaan bij het bijwerken van het product." }), { status: 500 });
     }
 };

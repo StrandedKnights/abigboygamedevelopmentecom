@@ -38,8 +38,9 @@ COPY --from=build /app/package.json ./package.json
 ENV HOST=0.0.0.0
 ENV PORT=4321
 ENV NODE_ENV=production
-# Prevent Next/Astro SSR fetch from failing on internal proxy SSL
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+# SEC-7 FIX: NODE_TLS_REJECT_UNAUTHORIZED=0 removed from production.
+# TLS certificate verification is now enforced for all outbound HTTPS connections.
+# If Coolify's reverse proxy causes SSL issues, fix the proxy cert chain instead.
 
 # Database is handled at runtime via environment variables passed to the container
 EXPOSE 4321

@@ -2,16 +2,21 @@
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import prisma from '../../lib/prisma';
 
-// Fetch only PAID or SHIPPED orders that actually generated revenue
-const orders = await prisma.order.findMany({
-    where: {
-        status: { in: ['PAID', 'SHIPPED'] }
-    },
-    include: {
-        items: true
-    },
-    orderBy: { createdAt: 'desc' }
-});
+let orders: any[] = [];
+
+try {
+    orders = await prisma.order.findMany({
+        where: {
+            status: { in: ['PAID', 'SHIPPED'] }
+        },
+        include: {
+            items: true
+        },
+        orderBy: { createdAt: 'desc' }
+    });
+} catch (e: any) {
+    console.error("Failed to fetch finance report", e);
+}
 
 const formatPrice = (cents: number) => `€${Math.max(0, cents / 100).toFixed(2)}`;
 const formatDate = (dateInfo: Date) => dateInfo.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -24,25 +29,39 @@ let totalVat = 0;
 const rows = orders.map(order => {
     const revenue = order.totalAmountInCents;
     
-    // Sum purchase prices. Fallback to 0 if an item had no purchase price logged.
-    // Cost = purchasePrice * quantity 
-    const cost = order.items.reduce((sum, item) => sum + ((item.purchasePriceAtPurchaseInCents || 0) * item.quantity), 0);
+    // Calculate totals per scheme
+    let orderVat = 0;
+    let orderCost = 0;
+
+    order.items.forEach(item => {
+        const itemRevenue = item.priceAtPurchaseInCents * item.quantity;
+        const itemCost = (item.purchasePriceAtPurchaseInCents || 0) * item.quantity;
+        orderCost += itemCost;
+
+        if (item.taxScheme === 'STANDARD') {
+            // Standard: 21% BTW over the full selling price
+            orderVat += Math.round(itemRevenue * (21 / 121));
+        } else {
+            // Margin: 21% BTW over the profit margin only
+            const itemMargin = Math.max(0, itemRevenue - itemCost);
+            orderVat += Math.round(itemMargin * (21 / 121));
+        }
+    });
     
-    const margin = revenue - cost;
-    const vat = Math.round(margin * (21 / 121)); // BTW Margeregeling: 21% from the inside out (21/121 of profit margin)
+    const margin = revenue - orderCost;
     
     totalRevenue += revenue;
-    totalCost += cost;
+    totalCost += orderCost;
     totalMargin += margin;
-    totalVat += vat;
+    totalVat += orderVat;
 
     return {
         id: order.id,
         date: order.createdAt,
         revenue,
-        cost,
+        cost: orderCost,
         margin,
-        vat,
+        vat: orderVat,
         customerName: order.customerName,
         status: order.status
     };
@@ -50,9 +69,14 @@ const rows = orders.map(order => {
 ---
 
 <AdminLayout title="Finance & Margeregeling">
-    <div class="mb-8 border-b border-white/5 pb-6">
-        <h2 class="font-barlow font-bold text-2xl uppercase tracking-widest text-white mb-2">BTW & Marge Calculator</h2>
-        <p class="text-on-surface-variant text-sm font-medium">Overzicht van nettoverkopen, inkoopwaardes en de 21% BTW berekend via de Margeregeling voor tweedehands goederen.</p>
+    <div class="mb-8 border-b border-white/5 pb-6 flex justify-between items-center">
+        <div>
+            <h2 class="font-barlow font-bold text-2xl uppercase tracking-widest text-white mb-2">BTW & Marge Calculator</h2>
+            <p class="text-on-surface-variant text-sm font-medium">Overzicht van nettoverkopen, inkoopwaardes en de 21% BTW berekend via de Margeregeling voor tweedehands goederen.</p>
+        </div>
+        <a href="/api/abg-nexus/finance/export" target="_blank" class="flex items-center gap-2 bg-blue-500/10 border border-blue-500/50 text-blue-400 px-5 py-3 rounded-lg font-orbitron text-[11px] font-black uppercase tracking-widest hover:bg-blue-500 hover:text-white hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all no-underline shrink-0">
+            <span class="material-symbols-outlined text-sm font-bold">download</span> Exporteer CSV
+        </a>
     </div>
 
     {/* Summary Cards */}

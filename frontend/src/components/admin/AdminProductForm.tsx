@@ -19,6 +19,7 @@ export default function AdminProductForm({
     const [purchasePrice, setPurchasePrice] = useState(initialData?.purchasePriceInCents ? (initialData.purchasePriceInCents / 100).toFixed(2) : '');
     const [stock, setStock] = useState(initialData ? String(initialData.stock) : '1');
     const [isWeekdeal, setIsWeekdeal] = useState(initialData?.isWeekdeal || false);
+    const [taxScheme, setTaxScheme] = useState<'MARGIN' | 'STANDARD'>(initialData?.taxScheme as any || 'MARGIN');
     
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageUrl || null);
@@ -72,6 +73,7 @@ export default function AdminProductForm({
                 purchasePriceInCents,
                 stock: stockUnits,
                 isWeekdeal,
+                taxScheme,
                 imageUrl
             };
 
@@ -158,6 +160,33 @@ export default function AdminProductForm({
                             <label class="block font-orbitron text-[10px] font-bold text-deal-purple uppercase tracking-[0.2em] mb-2">Voorraad</label>
                             <input type="number" required min="0" value={stock} onInput={(e: any) => setStock(e.target.value)} class="w-full bg-[#0a0a0d] border border-white/10 rounded-lg px-4 py-3 text-white text-sm font-barlow font-bold focus:outline-none focus:border-deal-green transition-all" placeholder="1" />
                         </div>
+                    </div>
+
+                    <div class="p-4 bg-deal-purple/5 border border-deal-purple/20 rounded-xl space-y-4">
+                        <div class="flex items-center justify-between">
+                            <label class="block font-orbitron text-[10px] font-bold text-deal-purple uppercase tracking-[0.2em]">Belastingregeling</label>
+                            <div class="flex bg-[#0a0a0d] rounded-lg p-1 border border-white/5">
+                                <button 
+                                    type="button"
+                                    onClick={() => setTaxScheme('MARGIN')}
+                                    class={`px-4 py-1.5 rounded-md text-[10px] font-bold uppercase transition-all ${taxScheme === 'MARGIN' ? 'bg-deal-purple text-white shadow-lg' : 'text-on-surface-variant'}`}
+                                >
+                                    Margeregeling
+                                </button>
+                                <button 
+                                    type="button"
+                                    onClick={() => setTaxScheme('STANDARD')}
+                                    class={`px-4 py-1.5 rounded-md text-[10px] font-bold uppercase transition-all ${taxScheme === 'STANDARD' ? 'bg-deal-green text-black shadow-lg' : 'text-on-surface-variant'}`}
+                                >
+                                    21% BTW
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-on-surface-variant italic leading-relaxed">
+                            {taxScheme === 'MARGIN' 
+                                ? "Marge: BTW wordt alleen berekend over de winstmarge (Verkoop - Inkoop). Ideaal voor tweedehands games." 
+                                : "Standaard: 21% BTW wordt berekend over het volledige verkoopbedrag. Gebruik voor nieuwe producten."}
+                        </p>
                     </div>
 
                     <div>

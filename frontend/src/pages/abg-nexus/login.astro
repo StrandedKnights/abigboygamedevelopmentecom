@@ -57,7 +57,7 @@ import '../../styles/global.css';
          errorBox.classList.add('hidden');
 
          try {
-            const response = await fetch('/api/admin/login', {
+            const response = await fetch('/api/abg-nexus/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -69,11 +69,9 @@ import '../../styles/global.css';
                 throw new Error(result.message || 'Login failed');
             }
 
-            // Sync token to JS context so apiClient can use it for requests
-            localStorage.setItem('adminToken', result.data.token);
-            
+            // The backend already issued an HttpOnly auth cookie 'admin_session'. No manual JS handling required.
             // Redirect to dashboard (Middleware will approve due to auto-injected cookie)
-            window.location.href = '/admin';
+            window.location.href = '/abg-nexus';
          } catch(err: any) {
             errorBox.textContent = err.message;
             errorBox.classList.remove('hidden');

@@ -21,6 +21,7 @@ model Product {
   isWeekdeal            Boolean     @default(false)
   discountPriceInCents  Int?
   reservedUntil         DateTime?
+  taxScheme             String      @default("MARGIN")
   createdAt             DateTime    @default(now())
   updatedAt             DateTime    @updatedAt
   orderItems            OrderItem[]
@@ -37,6 +38,7 @@ model Order {
   createdAt          DateTime    @default(now())
   updatedAt          DateTime    @updatedAt
   items              OrderItem[]
+  events             OrderEvent[]
 }
 
 model OrderItem {
@@ -49,5 +51,15 @@ model OrderItem {
   order                  Order   @relation(fields: [orderId], references: [id])
   
   productId              String
+  taxScheme              String  @default("MARGIN")
   product                Product @relation(fields: [productId], references: [id])
+}
+
+model OrderEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  type      String
+  details   String
+  createdAt DateTime @default(now())
 }

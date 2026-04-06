@@ -30,16 +30,19 @@ const { title } = Astro.props;
       </div>
       
       <nav class="flex-1 py-8 px-4 space-y-2">
-         <a href="/admin" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
+         <a href="/abg-nexus" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
             <span class="material-symbols-outlined group-hover:text-deal-green">dashboard</span> Dashboard
          </a>
-         <a href="/admin/orders" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
+         <a href="/abg-nexus/stats" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
+            <span class="material-symbols-outlined group-hover:text-deal-green">bar_chart</span> Statistieken
+         </a>
+         <a href="/abg-nexus/orders" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
             <span class="material-symbols-outlined group-hover:text-deal-green">receipt_long</span> Orders
          </a>
-         <a href="/admin/products" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
+         <a href="/abg-nexus/products" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
             <span class="material-symbols-outlined group-hover:text-deal-green">inventory_2</span> Warehouse
          </a>
-         <a href="/admin/finance" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
+         <a href="/abg-nexus/finance" class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-orbitron font-bold uppercase tracking-widest text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors group">
             <span class="material-symbols-outlined group-hover:text-deal-green">account_balance_wallet</span> Finance & Marges
          </a>
       </nav>
@@ -66,10 +69,9 @@ const { title } = Astro.props;
     </main>
 
     <script>
-      document.getElementById('logoutBtn')?.addEventListener('click', () => {
-         localStorage.removeItem('adminToken');
-         document.cookie = 'adminToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-         window.location.href = '/admin/login';
+      document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+         await fetch('/api/abg-nexus/logout', { method: 'POST' });
+         window.location.href = '/abg-nexus/login';
       });
     </script>
   </body>

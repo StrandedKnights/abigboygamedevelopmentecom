@@ -16,6 +16,7 @@ export interface Product {
     isLegacy: boolean;
     isWeekdeal: boolean;
     discountPriceInCents?: number | null;
+    taxScheme?: 'MARGIN' | 'STANDARD';
     createdAt?: string;
     updatedAt?: string;
 }
@@ -26,6 +27,7 @@ export interface OrderItem {
     priceAtPurchaseInCents: number;
     purchasePriceAtPurchaseInCents?: number | null;
     productId: string;
+    taxScheme?: 'MARGIN' | 'STANDARD';
     product?: Product;
 }
 
@@ -80,13 +82,7 @@ async function fetcher<T>(endpoint: string, options: Omit<RequestInit, 'body'> &
         headers.set('Content-Type', 'application/json');
     }
 
-    // Auth Token (Client-side only)
-    if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('adminToken');
-        if (token) {
-            headers.set('Authorization', `Bearer ${token}`);
-        }
-    }
+    // Auth Token: Removed client-side injection. Session auth is securely handled by Astro middleware via `admin_session` HttpOnly cookie.
 
     // Body handling
     const fetchOptions: RequestInit = { ...options };
@@ -157,32 +153,32 @@ export const CheckoutAPI = {
 export const AdminAPI = {
     /** POSTs to receive the JWT token. */
     login: (password: string) => 
-        fetcher<AuthResponse>('/admin/login', {
+        fetcher<AuthResponse>('/abg-nexus/login', {
             method: 'POST',
             body: { password }
         }),
 
     /** GETs all orders for the dashboard. */
     getOrders: () => 
-        fetcher<Order[]>('/admin/orders'),
+        fetcher<Order[]>('/abg-nexus/orders'),
 
     /** PATCHes an order's status or tracking. */
     updateOrderStatus: (orderId: string, status: string, trackingCode?: string) =>
-        fetcher<Order>(`/admin/orders/${orderId}`, {
+        fetcher<Order>(`/abg-nexus/orders/${orderId}`, {
             method: 'PATCH',
             body: { status, trackingCode }
         }),
 
     /** POSTs a new retro game to the inventory. */
     createProduct: (productData: Partial<Product>) =>
-        fetcher<Product>('/admin/products', {
+        fetcher<Product>('/abg-nexus/products', {
             method: 'POST',
             body: productData
         }),
 
     /** PATCHes an existing retro game in the inventory. */
     updateProduct: (id: string, productData: Partial<Product>) =>
-        fetcher<Product>(`/admin/products/${id}`, {
+        fetcher<Product>(`/abg-nexus/products/${id}`, {
             method: 'PATCH',
             body: productData
         }),
@@ -191,7 +187,7 @@ export const AdminAPI = {
     uploadImage: (file: File) => {
         const formData = new FormData();
         formData.append('image', file);
-        return fetcher<{ success: boolean; imageUrl?: string; error?: string }>('/admin/upload', {
+        return fetcher<{ success: boolean; imageUrl?: string; error?: string }>('/abg-nexus/upload', {
             method: 'POST',
             body: formData
         });

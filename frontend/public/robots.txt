@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /abg-nexus
+Disallow: /api/abg-nexus
+Disallow: /abg-nexus/login
+Disallow: /abg-nexus/products/bulk
+
+# Sitemap (Optional)
+# Sitemap: https://yourdomain.com/sitemap-index.xml

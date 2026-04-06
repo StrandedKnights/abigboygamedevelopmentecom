@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Betaling Geannuleerd — A Big Boy's Game">
+    <main class="min-h-screen bg-surface flex items-center justify-center p-4 py-20 relative overflow-hidden text-center">
+        <!-- Background Glow (Red) -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-500/10 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+
+        <div class="max-w-2xl w-full bg-surface-container-high/40 border border-white/5 backdrop-blur-xl rounded-[40px] p-8 md:p-12 shadow-2xl relative z-10 text-center reveal-active">
+            
+            <!-- Cancel Icon -->
+            <div class="w-24 h-24 bg-red-500/10 border border-red-500/20 rounded-full flex items-center justify-center mx-auto mb-8 relative">
+                <span class="material-symbols-outlined text-red-500 text-5xl">cancel</span>
+                <div class="absolute inset-0 bg-red-500/20 blur-2xl rounded-full scale-75"></div>
+            </div>
+
+            <h1 class="font-barlow font-black text-4xl md:text-5xl text-white uppercase tracking-tighter mb-4 italic">
+                BETALING GEANNULEERD
+            </h1>
+            
+            <p class="text-on-surface-variant font-medium text-lg mb-10 max-w-md mx-auto">
+                Geen zorgen, er is niks afgeschreven. Mogelijk wilde je toch iets anders kiezen of werkte de betaling niet naar behoren.
+            </p>
+
+            <div class="bg-black/20 border border-white/5 rounded-2xl p-6 mb-10 text-left">
+                <h3 class="text-xs font-orbitron uppercase tracking-widest text-on-surface-variant mb-2">Wat nu?</h3>
+                <p class="text-sm text-white/80">
+                    Je kunt terugkeren naar de shop om verder te kijken, of het opnieuw proberen in je winkelmandje. Je geselecteerde items zijn bewaard gebleven.
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="window.history.back()" class="w-full sm:w-auto px-8 py-4 bg-primary text-on-primary font-orbitron text-sm font-black uppercase tracking-widest rounded-full hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)] transition-all">
+                    Terug naar Winkelmand
+                </button>
+                <a href="/shop" class="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 text-white font-orbitron text-sm font-black uppercase tracking-widest rounded-full hover:bg-white/10 transition-all">
+                    Verder winkelen
+                </a>
+            </div>
+        </div>
+    </main>
+</BaseLayout>

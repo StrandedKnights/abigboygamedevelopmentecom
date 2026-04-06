@@ -1,15 +1,36 @@
 ---
+import ProductCard from './ProductCard.astro';
+import prisma from '../lib/prisma';
+
+let weekdeals: any[] = [];
+try {
+  weekdeals = await prisma.product.findMany({
+      where: { isWeekdeal: true },
+      orderBy: { createdAt: 'desc' }
+  });
+} catch (e) {
+  console.error("SSR failed to fetch Weekdeals", e);
+}
+
+const getPlatformColor = (platform: string) => {
+  if (platform.includes('PlayStation')) return '#3344ff';
+  if (platform.includes('Nintendo')) return '#e60012';
+  if (platform.includes('Xbox')) return '#107c10';
+  return '#d593ff';
+};
 ---
-<section class="reveal reveal-up py-12" style="background-color: #0e0e13;">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="animate-glow-pulse p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group shadow-[0_0_20px_rgba(0,255,136,0.2)]" style="background-color: #1A1A2E; border-left: 6px solid #00FF88; border-radius: 4px;">
+<section class="reveal reveal-up py-16" style="background-color: #0e0e13;">
+  <div class="max-w-[1400px] mx-auto px-6">
+    
+    <!-- Banner Header -->
+    <div class="animate-glow-pulse p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group shadow-[0_0_20px_rgba(0,255,136,0.2)] mb-10" style="background-color: #1A1A2E; border-left: 6px solid #00FF88; border-radius: 4px;">
       <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style="background: rgba(0,255,136,0.05);"></div>
       <div class="relative z-10 flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
         <div class="w-16 h-16 rounded-full flex items-center justify-center animate-pulse" style="background: rgba(0,255,136,0.2); color: #00FF88;">
           <span class="material-symbols-outlined text-4xl">bolt</span>
         </div>
         <div>
-          <h2 class="font-orbitron text-2xl font-black" style="color: #f9f5fd;">WEEKDEALS: SCOOR JE KLASSIEKERS</h2>
+          <h2 class="font-orbitron text-2xl font-black uppercase tracking-wide" style="color: #f9f5fd;">WEEKDEALS: SCOOR JE KLASSIEKERS</h2>
           <p class="text-sm font-label uppercase tracking-widest mt-1" style="color: #acaab1;">Eindigt in:</p>
         </div>
       </div>
@@ -19,10 +40,43 @@
         <div class="px-4 py-2 rounded-sm" style="background: #000000; border: 1px solid rgba(0,255,136,0.2);"><span id="countdown-mins">00</span><span class="text-xs block text-center uppercase tracking-wider font-bold mt-1" style="color: #acaab1;">Min</span></div>
         <div class="px-4 py-2 rounded-sm" style="background: #000000; border: 1px solid rgba(0,255,136,0.2);"><span id="countdown-secs">00</span><span class="text-xs block text-center uppercase tracking-wider font-bold mt-1" style="color: #acaab1;">Sec</span></div>
       </div>
-      <button class="relative z-10 px-10 py-4 font-orbitron font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_15px_rgba(0,255,136,0.3)]" style="background: #00FF88; color: #000000; border-radius: 2px;">
-        Bekijk Deals
-      </button>
+      <div class="relative z-10 flex flex-col md:flex-row gap-4 items-center mt-4 md:mt-0">
+        <div class="flex items-center gap-2">
+          <button id="wd-scroll-prev" class="w-12 h-12 flex items-center justify-center rounded-sm transition-all hover:bg-white/10" style="background:#000000;border:1px solid rgba(0,255,136,0.4);color:#00FF88;">
+            <span class="material-symbols-outlined text-lg">chevron_left</span>
+          </button>
+          <button id="wd-scroll-next" class="w-12 h-12 flex items-center justify-center rounded-sm transition-all hover:bg-white/10" style="background:#000000;border:1px solid rgba(0,255,136,0.4);color:#00FF88;">
+            <span class="material-symbols-outlined text-lg">chevron_right</span>
+          </button>
+        </div>
+        <a href="/shop?isWeekdeal=true" class="px-8 py-3 font-orbitron font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_15px_rgba(0,255,136,0.3)] no-underline flex items-center justify-center text-center" style="background: #00FF88; color: #000000; border-radius: 2px;">
+          Alles Zien
+        </a>
+      </div>
     </div>
+
+    <!-- Product Track -->
+    <div class="relative">
+      <div id="weekdeals-track" class="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory hide-scrollbar" style="scrollbar-width:none;-ms-overflow-style:none;">
+        {weekdeals.length > 0 ? weekdeals.map((product, index) => (
+          <ProductCard product={{ ...product, platformColor: getPlatformColor(product.platform) }} index={index} />
+        )) : (
+          <div class="w-full text-center py-12 border border-white/5 bg-white/5 rounded-2xl">
+              <span class="material-symbols-outlined text-4xl mb-3 text-white/20">sentiment_dissatisfied</span>
+              <p class="text-[#acaab1] font-orbitron text-sm uppercase tracking-widest">Op dit moment zijn er geen actieve weekdeals. Kom snel terug!</p>
+          </div>
+        )}
+      </div>
+
+      <!-- Optional gradient fades for scroll indication -->
+      {weekdeals.length > 4 && (
+        <>
+            <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#0e0e13] to-transparent pointer-events-none z-10 hidden md:block"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#0e0e13] to-transparent pointer-events-none z-10 hidden md:block"></div>
+        </>
+      )}
+    </div>
+
   </div>
 </section>
 
@@ -61,4 +115,13 @@
     updateCountdown();
     // Update every second
     setInterval(updateCountdown, 1000);
+
+    // Scrolling logic
+    document.getElementById('wd-scroll-prev')?.addEventListener('click', () => {
+      document.getElementById('weekdeals-track')?.scrollBy({ left: -285, behavior: 'smooth' });
+    });
+    
+    document.getElementById('wd-scroll-next')?.addEventListener('click', () => {
+      document.getElementById('weekdeals-track')?.scrollBy({ left: 285, behavior: 'smooth' });
+    });
 </script>

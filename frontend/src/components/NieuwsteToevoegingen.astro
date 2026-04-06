@@ -1,11 +1,14 @@
 ---
 import ProductCard from './ProductCard.astro';
-import { ProductsAPI } from '../services/apiClient';
+import prisma from '../lib/prisma';
 
-let products: Array<any> = [];
+let products: any[] = [];
 
 try {
-  products = await ProductsAPI.getLatestAdditions();
+  products = await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 6
+  });
 } catch (e) {
   console.error("SSR failed to fetch Nieuwste Toevoegingen", e);
 }

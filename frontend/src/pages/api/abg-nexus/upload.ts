@@ -78,7 +78,7 @@ export const POST: APIRoute = async ({ request }) => {
         console.error('Server Image Upload Error:', error);
         return new Response(JSON.stringify({ 
             success: false, 
-            error: error.message || 'Internal Server Error during image upload' 
+            error: 'Er is iets misgegaan bij het uploaden van de afbeelding.'
         } as UploadResponse), { 
             status: 500,
             headers: { 'Content-Type': 'application/json' }

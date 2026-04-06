@@ -1,0 +1,242 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import prisma from '../../lib/prisma';
+
+// Fetch key metrics on the server before rendering
+let totalProducts = 0;
+let totalOrders = 0;
+let totalRevenue = 0;
+let outOfStock = 0;
+let softLockCount = 0;
+let chartLabels: string[] = [];
+let chartData: number[] = [];
+
+try {
+  // 1. Products
+  totalProducts = await prisma.product.count();
+  outOfStock = await prisma.product.count({
+    where: { stock: { lte: 0 } }
+  });
+
+  // 2. Orders & Revenue (Only counting actual revenue from PAID/SHIPPED)
+  totalOrders = await prisma.order.count();
+  const paidOrders = await prisma.order.findMany({
+    where: {
+      status: { in: ['PAID', 'SHIPPED'] }
+    },
+    select: { totalAmountInCents: true, createdAt: true }
+  });
+  
+  totalRevenue = paidOrders.reduce((sum, o) => sum + o.totalAmountInCents, 0) / 100;
+
+  // 3. Aggregate Revenue for last 7 days (Chart.js Data) // 
+  const today = new Date();
+  const last7Days = Array.from({length: 7}).map((_, i) => {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      return d.toISOString().split('T')[0];
+  }).reverse(); // older to newer
+
+  const revenuePerDay = last7Days.reduce((acc, dateStr) => {
+      acc[dateStr] = 0;
+      return acc;
+  }, {} as Record<string, number>);
+
+  paidOrders.forEach(order => {
+      const dateStr = order.createdAt.toISOString().split('T')[0];
+      if (revenuePerDay[dateStr] !== undefined) {
+          revenuePerDay[dateStr] += (order.totalAmountInCents / 100);
+      }
+  });
+
+  chartLabels = last7Days;
+  chartData = last7Days.map(d => revenuePerDay[d]);
+
+  // 4. Soft-Locks (Live Radar)
+  softLockCount = await prisma.product.count({
+      where: {
+          reservedUntil: { gt: new Date() }
+      }
+  });
+
+} catch (e) {
+  console.error("Failed to fetch admin metrics", e);
+}
+---
+<script src="https://cdn.jsdelivr.net/npm/chart.js" is:inline></script>
+
+<style>
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-stagger {
+    opacity: 0;
+    animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+</style>
+
+<AdminLayout title="Dashboard Overview">
+   <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+      
+      <!-- Metric Card: Total Revenue -->
+      <div class="animate-stagger bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group" style="animation-delay: 100ms;">
+         <div class="absolute inset-0 bg-gradient-to-br from-deal-green/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+         <div class="flex items-center justify-between mb-4">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">Totale Omzet</h3>
+            <div class="w-8 h-8 rounded-full bg-deal-green/10 flex items-center justify-center text-deal-green">
+               <span class="material-symbols-outlined text-[16px]">payments</span>
+            </div>
+         </div>
+         <div class="flex items-baseline gap-2">
+            <span class="font-barlow font-black text-4xl text-white">€{totalRevenue.toFixed(2)}</span>
+         </div>
+      </div>
+
+      <!-- Metric Card: Total Orders -->
+      <div class="animate-stagger bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group" style="animation-delay: 200ms;">
+         <div class="absolute inset-0 bg-gradient-to-br from-deal-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+         <div class="flex items-center justify-between mb-4">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">Bestellingen</h3>
+            <div class="w-8 h-8 rounded-full bg-deal-purple/10 flex items-center justify-center text-deal-purple">
+               <span class="material-symbols-outlined text-[16px]">receipt_long</span>
+            </div>
+         </div>
+         <div class="flex items-baseline gap-2">
+            <span class="font-barlow font-black text-4xl text-white">{totalOrders}</span>
+         </div>
+      </div>
+
+      <!-- Metric Card: Total Products -->
+      <div class="animate-stagger bg-surface-container-high/40 border border-white/5 rounded-2xl p-6 relative overflow-hidden group" style="animation-delay: 300ms;">
+         <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+         <div class="flex items-center justify-between mb-4">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">Actieve Producten</h3>
+            <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400">
+               <span class="material-symbols-outlined text-[16px]">inventory_2</span>
+            </div>
+         </div>
+         <div class="flex items-baseline gap-2">
+            <span class="font-barlow font-black text-4xl text-white">{totalProducts - outOfStock}</span>
+            <span class="text-xs text-on-surface-variant font-medium">/{totalProducts}</span>
+         </div>
+      </div>
+
+      <!-- Metric Card: Out of Stock Alerts -->
+      <a href="/abg-nexus/products?filter=no-stock" class="animate-stagger block bg-surface-container-high/40 border border-[#ff4b4b]/20 rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] active:scale-95 transition-all no-underline" style="animation-delay: 400ms;">
+         <div class="absolute inset-0 bg-gradient-to-br from-[#ff4b4b]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+         <div class="flex items-center justify-between mb-4 relative z-10">
+            <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-[#ff4b4b] group-hover:text-white transition-colors">Niet Leverbaar (Actie Vereist)</h3>
+            <div class="w-8 h-8 rounded-full bg-[#ff4b4b]/10 flex items-center justify-center text-[#ff4b4b] group-hover:bg-[#ff4b4b] group-hover:text-white transition-all">
+               <span class="material-symbols-outlined text-[16px]">warning</span>
+            </div>
+         </div>
+         <div class="flex items-baseline gap-2 relative z-10">
+            <span class="font-barlow font-black text-4xl text-white">{outOfStock}</span>
+            <span class="text-xs text-[#ff4b4b] font-orbitron uppercase tracking-widest ml-2 group-hover:text-white transition-colors opacity-0 group-hover:opacity-100">Fix nu →</span>
+         </div>
+      </a>
+
+   </div>
+
+   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Quick Actions -->
+      <div class="bg-surface-container-high/20 border border-white/5 rounded-2xl p-8">
+         <h2 class="font-barlow font-bold text-xl uppercase tracking-widest text-white mb-6">Snelle Acties</h2>
+         <div class="space-y-4">
+            <a href="/abg-nexus/products/new" class="flex items-center gap-4 p-4 rounded-xl bg-deal-green/10 border border-deal-green/20 hover:bg-deal-green/20 transition-colors group no-underline">
+               <div class="w-10 h-10 rounded-lg bg-deal-green flex items-center justify-center text-black">
+                  <span class="material-symbols-outlined">add</span>
+               </div>
+               <div>
+                  <h4 class="font-orbitron text-sm font-bold tracking-wider text-white group-hover:text-deal-green transition-colors">Nieuw Product Toevoegen</h4>
+                  <p class="text-xs text-on-surface-variant mt-1">Voeg direct een nieuwe game of console toe aan de catalogus.</p>
+               </div>
+            </a>
+             <a href="/abg-nexus/orders" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors group no-underline">
+                <div class="w-10 h-10 rounded-lg bg-surface-container focus items-center justify-center text-white flex">
+                   <span class="material-symbols-outlined">local_shipping</span>
+                </div>
+                <div>
+                   <h4 class="font-orbitron text-sm font-bold tracking-wider text-white">Bestellingen Verwerken</h4>
+                   <p class="text-xs text-on-surface-variant mt-1">Bekijk en markeer vandaag de openstaande bestellingen als verzonden.</p>
+                </div>
+             </a>
+          </div>
+
+          <h2 class="font-barlow font-bold text-xl uppercase tracking-widest text-white mb-6 mt-12">Financiële Rapporten</h2>
+          <div class="space-y-4">
+            <a href="/api/abg-nexus/finance/export" target="_blank" class="flex items-center gap-4 p-4 rounded-xl bg-deal-purple/10 border border-deal-purple/20 hover:bg-deal-purple/20 transition-colors group no-underline">
+                 <div class="w-10 h-10 rounded-lg bg-deal-purple flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">description</span>
+                 </div>
+                 <div>
+                    <h4 class="font-orbitron text-sm font-bold tracking-wider text-white">Export Margeregeling (CSV)</h4>
+                    <p class="text-xs text-on-surface-variant mt-1">Download alle verkopen met 21/121 BTW berekening voor de boekhouding.</p>
+                 </div>
+            </a>
+          </div>
+       </div>
+
+      <!-- Revenue Chart & Live Radar -->
+        <div class="bg-surface-container-high/20 border border-white/5 rounded-2xl p-8 backdrop-blur-sm relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-deal-green/10 blur-[100px] pointer-events-none"></div>
+            
+            <div class="mb-4">
+                <h2 class="font-barlow font-bold text-xl uppercase tracking-widest text-white mb-2">Omzet Trend (7 Dagen)</h2>
+                <div class="h-40 w-full relative">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <div class="mt-4 border-t border-white/10 pt-4">
+               <h3 class="font-orbitron font-bold text-xs uppercase tracking-widest text-on-surface-variant flex items-center gap-2 mb-3">
+                   <span class="w-2 h-2 rounded-full bg-deal-purple animate-pulse"></span> Live Radar (Soft-Locks)
+               </h3>
+               <div class="flex items-center justify-between text-xs bg-[#0a0a0d] border border-white/5 p-3 rounded-lg">
+                   <span class="text-on-surface-variant">Actieve Winkelmandjes</span>
+                   <span class={`font-bold ${softLockCount > 0 ? 'text-deal-purple' : 'text-on-surface-variant'}`}>{softLockCount} items in checkout</span>
+               </div>
+            </div>
+        </div>
+   </div>
+
+   <script define:vars={{ chartLabels, chartData }}>
+     document.addEventListener('DOMContentLoaded', () => {
+         const ctx = document.getElementById('revenueChart');
+         if(ctx) {
+             new Chart(ctx, {
+                 type: 'line',
+                 data: {
+                     labels: chartLabels.map(d => {
+                       const [y, m, day] = d.split('-');
+                       return `${day}/${m}`;
+                     }),
+                     datasets: [{
+                         label: 'Omzet (€)',
+                         data: chartData,
+                         borderColor: '#00ff88',
+                         backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                         borderWidth: 2,
+                         tension: 0.4,
+                         fill: true,
+                         pointBackgroundColor: '#00ff88',
+                         pointRadius: 4
+                     }]
+                 },
+                 options: {
+                     responsive: true,
+                     maintainAspectRatio: false,
+                     plugins: {
+                         legend: { display: false }
+                     },
+                     scales: {
+                         x: { grid: { display: false, color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Orbitron', size: 9 } } },
+                         y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Orbitron', size: 9 }, callback: (val) => '€' + val } }
+                     }
+                 }
+             });
+         }
+     });
+   </script>
+</AdminLayout>

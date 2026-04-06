@@ -9,6 +9,7 @@ export const GET: APIRoute = async ({ url }) => {
         const minPrice = parseInt(url.searchParams.get('minPrice') || '0');
         const maxPrice = parseInt(url.searchParams.get('maxPrice') || '1000000');
         const inStockOnly = url.searchParams.get('inStockOnly') === 'true';
+        const isWeekdeal = url.searchParams.get('isWeekdeal') === 'true';
         const sort = url.searchParams.get('sort') || 'newest';
         const page = parseInt(url.searchParams.get('page') || '1');
         const limit = parseInt(url.searchParams.get('limit') || '24');
@@ -20,6 +21,7 @@ export const GET: APIRoute = async ({ url }) => {
             minPrice,
             maxPrice,
             inStockOnly,
+            isWeekdeal,
             sort,
             page,
             limit
@@ -37,7 +39,7 @@ export const GET: APIRoute = async ({ url }) => {
         console.error('API Error:', error);
         return new Response(JSON.stringify({
             status: 'error',
-            message: error.message || 'Internal server error'
+            message: 'Er is iets misgegaan bij het laden van de producten.'
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }

@@ -82,7 +82,7 @@ import Footer from '../components/Footer.astro';
                     
                     <h3 class="font-headline text-3xl uppercase tracking-wider mb-8 text-on-background flex justify-between items-baseline">
                         Overzicht
-                        <span class="text-xs font-body font-normal tracking-normal text-on-surface-variant">(2 items)</span>
+                        <span class="text-xs font-body font-normal tracking-normal text-on-surface-variant item-count">(0 items)</span>
                     </h3>
 
                     <!-- Order Items -->
@@ -97,7 +97,7 @@ import Footer from '../components/Footer.astro';
                     <div class="space-y-3 pt-6 border-t border-white/5 mb-8">
                         <div class="flex justify-between text-on-surface-variant font-medium">
                             <span>Subtotaal</span>
-                            <span class="font-orbitron text-sm">€ 159,00</span>
+                            <span class="font-orbitron text-sm subtotaal-val">€ 0,00</span>
                         </div>
                         <div class="flex justify-between text-deal-green font-medium">
                             <span>Verzending</span>
@@ -105,7 +105,7 @@ import Footer from '../components/Footer.astro';
                         </div>
                         <div class="flex justify-between text-on-background text-2xl font-headline tracking-wider pt-4">
                             <span>Totaal</span>
-                            <span class="font-orbitron">€ 159,00</span>
+                            <span class="font-orbitron totaal-val">€ 0,00</span>
                         </div>
                     </div>
 
@@ -125,49 +125,104 @@ import Footer from '../components/Footer.astro';
     <Footer />
 </BaseLayout>
 
+
 <script>
     import { CheckoutAPI } from '../services/apiClient';
+    import { cartItems, clearCart } from '../store/cartStore';
+    import { useStore } from '@nanostores/preact';
 
     const checkoutBtn = document.querySelector('button.bg-deal-green');
+    const itemsContainer = document.getElementById('checkout-items');
+    const subtotaalEl = document.querySelector('.subtotaal-val');
+    const totaalEl = document.querySelector('.totaal-val');
+    const countEl = document.querySelector('.item-count');
 
-    checkoutBtn?.addEventListener('click', async () => {
-        // Collect form data (simplified for now)
-        const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement;
-        const firstNameInput = document.querySelector('input[placeholder="Voornaam"]') as HTMLInputElement;
-        const lastNameInput = document.querySelector('input[placeholder="Achternaam"]') as HTMLInputElement;
-
-        if (!emailInput?.value) {
-            alert('Vul a.u.b. je e-mailadres in.');
+    // Sync cart with UI (simple vanilla for now to keep the Astro page clean)
+    function renderItems() {
+        const items = cartItems.get();
+        if (!itemsContainer) return;
+        
+        if (items.length === 0) {
+            itemsContainer.innerHTML = `
+                <div class="text-center opacity-40 py-8">
+                     <span class="material-symbols-outlined text-4xl mb-2">production_quantity_limits</span>
+                     <p class="font-headline text-lg uppercase tracking-widest">Winkelmand is leeg</p>
+                </div>`;
             return;
         }
 
-        const customerData = {
-            email: emailInput.value,
-            firstName: firstNameInput?.value || '',
-            lastName: lastNameInput?.value || '',
-            // ... other fields
+        // Render real items
+        itemsContainer.innerHTML = items.map(item => `
+            <div class="flex gap-4 items-center w-full group">
+                <div class="w-16 h-16 bg-[#131319] border border-white/5 rounded-lg p-2 overflow-hidden shrink-0">
+                    <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-contain filter drop-shadow-md" />
+                </div>
+                <div class="flex-grow">
+                    <h4 class="font-headline text-sm uppercase tracking-wider text-white line-clamp-1">${item.title}</h4>
+                    <span class="text-[9px] uppercase tracking-widest text-[#acaab1] font-orbitron">${item.platform}</span>
+                </div>
+                <div class="font-orbitron text-xs text-white">
+                    €${(item.priceInCents / 100).toFixed(2).replace('.', ',')}
+                </div>
+            </div>
+        `).join('');
+
+        // Update totals
+        const totalCents = items.reduce((acc, item) => acc + item.priceInCents, 0);
+        const formatted = `€ ${(totalCents / 100).toFixed(2).replace('.', ',')}`;
+        if (subtotaalEl) subtotaalEl.textContent = formatted;
+        if (totaalEl) totaalEl.textContent = formatted;
+        if (countEl) countEl.textContent = `(${items.length} items)`;
+    }
+
+    renderItems();
+    cartItems.subscribe(renderItems);
+
+    checkoutBtn?.addEventListener('click', async () => {
+        const items = cartItems.get();
+        if (items.length === 0) {
+            alert('Winkelmand is leeg.');
+            return;
+        }
+
+        // Gather All Fields
+        const email = (document.querySelector('input[type="email"]') as HTMLInputElement)?.value;
+        const firstName = (document.querySelector('input[placeholder="Voornaam"]') as HTMLInputElement)?.value;
+        const lastName = (document.querySelector('input[placeholder="Achternaam"]') as HTMLInputElement)?.value;
+        const street = (document.querySelector('input[placeholder="Straatnaam"]') as HTMLInputElement)?.value;
+        const houseNr = (document.querySelector('input[placeholder="12A"]') as HTMLInputElement)?.value;
+        const postcode = (document.querySelector('input[placeholder="1234 AB"]') as HTMLInputElement)?.value;
+        const city = (document.querySelector('input[placeholder="Stad"]') as HTMLInputElement)?.value;
+
+        if (!email || !firstName || !lastName || !street || !postcode || !city) {
+            alert('Vul a.u.b. alle adresgegevens in.');
+            return;
+        }
+
+        const customerData = { 
+            email, firstName, lastName, street, houseNr, postcode, city 
         };
 
-        // Placeholder for items from Nano Stores
-        const cartItems = [
-            { id: 'placeholder-1', quantity: 1 }
-        ];
+        const cartPayload = items.map(i => ({ id: i.id, quantity: 1 }));
 
         try {
-            checkoutBtn.textContent = 'VERWERKEN...';
+            checkoutBtn.textContent = 'DOORSTUREN NAAR MOLLIE...';
             (checkoutBtn as HTMLButtonElement).disabled = true;
 
-            const order = await CheckoutAPI.createOrder(cartItems, customerData);
+            const response = await CheckoutAPI.createOrder(cartPayload, customerData);
             
-            console.log('Order created:', order);
-            alert('Bestelling succesvol geplaatst! Order ID: ' + order.id);
+            // Success response from API (wrapped in data by fetcher)
+            if (response.paymentUrl) {
+                // Clear cart before redirecting so they don't see it if they click "back"
+                clearCart();
+                window.location.href = response.paymentUrl;
+            } else {
+                throw new Error('No payment URL received');
+            }
             
-            // Redirect to success page or clear cart
-            // window.location.href = '/checkout/success';
-        } catch (error) {
+        } catch (error: any) {
             console.error('Checkout failed:', error);
-            alert('Er is iets misgegaan bij het afrekenen. Probeer het later opnieuw.');
-        } finally {
+            alert(`Fout bij afrekenen: ${error.message || 'Onbekende fout'}`);
             checkoutBtn.textContent = 'AFREKENEN';
             (checkoutBtn as HTMLButtonElement).disabled = false;
         }

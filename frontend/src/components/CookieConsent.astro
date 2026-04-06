@@ -1,0 +1,81 @@
+---
+/**
+ * COMP-1: Cookie Consent Banner
+ * Unobtrusive, glassmorphic design that respects user choices.
+ */
+---
+
+<div id="cookie-consent-container" class="fixed bottom-6 left-6 right-6 md:left-10 md:right-auto md:w-[420px] z-[9999] translate-y-20 opacity-0 pointer-events-none transition-all duration-500 ease-in-out">
+    <div class="bg-surface-container-high/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+        <!-- Glow effect -->
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-deal-green/10 rounded-full blur-3xl"></div>
+        
+        <div class="relative">
+            <div class="flex items-start gap-4 mb-4">
+                <div class="bg-deal-green/10 p-2 rounded-xl border border-deal-green/20">
+                    <span class="material-symbols-outlined text-deal-green text-xl">cookie</span>
+                </div>
+                <div>
+                    <h3 class="text-white font-barlow font-bold uppercase tracking-widest text-lg leading-none mb-2">Cookie Voorkeuren</h3>
+                    <p class="text-on-surface-variant text-xs font-medium leading-relaxed">
+                        Wij gebruiken cookies om onze shop te verbeteren en je een optimale ervaring te bieden. Bekijk onze 
+                        <a href="/privacy" class="text-deal-green hover:underline">Privacy Policy</a> voor meer informatie.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button id="accept-cookies" class="flex-1 bg-white hover:bg-neutral-200 text-black font-orbitron font-black text-[10px] uppercase tracking-widest py-3 rounded-lg transition-all active:scale-95">
+                    Alle cookies accepteren
+                </button>
+                <button id="decline-cookies" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/5 text-on-surface-variant font-orbitron font-bold text-[10px] uppercase tracking-widest py-3 rounded-lg transition-all active:scale-95">
+                    Alleen functioneel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'abg_cookie_consent';
+    const container = document.getElementById('cookie-consent-container');
+    const acceptBtn = document.getElementById('accept-cookies');
+    const declineBtn = document.getElementById('decline-cookies');
+
+    function showBanner() {
+        if (!container) return;
+        setTimeout(() => {
+            container.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        }, 1000);
+    }
+
+    function hideBanner() {
+        if (!container) return;
+        container.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+    }
+
+    function setConsent(type: 'all' | 'essential') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            consent: type,
+            timestamp: Date.now()
+        }));
+        hideBanner();
+        // Trigger global event if other scripts need to know
+        window.dispatchEvent(new CustomEvent('cookie-consent-updated', { detail: type }));
+    }
+
+    // Check if consent already given
+    if (!localStorage.getItem(STORAGE_KEY)) {
+        showBanner();
+    }
+
+    acceptBtn?.addEventListener('click', () => setConsent('all'));
+    declineBtn?.addEventListener('click', () => setConsent('essential'));
+
+    // Handle re-animation after page navigation (Astro transitions)
+    document.addEventListener('astro:after-swap', () => {
+        if (!localStorage.getItem(STORAGE_KEY)) {
+            showBanner();
+        }
+    });
+</script>

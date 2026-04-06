@@ -7,6 +7,7 @@ export async function getProducts(params: {
     minPrice?: number;
     maxPrice?: number;
     inStockOnly?: boolean;
+    isWeekdeal?: boolean;
     sort?: string;
     page?: number;
     limit?: number;
@@ -18,6 +19,7 @@ export async function getProducts(params: {
         minPrice = 0,
         maxPrice = 1000000,
         inStockOnly = false,
+        isWeekdeal = false,
         sort = 'newest',
         page = 1,
         limit = 24
@@ -50,6 +52,10 @@ export async function getProducts(params: {
         where.AND.push({ stock: { gt: 0 } });
     }
 
+    if (isWeekdeal) {
+        where.AND.push({ isWeekdeal: true });
+    }
+
     // Build Order Logic
     let orderBy: any = { createdAt: 'desc' };
     if (sort === 'price_asc') orderBy = { priceInCents: 'asc' };
@@ -66,8 +72,15 @@ export async function getProducts(params: {
         prisma.product.count({ where })
     ]);
 
+    const processedProducts = products.map(p => {
+        if (p.isWeekdeal && !p.discountPriceInCents) {
+            p.discountPriceInCents = Math.round(p.priceInCents * 0.9);
+        }
+        return p;
+    });
+
     return {
-        products,
+        products: processedProducts,
         pagination: {
             totalCount,
             totalPages: Math.ceil(totalCount / limit),
@@ -83,6 +96,10 @@ export async function getProductById(id: string) {
     });
 
     if (!product) return null;
+
+    if (product.isWeekdeal && !product.discountPriceInCents) {
+        product.discountPriceInCents = Math.round(product.priceInCents * 0.9);
+    }
 
     // Check availability
     const now = new Date();

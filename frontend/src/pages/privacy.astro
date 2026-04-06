@@ -2,9 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TopNavBar from '../components/TopNavBar.astro';
 import Footer from '../components/Footer.astro';
+
+/**
+ * COMP-2: Overhauled Privacy Policy (Dutch GDPR/AVG compliant)
+ * Updated for A Big Boy's Game e-commerce.
+ */
 ---
 
-<BaseLayout title="Privacybeleid | ABigBoysGame" description="Privacybeleid van ABigBoysGame ter bescherming van jouw gegevens.">
+<BaseLayout title="Privacybeleid | ABigBoysGame" description="Privacybeleid van ABigBoysGame — Hoe we jouw gegevens beschermen conform de AVG/GDPR.">
     <TopNavBar />
     <div class="relative min-h-screen pt-32 pb-24" style="background-color: #0e0e13;">
         <!-- Background Glow -->
@@ -12,55 +17,117 @@ import Footer from '../components/Footer.astro';
              style="background: radial-gradient(circle at 50% 10%, #d593ff 0%, transparent 70%);">
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="max-w-4xl mx-auto px-6 relative z-10 text-on-surface-variant leading-relaxed">
 
             <!-- Header -->
             <div class="text-center mb-16">
-                <h1 class="font-barlow font-black text-6xl md:text-7xl text-white uppercase leading-none italic tracking-tighter">
+                <h1 class="font-barlow font-black text-5xl md:text-7xl text-white uppercase leading-none italic tracking-tighter mb-4">
                    Privacybeleid
                 </h1>
-                <p class="text-[#acaab1] mt-4 font-orbitron text-[10px] tracking-[0.4em] uppercase">Data Protection Protocol</p>
+                <div class="inline-block px-4 py-1 bg-white/5 border border-white/10 rounded-full">
+                    <p class="text-[#acaab1] font-orbitron text-[10px] tracking-[0.4em] uppercase">Data Protection Protocol v2.1</p>
+                </div>
             </div>
 
-            <!-- Content Cards -->
-            <div class="space-y-6">
-                <div class="p-8 md:p-12 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl">
-                    <h2 class="font-barlow font-bold text-3xl text-white uppercase italic mb-6">Onze Inzet</h2>
-                    <p class="text-[#acaab1] leading-relaxed text-lg mb-4">
-                        Bij ABigBoysGame respecteren we de privacy van alle gebruikers van onze site. Wij dragen er zorg voor dat de persoonlijke informatie die je ons verschaft vertrouwelijk wordt behandeld en beveiligd volgens de laatste standaarden.
+            <div class="space-y-12">
+                <!-- Introduction Card -->
+                <section class="p-8 md:p-12 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl">
+                    <h2 class="font-barlow font-bold text-3xl text-white uppercase italic mb-6">1. Introductie</h2>
+                    <p class="mb-4">
+                        A Big Boy's Game ("wij", "ons", "onze") respecteert de privacy van alle gebruikers van onze shop en draagt er zorg voor dat de persoonlijke informatie die je ons verschaft vertrouwelijk wordt behandeld. 
                     </p>
-                </div>
+                    <p>
+                        Wij verwerken persoonsgegevens in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG/GDPR). Dit beleid legt uit welke gegevens we verzamelen, waarom we dit doen en hoe we deze beschermen.
+                    </p>
+                </section>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-8 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl">
-                        <h3 class="font-barlow font-bold text-2xl text-white uppercase italic mb-4 text-[#d593ff]">Data Verzameling</h3>
-                        <p class="text-[#acaab1] leading-relaxed">
-                            Wanneer je een bestelling plaatst, hebben we je naam, e-mailadres, afleveradres en betaalgegevens nodig om de order te verwerken en je op de hoogte te houden.
-                        </p>
-                    </div>
-                    <div class="p-8 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl">
-                        <h3 class="font-barlow font-bold text-2xl text-white uppercase italic mb-4 text-[#d593ff]">Veiligheid</h3>
-                        <p class="text-[#acaab1] leading-relaxed">
-                            Jouw gegevens zijn veilig bij ons. Wij maken gebruik van SSL-encryptie voor alle transacties en verkopen jouw data NOOIT aan derden.
-                        </p>
-                    </div>
+                    <!-- Data Collection Card -->
+                    <section class="p-8 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl">
+                        <h3 class="font-barlow font-bold text-2xl text-white uppercase italic mb-4 text-[#d593ff]">2. Gegevensverzameling</h3>
+                        <p class="text-sm mb-4">Wanneer je een bestelling plaatst of de site gebruikt, verwerken we:</p>
+                        <ul class="text-sm space-y-2 list-disc list-inside text-[#acaab1]">
+                            <li>Naam en contactgegevens</li>
+                            <li>Bezorg- en factuuradres</li>
+                            <li>E-mailadres en telefoonnummer</li>
+                            <li>Betaalgegevens (via Mollie)</li>
+                            <li>IP-adres en browsergegevens</li>
+                        </ul>
+                    </section>
+
+                    <!-- Purpose Card -->
+                    <section class="p-8 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl">
+                        <h3 class="font-barlow font-bold text-2xl text-white uppercase italic mb-4 text-[#d593ff]">3. Grondslag & Doel</h3>
+                        <p class="text-sm mb-4">Wij verwerken jouw gegevens op basis van:</p>
+                        <ul class="text-sm space-y-2 list-disc list-inside text-[#acaab1]">
+                            <li><b>Overeenkomst:</b> Afhandelen van bestellingen</li>
+                            <li><b>Wettelijke plicht:</b> Belastingadministratie</li>
+                            <li><b>Gerechtvaardigd belang:</b> Fraudebestrijding</li>
+                            <li><b>Toestemming:</b> Marketing (opt-in)</li>
+                        </ul>
+                    </section>
                 </div>
 
-                <div class="p-8 md:p-12 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-md">
-                    <h2 class="font-barlow font-bold text-3xl text-white uppercase italic mb-6">Cookies & Tracking</h2>
-                    <p class="text-[#acaab1] leading-relaxed">
-                        Wij gebruiken functionele cookies om je winkelervaring te verbeteren. Analytische cookies helpen ons de website te optimaliseren voor een betere retro-vibe. Je kunt cookies te allen tijde uitschakelen via je browserinstellingen.
+                <!-- Processors Card -->
+                <section class="p-8 md:p-12 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl">
+                    <h2 class="font-barlow font-bold text-3xl text-white uppercase italic mb-6">4. Bewaartermijn & Derden</h2>
+                    <p class="mb-6">
+                        Wij bewaren jouw gegevens niet langer dan strikt nodig is voor de doelen waarvoor ze zijn verzameld, met een minimumtermijn van 7 jaar voor de fiscale bewaarplicht.
                     </p>
-                </div>
+                    <h4 class="text-white font-bold mb-4">Onze Verwerkers:</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                            <span class="text-white font-bold text-sm block">Mollie B.V.</span>
+                            <span class="text-xs text-[#acaab1]">Veilige betalingsverwerking</span>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                            <span class="text-white font-bold text-sm block">Supabase / AWS</span>
+                            <span class="text-xs text-[#acaab1]">Database- en bestandopslag</span>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                            <span class="text-white font-bold text-sm block">Hetzner Online GmbH</span>
+                            <span class="text-xs text-[#acaab1]">Server hosting (Duitsland)</span>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                            <span class="text-white font-bold text-sm block">Google Fonts</span>
+                            <span class="text-xs text-[#acaab1]">Typografie (enkel technisch)</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rights Card -->
+                <section class="p-8 md:p-12 rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#d593ff]/5 to-transparent backdrop-blur-xl">
+                    <h2 class="font-barlow font-bold text-3xl text-white uppercase italic mb-6">5. Jouw Rechten</h2>
+                    <p class="mb-4">Je hebt conform de AVG de volgende rechten:</p>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm text-[#acaab1] list-inside list-disc">
+                        <li>Recht op inzage (Art. 15)</li>
+                        <li>Recht op rectificatie (Art. 16)</li>
+                        <li>Recht op vergeten te worden (Art. 17)</li>
+                        <li>Recht op beperking (Art. 18)</li>
+                        <li>Recht op overdraagbaarheid (Art. 20)</li>
+                        <li>Recht op bezwaar (Art. 21)</li>
+                    </ul>
+                    <p class="mt-6 text-sm italic">
+                        Stuur een verzoek naar onze klantenservice om gebruik te maken van deze rechten. Je hebt ook het recht om een klacht in te dienen bij de <a href="https://autoriteitpersoonsgegevens.nl" class="text-[#d593ff] hover:underline" target="_blank">Autoriteit Persoonsgegevens</a>.
+                    </p>
+                </section>
+
+                <!-- Cookies Note -->
+                <section class="p-8 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl">
+                    <h3 class="font-barlow font-bold text-2xl text-white uppercase italic mb-4">6. Cookies</h3>
+                    <p class="text-on-surface-variant text-sm">
+                        Wij maken gebruik van cookies om de shopervaring te verbeteren. Functionele cookies zijn essentieel voor de werking van de winkelwagen en login. Analytische cookies worden geanonimiseerd verwerkt. Je kunt jouw voorkeuren op elk moment aanpassen via de banner onderaan de pagina.
+                    </p>
+                </section>
             </div>
 
-            <!-- Footer Note -->
-            <div class="mt-16 text-center text-[#acaab1] text-sm italic">
-                Laatst bijgewerkt: Maart 2024
+            <!-- Footer Details -->
+            <div class="mt-20 pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-[#acaab1] text-[10px] uppercase font-orbitron tracking-widest italic">
+                <span>Versie: 2026.04.03</span>
+                <span>Laatst bijgewerkt: 3 April 2026</span>
+                <a href="#" class="hover:text-white transition-colors">Terug naar boven</a>
             </div>
         </div>
     </div>
     <Footer />
 </BaseLayout>
-
-
