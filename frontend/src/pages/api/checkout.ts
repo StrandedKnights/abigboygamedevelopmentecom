@@ -94,7 +94,9 @@ export const POST: APIRoute = async ({ request }) => {
         });
 
         // 4. Create Mollie Payment
-        const siteUrl = import.meta.env.FRONTEND_URL || new URL(request.url).origin;
+        // Force the production URL if we are in production, otherwise use the request origin
+        const prodUrl = 'https://www.abigboysgamedevelopment.skyco-webagency.nl';
+        const siteUrl = import.meta.env.PROD ? prodUrl : (new URL(request.url).origin);
         
         try {
             const payment = await mollieClient.payments.create({
