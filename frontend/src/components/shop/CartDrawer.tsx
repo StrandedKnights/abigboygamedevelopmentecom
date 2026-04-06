@@ -69,38 +69,37 @@ export default function CartDrawer() {
             </div>
           ) : (
             $cartItems.map((item) => (
-              <div key={item.id} class="group flex gap-4 items-start relative">
-                <div class="w-24 h-24 bg-surface-container-highest rounded-sm overflow-hidden shrink-0 border border-outline-variant/20 group-hover:border-primary/50 transition-colors p-2">
+              <div key={item.id} class="group flex gap-4 items-start relative bg-white/2 p-3 rounded border border-white/5 hover:border-white/10 transition-colors">
+                <div class="w-20 h-20 bg-surface-container-highest rounded-sm overflow-hidden shrink-0 border border-outline-variant/20 group-hover:border-primary/50 transition-colors p-1 flex items-center justify-center">
                   <img 
                     src={item.imageUrl} 
                     alt={item.title} 
-                    class="w-full h-full object-contain filter drop-shadow-md opacity-80 group-hover:opacity-100 transition-opacity" 
+                    class="max-w-full max-h-full object-contain filter drop-shadow-md opacity-90 group-hover:opacity-100 transition-opacity" 
                   />
                 </div>
                 
-                <div class="flex-grow flex flex-col justify-between h-24 py-1">
-                  <div>
-                    <div class="flex justify-between items-start">
-                      <h3 class="font-headline font-bold text-lg text-on-surface leading-tight line-clamp-1 truncate w-[80%]">{item.title}</h3>
+                <div class="flex-grow flex flex-col justify-between h-20">
+                  <div class="min-w-0">
+                    <div class="flex justify-between items-start gap-2">
+                      <h3 class="font-headline font-bold text-sm text-on-surface leading-tight line-clamp-2 break-words flex-1 pr-1">{item.title}</h3>
                       <button 
                         onClick={() => removeFromCart(item.id)}
-                        class="text-on-surface-variant hover:text-error transition-colors"
+                        class="text-on-surface-variant hover:text-red-500 transition-colors mt-0.5 shrink-0"
+                        title="Verwijder uit kluis"
                       >
-                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                        <span class="material-symbols-outlined text-[18px]">delete</span>
                       </button>
                     </div>
-                    <span class="font-inter text-[10px] tracking-[0.15em] uppercase px-2 py-0.5 bg-surface-container-high text-on-surface-variant border border-outline-variant/20 inline-block mt-1">
+                    <span class="font-inter text-[9px] tracking-[0.1em] uppercase px-1.5 py-0.5 bg-surface-container-high text-on-surface-variant border border-outline-variant/10 inline-block mt-1 rounded-sm">
                       {item.platform}
                     </span>
                   </div>
                   
                   <div class="flex justify-between items-end">
-                    <div class="flex items-center gap-3 opacity-50 pointer-events-none">
-                      <button class="w-6 h-6 flex items-center justify-center text-xs border border-outline-variant/30 hover:border-primary/50 text-on-surface-variant">-</button>
-                      <span class="font-orbitron text-xs">01</span>
-                      <button class="w-6 h-6 flex items-center justify-center text-xs border border-outline-variant/30 hover:border-primary/50 text-on-surface-variant">+</button>
+                    <div class="flex items-center gap-1.5 opacity-30 select-none grayscale">
+                      <span class="font-orbitron text-[10px]">QTY: 1</span>
                     </div>
-                    <span class="font-orbitron font-bold text-primary-dim">
+                    <span class="font-orbitron font-bold text-sm text-primary-dim">
                       €{(item.priceInCents / 100).toFixed(2).replace('.', ',')}
                     </span>
                   </div>
@@ -108,23 +107,6 @@ export default function CartDrawer() {
               </div>
             ))
           )}
-          
-          {/* Suggestion Module */}
-          <div class="mt-12 p-4 bg-surface-container-low border-l-2 border-tertiary-fixed/30">
-            <p class="font-inter text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Power-up suggestie:</p>
-            <div class="flex gap-3 items-center">
-              <div class="w-12 h-12 bg-surface-container-high shrink-0 rounded-sm overflow-hidden p-1 flex items-center justify-center">
-                <span class="material-symbols-outlined text-tertiary-fixed text-2xl">cleaning_services</span>
-              </div>
-              <div class="flex-grow">
-                <p class="font-headline font-bold text-xs text-on-surface">Premium Gevalideerd & Gepoetst</p>
-                <p class="font-orbitron text-[10px] text-tertiary-fixed">€ 4.99</p>
-              </div>
-              <button class="text-tertiary-fixed hover:scale-110 transition-transform">
-                <span class="material-symbols-outlined">add_circle</span>
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}

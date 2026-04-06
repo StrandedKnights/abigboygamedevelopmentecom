@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
-import { addToCart, isItemInCart } from '../../store/cartStore';
+import { useStore } from '@nanostores/preact';
+import { addToCart, isItemInCart, cartItems } from '../../store/cartStore';
 
 interface Product {
   id: string;
@@ -16,15 +17,14 @@ interface Props {
 }
 
 export default function AddToCartBtn({ product, isAvailable }: Props) {
+  const $cartItems = useStore(cartItems);
   const [added, setAdded] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  // Sync state on mount (in case item is already in cart)
+  // Sync state when store changes
   useEffect(() => {
-    if (isItemInCart(product.id)) {
-      setAdded(true);
-    }
-  }, [product.id]);
+    setAdded(isItemInCart(product.id));
+  }, [$cartItems, product.id]);
 
   const handleAdd = () => {
     if (!isAvailable || added) return;
