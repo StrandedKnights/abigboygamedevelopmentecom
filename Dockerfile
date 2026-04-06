@@ -1,6 +1,6 @@
 # Unified Dockerfile for consolidated Astro SSR + Prisma project
 # Stage 1: Build
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 RUN apk add --no-cache openssl
 
 WORKDIR /app
@@ -24,7 +24,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Stage 2: Production
-FROM node:20-alpine AS production
+FROM node:22-alpine AS production
 RUN apk add --no-cache openssl
 
 WORKDIR /app

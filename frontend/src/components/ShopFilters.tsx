@@ -112,11 +112,10 @@ export default function ShopFilters() {
               </button>
               
               <div class={`transition-all duration-300 ease-in-out ${expandedBrands.includes(group.brand) ? 'max-h-96 opacity-100 p-3 pt-0' : 'max-h-0 opacity-0 pointer-events-none'}`}>
-                 <div class="space-y-2 mt-1">
+                  <div class="space-y-2 mt-1">
                    {group.platforms.map(p => (
-                     <label key={p} class="flex items-center gap-3 group cursor-pointer py-0.5">
+                     <div key={p} onClick={() => togglePlatform(p)} class="flex items-center gap-3 group cursor-pointer py-0.5">
                        <div 
-                         onClick={() => togglePlatform(p)}
                          class={`w-3.5 h-3.5 rounded border transition-all flex items-center justify-center flex-shrink-0 ${
                            filters.platforms.includes(p) 
                            ? 'bg-deal-green border-deal-green shadow-[0_0_10px_rgba(0,255,136,0.3)]' 
@@ -128,7 +127,7 @@ export default function ShopFilters() {
                        <span class={`text-[11px] font-medium transition-colors tracking-wide ${filters.platforms.includes(p) ? 'text-white' : 'text-on-surface-variant group-hover:text-white'}`}>
                          {p}
                        </span>
-                     </label>
+                     </div>
                    ))}
                  </div>
               </div>
@@ -142,9 +141,8 @@ export default function ShopFilters() {
         <h3 class="font-orbitron text-[10px] tracking-[0.2em] uppercase text-deal-purple mb-4">CONDITIE</h3>
         <div class="space-y-2">
           {CONDITIONS.map(c => (
-            <label key={c} class="flex items-center gap-3 group cursor-pointer">
+            <div key={c} onClick={() => toggleCondition(c)} class="flex items-center gap-3 group cursor-pointer">
               <div 
-                onClick={() => toggleCondition(c)}
                 class={`w-4 h-4 rounded border transition-all flex items-center justify-center flex-shrink-0 ${
                   filters.conditions.includes(c) 
                   ? 'bg-deal-green border-deal-green shadow-[0_0_10px_rgba(0,255,136,0.3)]' 
@@ -156,7 +154,7 @@ export default function ShopFilters() {
               <span class={`text-[11px] font-medium transition-colors tracking-wide ${filters.conditions.includes(c) ? 'text-white' : 'text-on-surface-variant group-hover:text-white'}`}>
                 {c}
               </span>
-            </label>
+            </div>
           ))}
         </div>
       </div>
@@ -189,9 +187,8 @@ export default function ShopFilters() {
 
       {/* In Stock */}
       <div class="pt-4 space-y-3">
-        <label class="flex items-center gap-3 group cursor-pointer p-3 bg-surface-container-low/50 border border-outline-variant/10 rounded-xl hover:border-deal-green/30 transition-all">
+        <div onClick={() => updateFilters({ inStockOnly: !filters.inStockOnly })} class="flex items-center gap-3 group cursor-pointer p-3 bg-surface-container-low/50 border border-outline-variant/10 rounded-xl hover:border-deal-green/30 transition-all">
           <div 
-            onClick={() => updateFilters({ inStockOnly: !filters.inStockOnly })}
             class={`w-5 h-5 rounded-md border transition-all flex items-center justify-center flex-shrink-0 ${
               filters.inStockOnly 
               ? 'bg-deal-green border-deal-green shadow-[0_0_15px_rgba(0,255,136,0.4)]' 
@@ -204,12 +201,11 @@ export default function ShopFilters() {
             <span class="block text-[10px] font-black text-white uppercase tracking-wider">Voorradig</span>
             <span class="text-[8px] text-on-surface-variant font-medium">Verberg niet leverbaar artikelen</span>
           </div>
-        </label>
+        </div>
 
         {/* Weekdeals */}
-        <label class="flex items-center gap-3 group cursor-pointer p-3 bg-deal-green/5 border border-deal-green/20 rounded-xl hover:border-deal-green/50 transition-all">
+        <div onClick={() => updateFilters({ isWeekdeal: !filters.isWeekdeal })} class="flex items-center gap-3 group cursor-pointer p-3 bg-deal-green/5 border border-deal-green/20 rounded-xl hover:border-deal-green/50 transition-all">
           <div 
-            onClick={() => updateFilters({ isWeekdeal: !filters.isWeekdeal })}
             class={`w-5 h-5 rounded-md border transition-all flex items-center justify-center flex-shrink-0 ${
               filters.isWeekdeal 
               ? 'bg-deal-green border-deal-green shadow-[0_0_15px_rgba(0,255,136,0.4)]' 
@@ -222,7 +218,7 @@ export default function ShopFilters() {
             <span class="block text-[10px] font-black text-deal-green uppercase tracking-wider flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">bolt</span> Actieve Deals</span>
             <span class="text-[8px] text-on-surface-variant font-medium">Toon alleen de geprijsde Weekdeals</span>
           </div>
-        </label>
+        </div>
       </div>
 
       <button 

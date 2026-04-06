@@ -26,6 +26,7 @@ export default function ProductGrid({ initialProducts, initialMeta }: ProductGri
         conditions: filters.conditions.join(','),
         maxPrice: filters.maxPrice * 100, // Convert to cents
         inStockOnly: filters.inStockOnly,
+        isWeekdeal: filters.isWeekdeal,
         sortBy: filters.sortBy,
         page: filters.page,
         limit: 12
