@@ -1,16 +1,16 @@
 import type { APIRoute } from 'astro';
-import prisma from '../../../../lib/prisma';
-import { mollieClient } from '../../../../lib/mollie';
+import prisma from '../../../../../lib/prisma';
+import { mollieClient } from '../../../../../lib/mollie';
 
 /**
  * REFUND HANDLER
- * 1. Checks if order was PAID.
+ * 1. Checks if order was PAID or SHIPPED.
  * 2. Fetches the Mollie Payment ID.
  * 3. Triggers refund via Mollie API.
  * 4. Updates DB status to REFUNDED.
  * 5. Restocks items.
  */
-export const POST: APIRoute = async ({ params, request }) => {
+export const POST: APIRoute = async ({ params }) => {
     try {
         const { id } = params;
         if (!id) return new Response(JSON.stringify({ error: 'Order ID ontbreekt' }), { status: 400 });
@@ -22,16 +22,20 @@ export const POST: APIRoute = async ({ params, request }) => {
         });
 
         if (!order) return new Response(JSON.stringify({ error: 'Order niet gevonden' }), { status: 404 });
+        
+        // Allow refunding PAID or SHIPPED orders
         if (order.status !== 'PAID' && order.status !== 'SHIPPED') {
             return new Response(JSON.stringify({ error: 'Alleen betaalde of verzonden orders kunnen worden terugbetaald.' }), { status: 400 });
         }
+        
         if (!order.molliePaymentId) {
             return new Response(JSON.stringify({ error: 'Geen Mollie betalingskenmerk gevonden voor deze order.' }), { status: 400 });
         }
 
         // 2. Trigger Mollie Refund
         try {
-            await mollieClient.payments_refunds.create({
+            // Correct Mollie SDK method for refunds on a specific payment
+            await mollieClient.paymentRefunds.create({
                 paymentId: order.molliePaymentId,
                 amount: {
                     currency: 'EUR',
@@ -48,7 +52,7 @@ export const POST: APIRoute = async ({ params, request }) => {
         await prisma.order.update({
             where: { id },
             data: { 
-                status: 'REFUNDED' as any, // Using type cast as enum might need update or string
+                status: 'REFUNDED' as any,
                 events: {
                     create: [{
                         type: 'REFUND_ISSUED',
