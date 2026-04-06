@@ -188,7 +188,7 @@ export default function ShopFilters() {
       </div>
 
       {/* In Stock */}
-      <div class="pt-4">
+      <div class="pt-4 space-y-3">
         <label class="flex items-center gap-3 group cursor-pointer p-3 bg-surface-container-low/50 border border-outline-variant/10 rounded-xl hover:border-deal-green/30 transition-all">
           <div 
             onClick={() => updateFilters({ inStockOnly: !filters.inStockOnly })}
@@ -205,10 +205,28 @@ export default function ShopFilters() {
             <span class="text-[8px] text-on-surface-variant font-medium">Verberg niet leverbaar artikelen</span>
           </div>
         </label>
+
+        {/* Weekdeals */}
+        <label class="flex items-center gap-3 group cursor-pointer p-3 bg-deal-green/5 border border-deal-green/20 rounded-xl hover:border-deal-green/50 transition-all">
+          <div 
+            onClick={() => updateFilters({ isWeekdeal: !filters.isWeekdeal })}
+            class={`w-5 h-5 rounded-md border transition-all flex items-center justify-center flex-shrink-0 ${
+              filters.isWeekdeal 
+              ? 'bg-deal-green border-deal-green shadow-[0_0_15px_rgba(0,255,136,0.4)]' 
+              : 'border-deal-green/30 group-hover:border-deal-green/50'
+            }`}
+          >
+            {filters.isWeekdeal && <span class="material-symbols-outlined text-[12px] text-black font-bold">check</span>}
+          </div>
+          <div class="flex-1">
+            <span class="block text-[10px] font-black text-deal-green uppercase tracking-wider flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">bolt</span> Actieve Deals</span>
+            <span class="text-[8px] text-on-surface-variant font-medium">Toon alleen de geprijsde Weekdeals</span>
+          </div>
+        </label>
       </div>
 
       <button 
-        onClick={() => updateFilters({ search: '', platforms: [], conditions: [], minPrice: 0, maxPrice: 1000, sortBy: 'newest' })}
+        onClick={() => updateFilters({ search: '', platforms: [], conditions: [], minPrice: 0, maxPrice: 1000, sortBy: 'newest', isWeekdeal: false, inStockOnly: false })}
         class="w-full py-3.5 bg-surface-container-high/40 border border-outline-variant/20 rounded-xl font-orbitron text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant hover:text-white hover:border-deal-green/40 hover:bg-surface-container-high transition-all"
       >
         Filters Wissen

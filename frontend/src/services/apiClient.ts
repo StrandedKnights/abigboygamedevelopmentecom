@@ -182,6 +182,12 @@ export const AdminAPI = {
             method: 'PATCH',
             body: productData
         }),
+        
+    /** DELETEs a product from the inventory. */
+    deleteProduct: (id: string) =>
+        fetcher<{ success: boolean; message: string }>(`/abg-nexus/products/${id}`, {
+            method: 'DELETE'
+        }),
 
     /** POSTs an image upload to the secure server endpoint. */
     uploadImage: (file: File) => {

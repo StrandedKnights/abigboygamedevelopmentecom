@@ -7,6 +7,7 @@ export interface ShopFiltersState {
   minPrice: number;
   maxPrice: number;
   inStockOnly: boolean;
+  isWeekdeal: boolean;
   sortBy: 'newest' | 'price_asc' | 'price_desc';
   page: number;
 }
@@ -21,6 +22,7 @@ const getInitialState = (): ShopFiltersState => {
       minPrice: 0,
       maxPrice: 1000,
       inStockOnly: false,
+      isWeekdeal: false,
       sortBy: 'newest',
       page: 1
     };
@@ -34,6 +36,7 @@ const getInitialState = (): ShopFiltersState => {
     minPrice: parseInt(params.get('minPrice') || '0') / 100,
     maxPrice: parseInt(params.get('maxPrice') || '100000') / 100,
     inStockOnly: params.get('inStockOnly') === 'true',
+    isWeekdeal: params.get('isWeekdeal') === 'true',
     sortBy: (params.get('sortBy') as any) || 'newest',
     page: parseInt(params.get('page') || '1')
   };
@@ -57,6 +60,7 @@ export function updateFilters(updates: Partial<ShopFiltersState>) {
     if (newState.minPrice > 0) params.set('minPrice', (newState.minPrice * 100).toString());
     if (newState.maxPrice < 1000) params.set('maxPrice', (newState.maxPrice * 100).toString());
     if (newState.inStockOnly) params.set('inStockOnly', 'true');
+    if (newState.isWeekdeal) params.set('isWeekdeal', 'true');
     if (newState.sortBy !== 'newest') params.set('sortBy', newState.sortBy);
     if (newState.page > 1) params.set('page', newState.page.toString());
 

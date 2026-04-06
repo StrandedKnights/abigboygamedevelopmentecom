@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import type { Product } from '../../services/apiClient';
+import { AdminAPI } from '../../services/apiClient';
 
 export default function AdminProductsTable({ initialProducts }: { initialProducts: Product[] }) {
     const [search, setSearch] = useState('');
@@ -12,6 +13,21 @@ export default function AdminProductsTable({ initialProducts }: { initialProduct
     );
 
     const formatPrice = (cents: number) => `€${(cents / 100).toFixed(2)}`;
+
+    const handleDeleteProduct = async (id: string, title: string) => {
+        if (!window.confirm(`Weet je zeker dat je "${title}" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`)) {
+            return;
+        }
+
+        try {
+            await AdminAPI.deleteProduct(id);
+            // Update local state to remove the deleted product
+            setProducts(current => current.filter(p => p.id !== id));
+        } catch (err: any) {
+            console.error("Failed to delete product:", err);
+            alert(err?.message || "Olielek! Mislukt om het product te verwijderen.");
+        }
+    };
 
     return (
         <div class="space-y-6">
@@ -92,7 +108,11 @@ export default function AdminProductsTable({ initialProducts }: { initialProduct
                                         <a href={`/abg-nexus/products/edit/${product.id}`} class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white transition-all shadow-sm" title="Edit Product">
                                             <span class="material-symbols-outlined text-[18px]">edit</span>
                                         </a>
-                                        <button class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 text-[#ff4b4b] hover:bg-[#ff4b4b] hover:text-white transition-all cursor-not-allowed opacity-50" title="Delete coming soon">
+                                        <button 
+                                            onClick={() => handleDeleteProduct(product.id, product.title)}
+                                            class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 text-[#ff4b4b] hover:bg-[#ff4b4b] hover:text-white transition-all shadow-sm" 
+                                            title="Verwijder Product"
+                                        >
                                             <span class="material-symbols-outlined text-[18px]">delete</span>
                                         </button>
                                     </td>

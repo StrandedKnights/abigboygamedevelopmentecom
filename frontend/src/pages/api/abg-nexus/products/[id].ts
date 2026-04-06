@@ -59,3 +59,22 @@ export const PATCH: APIRoute = async ({ request, params }) => {
         return new Response(JSON.stringify({ error: "Er is iets misgegaan bij het bijwerken van het product." }), { status: 500 });
     }
 };
+
+export const DELETE: APIRoute = async ({ params }) => {
+    try {
+        const id = params.id;
+        if (!id) {
+            return new Response(JSON.stringify({ error: "Product ID is missing." }), { status: 400 });
+        }
+
+        await (prisma.product as any).delete({
+            where: { id }
+        });
+
+        return new Response(JSON.stringify({ success: true, message: "Product verwijderd." }), { status: 200 });
+
+    } catch (error: any) {
+        console.error("API Product Delete Error:", error);
+        return new Response(JSON.stringify({ error: "Olielek! Kan product niet verwijderen. Mogelijk is het gebonden aan bestaande orders." }), { status: 500 });
+    }
+};
