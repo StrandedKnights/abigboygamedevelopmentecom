@@ -37,12 +37,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
         const origin = context.request.headers.get('Origin');
         const referer = context.request.headers.get('Referer');
         const expectedOrigin = new URL(context.request.url).origin;
+        const publicUrl = import.meta.env.FRONTEND_URL || import.meta.env.PUBLIC_URL;
         
-        // Basic origin/referer check (must match current site)
-        const isSelfMatch = (origin && origin === expectedOrigin) || (referer && referer.startsWith(expectedOrigin));
+        // Basic origin/referer check (must match current site or the public URL)
+        const isSelfMatch = 
+            (origin && (origin === expectedOrigin || (publicUrl && origin.startsWith(publicUrl)))) || 
+            (referer && (referer.startsWith(expectedOrigin) || (publicUrl && referer.startsWith(publicUrl))));
         
         if (!isSelfMatch) {
-            console.error(`[Security] CSRF Blocked: ${context.request.method} ${url.pathname} from ${origin || 'unknown'}`);
+            console.error(`[Security] CSRF Blocked: ${context.request.method} ${url.pathname} from origin: ${origin}, referer: ${referer}. Expected: ${expectedOrigin} or ${publicUrl}`);
             return new Response(JSON.stringify({ error: "Forbidden: CSRF verification failed" }), { status: 403 });
         }
     }
