@@ -46,7 +46,21 @@ export default function OrderList({ initialOrders }: { initialOrders: Order[] })
         if (status === 'PAID') return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
         if (status === 'SHIPPED') return 'bg-deal-green/10 text-deal-green border-deal-green/20';
         if (status === 'CANCELLED') return 'bg-red-500/10 text-red-500 border-red-500/20';
+        if (status === 'REFUNDED') return 'bg-orange-500/10 text-orange-500 border-orange-500/20';
         return 'bg-white/10 text-white border-white/20';
+    };
+
+    const handleRefund = async (orderId: string) => {
+        if (!confirm("Weet je zeker dat je deze order wilt terugbetalen via Mollie? Dit stelt ook de voorraad weer terug.")) return;
+        
+        try {
+            await AdminAPI.refundOrder(orderId);
+            // Re-sync local state
+            setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: 'REFUNDED' as any } : o));
+            alert("Terugbetaling succesvol uitgevoerd.");
+        } catch (e: any) {
+            alert("Fout bij terugbetalen: " + (e.data?.error || e.message));
+        }
     };
 
     return (
@@ -108,16 +122,17 @@ export default function OrderList({ initialOrders }: { initialOrders: Order[] })
                                     <select 
                                         value={order.status}
                                         title="Order Status Aanpassen"
-                                        disabled={order.status === 'SHIPPED' || order.status === 'CANCELLED'}
+                                        disabled={order.status === 'SHIPPED' || order.status === 'CANCELLED' || order.status === 'REFUNDED'}
                                         onChange={(e: any) => updateStatus(order.id, e.target.value, order.trackingCode)}
                                         class={`border px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-widest font-orbitron appearance-none text-center outline-none transition-all focus:ring-2 ring-white/20 ${
-                                            order.status === 'SHIPPED' || order.status === 'CANCELLED' ? 'cursor-not-allowed opacity-75' : 'cursor-pointer hover:border-white/40'
+                                            order.status === 'SHIPPED' || order.status === 'CANCELLED' || order.status === 'REFUNDED' ? 'cursor-not-allowed opacity-75' : 'cursor-pointer hover:border-white/40'
                                         } ${getStatusColor(order.status)}`}
                                     >
                                         <option value="PENDING" class="bg-[#131319] text-white">PENDING (Afwachtend)</option>
                                         <option value="PAID" class="bg-[#131319] text-white">PAID (Betaald)</option>
                                         <option value="SHIPPED" class="bg-[#131319] text-white">SHIPPED (Verzonden)</option>
                                         <option value="CANCELLED" class="bg-[#131319] text-white">CANCELLED (Geannuleerd)</option>
+                                        <option value="REFUNDED" class="bg-[#131319] text-white">REFUNDED (Terugbetaald)</option>
                                     </select>
                                     
                                     {order.trackingCode && order.status === 'SHIPPED' && (
@@ -131,10 +146,19 @@ export default function OrderList({ initialOrders }: { initialOrders: Order[] })
                                     <button 
                                         onClick={() => updateStatus(order.id, 'SHIPPED', order.trackingCode)}
                                         class="p-2 bg-[#0a0a0d] border border-white/10 rounded-lg text-on-surface-variant hover:text-deal-green hover:border-deal-green/40 transition-all font-orbitron text-[10px] uppercase tracking-widest block w-full text-center"
-                                        disabled={order.status === 'SHIPPED'}
+                                        disabled={order.status === 'SHIPPED' || order.status === 'CANCELLED' || order.status === 'REFUNDED'}
                                     >
                                         VERZEND
                                     </button>
+
+                                    {(order.status === 'PAID' || order.status === 'SHIPPED') && (
+                                        <button 
+                                            onClick={() => handleRefund(order.id)}
+                                            class="mt-2 p-2 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 hover:bg-red-500/20 transition-all font-orbitron text-[10px] uppercase tracking-widest block w-full text-center"
+                                        >
+                                            REFUND
+                                        </button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

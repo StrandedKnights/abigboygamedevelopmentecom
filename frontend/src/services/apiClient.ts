@@ -36,8 +36,9 @@ export interface Order {
     customerEmail: string;
     customerName: string;
     totalAmountInCents: number;
-    status: 'PENDING' | 'PAID' | 'SHIPPED' | 'CANCELLED';
+    status: 'PENDING' | 'PAID' | 'SHIPPED' | 'CANCELLED' | 'REFUNDED';
     trackingCode?: string | null;
+    molliePaymentId?: string | null;
     createdAt: string;
     items?: OrderItem[];
 }
@@ -197,5 +198,11 @@ export const AdminAPI = {
             method: 'POST',
             body: formData
         });
-    }
+    },
+
+    /** POSTs to trigger a Mollie refund. */
+    refundOrder: (orderId: string) =>
+        fetcher<{ message: string }>(`/abg-nexus/orders/refund/${orderId}`, {
+            method: 'POST'
+        })
 };
