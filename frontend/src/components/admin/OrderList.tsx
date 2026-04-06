@@ -108,13 +108,16 @@ export default function OrderList({ initialOrders }: { initialOrders: Order[] })
                                     <select 
                                         value={order.status}
                                         title="Order Status Aanpassen"
+                                        disabled={order.status === 'SHIPPED' || order.status === 'CANCELLED'}
                                         onChange={(e: any) => updateStatus(order.id, e.target.value, order.trackingCode)}
-                                        class={`border px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-widest font-orbitron appearance-none cursor-pointer text-center outline-none transition-all focus:ring-2 ring-white/20 ${getStatusColor(order.status)}`}
+                                        class={`border px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-widest font-orbitron appearance-none text-center outline-none transition-all focus:ring-2 ring-white/20 ${
+                                            order.status === 'SHIPPED' || order.status === 'CANCELLED' ? 'cursor-not-allowed opacity-75' : 'cursor-pointer hover:border-white/40'
+                                        } ${getStatusColor(order.status)}`}
                                     >
-                                        <option value="PENDING" class="bg-[#131319] text-white uppercase">PENDING (Afwachtend)</option>
-                                        <option value="PAID" class="bg-[#131319] text-white uppercase">PAID (Betaald)</option>
-                                        <option value="SHIPPED" class="bg-[#131319] text-white uppercase">SHIPPED (Verzonden)</option>
-                                        <option value="CANCELLED" class="bg-[#131319] text-white uppercase">CANCELLED (Geannuleerd)</option>
+                                        <option value="PENDING" class="bg-[#131319] text-white">PENDING (Afwachtend)</option>
+                                        <option value="PAID" class="bg-[#131319] text-white">PAID (Betaald)</option>
+                                        <option value="SHIPPED" class="bg-[#131319] text-white">SHIPPED (Verzonden)</option>
+                                        <option value="CANCELLED" class="bg-[#131319] text-white">CANCELLED (Geannuleerd)</option>
                                     </select>
                                     
                                     {order.trackingCode && order.status === 'SHIPPED' && (
