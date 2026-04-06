@@ -13,8 +13,8 @@ COPY frontend/package*.json ./
 # prisma is inside the frontend directory
 COPY frontend/prisma ./prisma/
 
-# Install dependencies
-RUN npm ci
+# Install dependencies using legacy-peer-deps to fix strict Astro v6 conflicts in Coolify
+RUN npm install --legacy-peer-deps
 
 # Copy full source from the frontend directory
 COPY frontend .
