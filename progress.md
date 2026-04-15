@@ -35,6 +35,24 @@
 - [x] GitHub migration & Production Synchronization.
 - [x] **Admin Authentication (Master Password Bypass).**
 - [x] **Documentation Sync complete.**
+- [x] **Security Hardening (CSRF & GitGuardian Protections)**:
+    - **[TECHNICAL LOG - 06 APR]**: Dynamische CSRF check refactor via `X-Forwarded-Host` / `Host` in `middleware.ts`. Dit verhelpt de 403 Forbidden errors achter de Coolify Docker proxy.
+    - **[TECHNICAL LOG - 06 APR]**: Volledige verwijdering van build-scripts (`add_admin.js`) na GitGuardian waarschuwingen (blootgestelde Supabase plain-text credentials).
+    - HTTPS/Origin validatie strakgetrokken voor al het inkomende Admin/Betalings-netwerkverkeer.
+
+## 💳 Phase 7: Commerce (C) - Complete
+- [x] **Mollie Checkout Integration**: Volledig werkende betaallijn met iDEAL en webhook response afhandeling voor database status.
+- [x] **Fixed Redirect & Webhook URLs**: 
+    - **[TECHNICAL LOG - 06 APR]**: Hardcoded productie-URL's direct in Mollie `payment.create` parameters gedwongen, omdat `Astro.url` dynamieken kapot gingen achter de proxy Load Balancer.
+- [x] **Real-time Stock Updates**: 
+    - **[TECHNICAL LOG - 06 APR]**: Product Detail Pagina (PDP) checkt nu live de voorraad via server-side No-Cache fetching om spookverkopen te voorkomen na transacties.
+- [x] **UI/UX Polishing**:
+    - **[TECHNICAL LOG - 06 APR]**: Reactive Cart state bug verholpen: Button component abonneert zich nu correct op de Nanostores `$cartItems`, zodat de status update bij het verwijderen van items uit de drawer.
+    - **[TECHNICAL LOG - 06 APR]**: Styling aangepast voor CartDrawer bij meerdere items; Power-Up suggestieblok verwijderd voor snellere kassa conversie.
+- [x] **Admin Refund Flow**: 
+    - **[TECHNICAL LOG - 06 APR]**: Geïntegreerde Mollie refunds vanuit het dashboard + voorraadherstel (Voorraad increment +1, loop over order items).
+- [x] **Order Status Locking**: 
+    - **[TECHNICAL LOG - 06 APR]**: Beveiliging op form-niveau tegen per ongeluk wijzigen van voltooide orders. Dropdowns voor SHIPPED, CANCELLED, en REFUNDED worden programmatisch gedisabled.
 
 ## 🛠️ Phase 6: Admin & Operations (NEW) - Complete
 - [x] **Admin Dashboard v1.0 (Live metrics & CRUD operations).**

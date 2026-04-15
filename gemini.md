@@ -93,6 +93,8 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 | 2026-03-30 | Taxonomy & Catalog Sync | Implemented 30-platform source of truth, 20-game seeder, and brand-based accordions. |
 | 2026-03-30 | Cyberpunk PDP & Cart | Integrated high-fidelity "Morphism" PDP design and Nanostores reactive cart. |
 | 2026-03-30 | Admin Dashboard v1.0 | Added real-time metrics, product creation with image uploads, and order status management. |
+| 2026-04-06 | Commerce & Refund Flow | Integrated Mollie Checkout, fixed proxy-redirects, added Admin Refund + Stock Restock logic. |
+| 2026-04-06 | Security Hardening | Implemented dynamic CSRF protection and removed exposed credentials. |
 
 
 ## Component Inventory
@@ -108,5 +110,6 @@ Premium, dark-themed headless e-commerce for "A Big Boy's Game" — pre-owned re
 | ShopFilters | `components/ShopFilters.tsx` | ✅ Done — Brand Accordions & Price Pills |
 | ProductGrid | `components/ProductGrid.tsx` | ✅ Done — Responsive SSR-first grid |
 | CartDrawer | `components/shop/CartDrawer.tsx` | ✅ Done — Cyberpunk Reactive Drawer |
-| ProductDetail | `pages/product/[id].astro` | ✅ Done — High-fidelity PDP |
-| AdminDashboard | `pages/admin/index.astro` | ✅ Done — Live metrics & CRUD |
+| ProductDetail | `pages/product/[id].astro` | ✅ Done — Live Stock Sync (No-Cache) |
+| AdminDashboard | `pages/admin/index.astro` | ✅ Done — Order Management & Refunds |
+| RefundAPI | `pages/api/abg-nexus/orders/refund/[id].ts` | ✅ Done — Mollie Sync & Restock |

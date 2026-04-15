@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNavBar from '../components/TopNavBar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Verzendinformatie | A Big Boy's Game">
+    <TopNavBar />
+    
+    <main class="max-w-4xl mx-auto px-6 py-24 lg:py-32 mt-16">
+        <h1 class="font-headline text-5xl md:text-7xl uppercase tracking-wider mb-12 text-on-background">
+            Verzend<span class="text-primary">informatie</span>
+        </h1>
+        
+        <div class="prose prose-invert prose-purple max-w-none space-y-8 font-body text-on-surface-variant leading-relaxed">
+            <section class="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <h2 class="text-2xl font-headline uppercase tracking-widest text-[#d593ff] mb-4">Levertijden</h2>
+                <p>
+                    Bij A Big Boy's Game begrijpen we dat je jouw nieuwe retro gear zo snel mogelijk in huis wilt hebben. Wij hanteren de volgende richtlijnen:
+                </p>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li><strong>Voor 16:00 besteld:</strong> Dezelfde of de volgende werkdag verzonden.</li>
+                    <li><strong>Binnen Nederland:</strong> Gemiddeld 1-2 werkdagen na verzending.</li>
+                    <li><strong>België:</strong> Gemiddeld 2-3 werkdagen na verzending.</li>
+                </ul>
+            </section>
+
+            <section class="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <h2 class="text-2xl font-headline uppercase tracking-widest text-[#d593ff] mb-4">Verzendkosten</h2>
+                <p>Wij hanteren transparante verzendtarieven:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="p-4 bg-black/30 border border-white/5 rounded-xl">
+                        <h4 class="text-[#d593ff] font-bold">Nederland</h4>
+                        <p>€6,95 (Gratis vanaf €75,-)</p>
+                    </div>
+                    <div class="p-4 bg-black/30 border border-white/5 rounded-xl">
+                        <h4 class="text-[#d593ff] font-bold">België</h4>
+                        <p>€9,95</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <h2 class="text-2xl font-headline uppercase tracking-widest text-[#d593ff] mb-4">Vervoerders</h2>
+                <p>
+                    Wij verzenden onze pakketten hoofdzakelijk met PostNL of DHL. Zodra je pakket onderweg is, ontvang je van ons een Track & Trace code via e-mail.
+                </p>
+            </section>
+
+            <section class="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <h2 class="text-2xl font-headline uppercase tracking-widest text-[#d593ff] mb-4">Verpakking</h2>
+                <p>
+                    Retro consoles en games zijn kwetsbaar. Daarom verpakken wij alles met de grootste zorg in stevige dozen, voorzien van voldoende beschermingsmateriaal (bubbelplastic of opvulpapier), zodat je aankoop veilig op de bestemming aankomt.
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <Footer />
+</BaseLayout>

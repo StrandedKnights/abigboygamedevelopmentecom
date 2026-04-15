@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNavBar from '../components/TopNavBar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Retourbeleid | A Big Boy's Game">
+    <TopNavBar />
+    
+    <main class="max-w-4xl mx-auto px-6 py-24 lg:py-32 mt-16">
+        <h1 class="font-headline text-5xl md:text-7xl uppercase tracking-wider mb-12 text-on-background">
+            Retour<span class="text-primary">beleid</span>
+        </h1>
+        
+        <div class="prose prose-invert prose-purple max-w-none space-y-8 font-body text-on-surface-variant leading-relaxed">
+            <section class="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <h2 class="text-2xl font-headline uppercase tracking-widest text-[#d593ff] mb-4">Wettelijk Herroepingsrecht</h2>
+                <p>
+                    U heeft het recht uw bestelling tot 14 dagen na ontvangst zonder opgave van reden te annuleren. U heeft na annulering nogmaals 14 dagen om uw product retour te sturen. U krijgt dan het volledige orderbedrag inclusief verzendkosten gecrediteerd. Enkel de kosten voor retour van u thuis naar de webwinkel zijn voor eigen rekening.
+                </p>
+                <p class="mt-4 italic">
+                    Let op: Gezien de aard van onze producten (antieke/gebruikte retro games en consoles), gelden specifieke voorwaarden voor retournering.
+                </p>
+            </section>
+
+            <section class="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <h2 class="text-2xl font-headline uppercase tracking-widest text-[#d593ff] mb-4">Voorwaarden voor Retour</h2>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Het product dient met alle geleverde toebehoren en – indien redelijkerwijze mogelijk – in de originele staat en verpakking aan ons geretourneerd te worden.</li>
+                    <li>Verzegelde producten (zoals nieuw in de folie games) waarbij de verzegeling is verbroken, kunnen niet worden geretourneerd.</li>
+                    <li>Producten die duidelijke sporen van gebruik vertonen die niet aanwezig waren bij verkoop, kunnen worden geweigerd of de waardevermindering wordt doorberekend.</li>
+                </ul>
+            </section>
+
+            <section class="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <h2 class="text-2xl font-headline uppercase tracking-widest text-[#d593ff] mb-4">Hoe retourneer ik?</h2>
+                <p>Om gebruik te maken van dit recht kunt u contact met ons opnemen via <a href="mailto:info@abigboysgame.com" class="text-[#d593ff] hover:underline">info@abigboysgame.com</a> of via onze contactpagina. Wij zullen vervolgens het verschuldigde orderbedrag binnen 14 dagen na aanmelding van uw retour terugstorten, mits het product reeds in goede orde retour ontvangen is.</p>
+            </section>
+
+            <section class="bg-white/5 p-8 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <h2 class="text-2xl font-headline uppercase tracking-widest text-[#d593ff] mb-4">Uitzonderingen</h2>
+                <p>
+                    Zakelijke bestellingen en producten die op maat zijn gemaakt/aangepast vallen buiten het standaard herroepingsrecht indien dit expliciet is overeengekomen.
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <Footer />
+</BaseLayout>

@@ -52,3 +52,17 @@
 **Resolution 1 (Buffer)**: Refactored `File.arrayBuffer()` to use `Buffer.from(arrayBuffer)` for better Node.js compatibility in containerized environments.
 **Resolution 2 (Auth)**: Identified "Invalid Compact JWS" error, tracing it back to an incorrectly configured `SUPABASE_SERVICE_ROLE_KEY` in the production environment variables.
 **Resolution 3 (Storage)**: Ensured the `product-images` bucket in Supabase is set to 'Public' to allow direct URL access for product cards.
+### 10. Mollie Redirects & Webhook Stability
+**Issue**: Dynamic origin detection (`Astro.url.origin`) failed behind Coolify's proxy, causing "Invalid Redirect URL" errors in Mollie.
+**Resolution**: Hardcoded the Production URL (`https://www.abigboysgamedevelopment.skyco-webagency.nl`) for all redirect and webhook endpoints to ensure 100% reliability.
+
+### 11. Real-time Inventory Sync
+**Issue**: Product Detail Pages (PDP) were showing cached/stale stock levels after a purchase or manual update.
+**Resolution**: Implemented `Cache-Control: no-store, max-age=0` headers and side-stepped Astro's internal caching for product data fetches, forcing the browser to fetch live data from the database on every visit.
+
+### 12. Integrated Refund & Restock Flow
+**Issue**: Refunding a customer required manual action in Mollie AND manual stock adjustment in the database.
+**Resolution**: Built a unified "Refund" action in the Admin Dashboard. A single click now:
+1. Triggers the Mollie API for a full refund.
+2. Updates the Database order status to `REFUNDED`.
+3. Automatically increments the Product Stock (+1) back into inventory.
